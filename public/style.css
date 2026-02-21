@@ -3,3 +3,162 @@
 *::after {
   box-sizing: border-box;
 }
+
+/* ── テーマ CSS 変数 ── */
+
+:root {
+  /* ライトモード（デフォルト） */
+  --color-bg: #f5f5f7;
+  --color-text: #1d1d1f;
+  --color-accent: #0066cc;
+  --color-card-bg: #ffffff;
+  --color-card-border: #d2d2d7;
+  --color-card-shadow: rgba(0, 0, 0, 0.06);
+  --color-header-bg: rgba(245, 245, 247, 0.8);
+  --color-nav-hover: #e8e8ed;
+  --color-muted: #6e6e73;
+  --radius: 12px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
+    sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "Fira Mono", Menlo, monospace;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1a1a2e;
+  --color-text: #e0e0e0;
+  --color-accent: #6ec6ff;
+  --color-card-bg: #25253e;
+  --color-card-border: #3a3a5c;
+  --color-card-shadow: rgba(0, 0, 0, 0.3);
+  --color-header-bg: rgba(26, 26, 46, 0.85);
+  --color-nav-hover: #30304d;
+  --color-muted: #9a9ab0;
+}
+
+/* ── ベースリセット ── */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' fill='%23808080' fill-opacity='0.03'/%3E%3C/svg%3E");
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100dvh;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ── ヘッダー ── */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: var(--color-header-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-card-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  font-family: var(--font-mono);
+}
+
+/* ── テーマ切り替えボタン ── */
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--color-card-border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  background-color: var(--color-nav-hover);
+}
+
+/* ── メインコンテンツ ── */
+
+main {
+  max-width: 640px;
+  margin: 48px auto;
+  padding: 0 24px;
+}
+
+/* ── ナビゲーション（ページ一覧） ── */
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+nav li a {
+  display: block;
+  padding: 16px 20px;
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px var(--color-card-shadow), inset 0 1px 0
+    rgba(255, 255, 255, 0.06);
+  color: var(--color-text);
+  font-weight: 500;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s
+    ease;
+}
+
+nav li a:hover {
+  text-decoration: none;
+  background-color: var(--color-nav-hover);
+  box-shadow: 0 2px 8px var(--color-card-shadow);
+  transform: translateY(-1px);
+}
+
+nav li a .nav-description {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--color-muted);
+  margin-top: 4px;
+}
+
+/* ── フッター ── */
+
+footer {
+  text-align: center;
+  padding: 32px 24px;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-card-border);
+  margin-top: 48px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
