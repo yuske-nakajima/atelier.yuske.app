@@ -1,0 +1,13 @@
+{
+  "name": "atelier-yuske-app",
+  "private": true,
+  "scripts": {
+    "dev": "vite public",
+    "check": "biome check .",
+    "format": "biome check --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1",
+    "vite": "^6"
+  }
+}
