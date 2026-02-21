@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>T-8 Random Pattern | atelier.yuske.app</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body>
+    <header>
+      <a href="/">&larr; トップに戻る</a>
+    </header>
+
+    <main>
+      <h1>T-8 Random Pattern</h1>
+
+      <!-- Web MIDI 非対応時のエラー表示 -->
+      <div id="midi-error" class="error" role="alert" hidden>
+        <p>
+          このブラウザは Web MIDI API に対応していません。Chrome / Edge
+          をお使いください。
+        </p>
+      </div>
+
+      <!-- MIDI Output セクション -->
+      <section class="section">
+        <h2>MIDI Output</h2>
+        <div class="field">
+          <label for="midi-device">デバイス</label>
+          <select id="midi-device" disabled>
+            <option value="">-- デバイスなし --</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="midi-channel">チャンネル</label>
+          <select id="midi-channel">
+            <option value="0">1</option>
+            <option value="1">2</option>
+            <option value="2">3</option>
+            <option value="3">4</option>
+            <option value="4">5</option>
+            <option value="5">6</option>
+            <option value="6">7</option>
+            <option value="7">8</option>
+            <option value="8">9</option>
+            <option value="9" selected>10</option>
+            <option value="10">11</option>
+            <option value="11">12</option>
+            <option value="12">13</option>
+            <option value="13">14</option>
+            <option value="14">15</option>
+            <option value="15">16</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Timing セクション -->
+      <section class="section">
+        <h2>Timing</h2>
+        <div class="field">
+          <label for="bpm">BPM</label>
+          <input
+            type="number"
+            id="bpm"
+            value="120"
+            min="30"
+            max="300"
+            step="1"
+          />
+        </div>
+        <div class="field">
+          <label>ステップ数</label>
+          <div class="toggle-group">
+            <button type="button" class="step-btn active" data-steps="16">
+              16 step
+            </button>
+            <button type="button" class="step-btn" data-steps="32">
+              32 step
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label>インターバル</label>
+          <span id="interval-display">2.000 秒</span>
+        </div>
+      </section>
+
+      <!-- Bank セクション -->
+      <section class="section">
+        <h2>Bank</h2>
+        <div class="bank-group">
+          <button type="button" class="bank-btn active" data-bank="1">
+            Bank 1
+          </button>
+          <button type="button" class="bank-btn" data-bank="2">Bank 2</button>
+          <button type="button" class="bank-btn" data-bank="3">Bank 3</button>
+          <button type="button" class="bank-btn" data-bank="4">Bank 4</button>
+        </div>
+      </section>
+
+      <!-- Patterns セクション -->
+      <section class="section">
+        <h2>Patterns</h2>
+        <div class="pattern-actions">
+          <button type="button" id="pattern-all">All</button>
+          <button type="button" id="pattern-none">None</button>
+        </div>
+        <div id="pattern-grid" class="pattern-grid"></div>
+      </section>
+
+      <!-- Now Playing セクション -->
+      <section class="section">
+        <h2>Now Playing</h2>
+        <div id="now-playing" class="now-playing" aria-live="polite">--</div>
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+      </section>
+
+      <!-- Start / Stop ボタン -->
+      <button type="button" id="start-stop" class="start-stop-btn" disabled>
+        START
+      </button>
+
+      <!-- フッター注記 -->
+      <footer>
+        <p>T-8 側の設定: MIDI RX Program Change = On</p>
+      </footer>
+    </main>
+  </body>
+</html>
