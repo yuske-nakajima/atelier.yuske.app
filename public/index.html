@@ -4,20 +4,48 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>atelier.yuske.app</title>
+    <script>
+      // FOUC 防止: CSS 読み込み前にテーマを即座に適用
+      (function () {
+        var s = localStorage.getItem('theme');
+        var t =
+          s === 'light' || s === 'dark'
+            ? s
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
     <link rel="stylesheet" href="/style.css" />
     <script type="module" src="/main.js"></script>
   </head>
   <body>
     <header>
       <h1>atelier.yuske.app</h1>
+      <button
+        type="button"
+        class="theme-toggle"
+        aria-label="テーマを切り替え"
+        aria-pressed="false"
+      >
+        🌙
+      </button>
     </header>
-    <nav>
-      <ul>
-        <li><a href="/">トップ</a></li>
-      </ul>
-    </nav>
     <main>
-      <p>ようこそ</p>
+      <nav>
+        <ul>
+          <li>
+            <a href="/t-8/">
+              T-8 Random Pattern
+              <span class="nav-description">ランダムパターン生成</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </main>
+    <footer>
+      <p>&copy; atelier.yuske.app</p>
+    </footer>
   </body>
 </html>
