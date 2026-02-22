@@ -89,8 +89,106 @@ let expected = 0;
 /** @type {number | null} */
 let runtimeErrorTimerId = null;
 
+const STORAGE_KEY_PATTERNS = 't8-random-pattern:bankPatterns';
+const STORAGE_KEY_SETTINGS = 't8-random-pattern:settings';
+
+// ── localStorage 永続化 ──
+
+function loadPatterns() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_PATTERNS);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    // 4 Bank × 16 パターンの boolean[][] であることを検証
+    if (
+      !Array.isArray(parsed) ||
+      parsed.length !== 4 ||
+      !parsed.every(
+        (/** @type {unknown} */ bank) =>
+          Array.isArray(bank) &&
+          bank.length === 16 &&
+          bank.every((/** @type {unknown} */ v) => typeof v === 'boolean'),
+      )
+    ) {
+      return;
+    }
+    for (let b = 0; b < 4; b++) {
+      for (let p = 0; p < 16; p++) {
+        bankPatterns[b][p] = parsed[b][p];
+      }
+    }
+  } catch {
+    // localStorage が使えない/データが壊れている場合は無視
+  }
+}
+
+function savePatterns() {
+  try {
+    localStorage.setItem(STORAGE_KEY_PATTERNS, JSON.stringify(bankPatterns));
+  } catch {
+    // localStorage が使えない場合は無視
+  }
+}
+
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_SETTINGS);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (typeof parsed !== 'object' || parsed === null) return;
+
+    // チャンネル（0〜15）
+    if (
+      typeof parsed.channel === 'number' &&
+      parsed.channel >= 0 &&
+      parsed.channel <= 15 &&
+      Number.isInteger(parsed.channel)
+    ) {
+      channelSelect.value = String(parsed.channel);
+    }
+
+    // BPM（30〜300）
+    if (
+      typeof parsed.bpm === 'number' &&
+      parsed.bpm >= 30 &&
+      parsed.bpm <= 300 &&
+      Number.isInteger(parsed.bpm)
+    ) {
+      bpmInput.value = String(parsed.bpm);
+    }
+
+    // ステップ数（16 or 32）
+    if (parsed.steps === 16 || parsed.steps === 32) {
+      currentSteps = parsed.steps;
+      for (const btn of document.querySelectorAll('.step-btn')) {
+        const s = Number(/** @type {HTMLElement} */ (btn).dataset.steps);
+        btn.classList.toggle('active', s === currentSteps);
+      }
+    }
+  } catch {
+    // localStorage が使えない/データが壊れている場合は無視
+  }
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(
+      STORAGE_KEY_SETTINGS,
+      JSON.stringify({
+        channel: Number(channelSelect.value),
+        bpm: Number(bpmInput.value) || 120,
+        steps: currentSteps,
+      }),
+    );
+  } catch {
+    // localStorage が使えない場合は無視
+  }
+}
+
 // ── 初期化 ──
 
+loadPatterns();
+loadSettings();
 initPatternGrid();
 updateIntervalDisplay();
 initMidi();
@@ -214,8 +312,13 @@ function updateIntervalDisplay() {
   intervalDisplay.textContent = `${(intervalMs / 1000).toFixed(3)} 秒`;
 }
 
+channelSelect.addEventListener('change', () => {
+  saveSettings();
+});
+
 bpmInput.addEventListener('input', () => {
   updateIntervalDisplay();
+  saveSettings();
   if (engineState === 'running') {
     restartSelfCorrectingTimer();
   }
@@ -229,6 +332,7 @@ for (const btn of document.querySelectorAll('.step-btn')) {
     btn.classList.add('active');
     currentSteps = Number(/** @type {HTMLElement} */ (btn).dataset.steps);
     updateIntervalDisplay();
+    saveSettings();
     if (engineState === 'running') {
       restartSelfCorrectingTimer();
     }
@@ -252,10 +356,11 @@ for (const btn of document.querySelectorAll('.bank-btn')) {
 
 function initPatternGrid() {
   patternGrid.innerHTML = '';
+  const patterns = bankPatterns[currentBank - 1];
   for (let i = 0; i < 16; i++) {
     const cell = document.createElement('button');
     cell.type = 'button';
-    cell.className = 'pattern-cell active';
+    cell.className = patterns[i] ? 'pattern-cell active' : 'pattern-cell';
     cell.textContent = String(i + 1);
     cell.dataset.index = String(i);
     cell.addEventListener('click', () => togglePattern(i));
@@ -276,6 +381,7 @@ function renderPatternGrid() {
 function togglePattern(index) {
   const patterns = bankPatterns[currentBank - 1];
   patterns[index] = !patterns[index];
+  savePatterns();
   renderPatternGrid();
 
   // 有効パターンが 0 件になった場合は IDLE へ
@@ -288,12 +394,14 @@ function togglePattern(index) {
 
 patternAllBtn.addEventListener('click', () => {
   bankPatterns[currentBank - 1].fill(true);
+  savePatterns();
   renderPatternGrid();
   updateUI();
 });
 
 patternNoneBtn.addEventListener('click', () => {
   bankPatterns[currentBank - 1].fill(false);
+  savePatterns();
   renderPatternGrid();
 
   // 有効パターンが 0 件になった場合は IDLE へ
