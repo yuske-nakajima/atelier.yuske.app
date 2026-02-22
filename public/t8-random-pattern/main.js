@@ -92,26 +92,77 @@ let runtimeErrorTimerId = null;
 const STORAGE_KEY_PATTERNS = 't8-random-pattern:bankPatterns';
 const STORAGE_KEY_SETTINGS = 't8-random-pattern:settings';
 
+// ── ユーティリティ ──
+
+/**
+ * 同期関数を安全に実行する（Try Wrapper Pattern）
+ * @param {() => void} fn
+ * @returns {boolean} 成功なら true
+ */
+function trySync(fn) {
+  try {
+    fn();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** 有効なパターンが1つ以上あるか */
+function hasActivePatterns() {
+  return bankPatterns.flat().some(Boolean);
+}
+
 // ── localStorage 永続化 ──
+
+/**
+ * 4 Bank × 16 パターンの boolean[][] であることを検証する
+ * @param {unknown} data
+ * @returns {data is boolean[][]}
+ */
+function isValidBankPatterns(data) {
+  return (
+    Array.isArray(data) &&
+    data.length === 4 &&
+    data.every(
+      (/** @type {unknown} */ bank) =>
+        Array.isArray(bank) &&
+        bank.length === 16 &&
+        bank.every((/** @type {unknown} */ v) => typeof v === 'boolean'),
+    )
+  );
+}
+
+/**
+ * @param {unknown} v
+ * @returns {v is number}
+ */
+function isValidChannel(v) {
+  return typeof v === 'number' && v >= 0 && v <= 15 && Number.isInteger(v);
+}
+
+/**
+ * @param {unknown} v
+ * @returns {v is number}
+ */
+function isValidBpm(v) {
+  return typeof v === 'number' && v >= 30 && v <= 300 && Number.isInteger(v);
+}
+
+/**
+ * @param {unknown} v
+ * @returns {v is 16 | 32}
+ */
+function isValidSteps(v) {
+  return v === 16 || v === 32;
+}
 
 function loadPatterns() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY_PATTERNS);
     if (!raw) return;
     const parsed = JSON.parse(raw);
-    // 4 Bank × 16 パターンの boolean[][] であることを検証
-    if (
-      !Array.isArray(parsed) ||
-      parsed.length !== 4 ||
-      !parsed.every(
-        (/** @type {unknown} */ bank) =>
-          Array.isArray(bank) &&
-          bank.length === 16 &&
-          bank.every((/** @type {unknown} */ v) => typeof v === 'boolean'),
-      )
-    ) {
-      return;
-    }
+    if (!isValidBankPatterns(parsed)) return;
     for (let b = 0; b < 4; b++) {
       for (let p = 0; p < 16; p++) {
         bankPatterns[b][p] = parsed[b][p];
@@ -123,11 +174,9 @@ function loadPatterns() {
 }
 
 function savePatterns() {
-  try {
-    localStorage.setItem(STORAGE_KEY_PATTERNS, JSON.stringify(bankPatterns));
-  } catch {
-    // localStorage が使えない場合は無視
-  }
+  trySync(() =>
+    localStorage.setItem(STORAGE_KEY_PATTERNS, JSON.stringify(bankPatterns)),
+  );
 }
 
 function loadSettings() {
@@ -137,28 +186,13 @@ function loadSettings() {
     const parsed = JSON.parse(raw);
     if (typeof parsed !== 'object' || parsed === null) return;
 
-    // チャンネル（0〜15）
-    if (
-      typeof parsed.channel === 'number' &&
-      parsed.channel >= 0 &&
-      parsed.channel <= 15 &&
-      Number.isInteger(parsed.channel)
-    ) {
+    if (isValidChannel(parsed.channel)) {
       channelSelect.value = String(parsed.channel);
     }
-
-    // BPM（30〜300）
-    if (
-      typeof parsed.bpm === 'number' &&
-      parsed.bpm >= 30 &&
-      parsed.bpm <= 300 &&
-      Number.isInteger(parsed.bpm)
-    ) {
+    if (isValidBpm(parsed.bpm)) {
       bpmInput.value = String(parsed.bpm);
     }
-
-    // ステップ数（16 or 32）
-    if (parsed.steps === 16 || parsed.steps === 32) {
+    if (isValidSteps(parsed.steps)) {
       currentSteps = parsed.steps;
       for (const btn of document.querySelectorAll('.step-btn')) {
         const s = Number(/** @type {HTMLElement} */ (btn).dataset.steps);
@@ -171,7 +205,7 @@ function loadSettings() {
 }
 
 function saveSettings() {
-  try {
+  trySync(() =>
     localStorage.setItem(
       STORAGE_KEY_SETTINGS,
       JSON.stringify({
@@ -179,10 +213,8 @@ function saveSettings() {
         bpm: Number(bpmInput.value) || 120,
         steps: currentSteps,
       }),
-    );
-  } catch {
-    // localStorage が使えない場合は無視
-  }
+    ),
+  );
 }
 
 // ── 初期化 ──
@@ -377,51 +409,43 @@ function renderPatternGrid() {
   }
 }
 
-/** @param {number} index */
-function togglePattern(index) {
-  const patterns = bankPatterns[currentBank - 1];
-  patterns[index] = !patterns[index];
+/** パターン変更後の共通処理: 保存 → 描画 → 必要なら IDLE 遷移 */
+function afterPatternChange() {
   savePatterns();
   renderPatternGrid();
 
   // 有効パターンが 0 件になった場合は IDLE へ
-  if (engineState !== 'idle' && !bankPatterns.flat().some(Boolean)) {
+  if (engineState !== 'idle' && !hasActivePatterns()) {
     transitionToIdle();
     return;
   }
   updateUI();
 }
 
+/** @param {number} index */
+function togglePattern(index) {
+  bankPatterns[currentBank - 1][index] = !bankPatterns[currentBank - 1][index];
+  afterPatternChange();
+}
+
 patternAllBtn.addEventListener('click', () => {
   bankPatterns[currentBank - 1].fill(true);
-  savePatterns();
-  renderPatternGrid();
-  updateUI();
+  afterPatternChange();
 });
 
 patternNoneBtn.addEventListener('click', () => {
   bankPatterns[currentBank - 1].fill(false);
-  savePatterns();
-  renderPatternGrid();
-
-  // 有効パターンが 0 件になった場合は IDLE へ
-  if (engineState !== 'idle' && !bankPatterns.flat().some(Boolean)) {
-    transitionToIdle();
-    return;
-  }
-  updateUI();
+  afterPatternChange();
 });
 
 // ── UI 更新（状態ベース） ──
 
 function updateUI() {
-  const hasActivePatterns = bankPatterns.flat().some(Boolean);
-
   switch (engineState) {
     case 'idle':
       startStopBtn.textContent = 'START';
       startStopBtn.classList.remove('running', 'waiting');
-      startStopBtn.disabled = !selectedOutput || !hasActivePatterns;
+      startStopBtn.disabled = !selectedOutput || !hasActivePatterns();
       cancelBtn.hidden = true;
       resyncBtn.hidden = true;
       tapHint.hidden = true;
@@ -621,37 +645,43 @@ function updateCurrentHighlight(bank, pattern) {
 
 // ── 自己補正タイマー ──
 
-function startSelfCorrectingTimer() {
-  expected = performance.now() + intervalMs;
+/** ドリフト補正付きで次の tick をスケジュールする */
+function scheduleNextTick() {
+  const now = performance.now();
+  const drift = now - expected;
 
-  function tick() {
-    if (engineState !== 'running') return;
-
-    const result = trySendRandomPC();
-    if (result !== 'ok') {
-      transitionToIdle();
-      if (result === 'send-error') {
-        showRuntimeError('MIDI 送信に失敗しました');
-      }
-      return;
-    }
-    lastSendTime = performance.now();
-
-    // バースト送信防止
-    const now = performance.now();
-    const drift = now - expected;
-    if (drift > intervalMs) {
-      while (expected <= now) {
-        expected += intervalMs;
-      }
-    } else {
+  // バースト送信防止: 大幅な遅延時は expected を現在時刻まで早送り
+  if (drift > intervalMs) {
+    while (expected <= now) {
       expected += intervalMs;
     }
-    const nextDelay = Math.max(0, expected - performance.now());
-
-    timerId = window.setTimeout(tick, nextDelay);
+  } else {
+    expected += intervalMs;
   }
 
+  const nextDelay = Math.max(0, expected - performance.now());
+  timerId = window.setTimeout(tick, nextDelay);
+}
+
+/** タイマー tick: PC 送信 → 次の tick をスケジュール */
+function tick() {
+  if (engineState !== 'running') return;
+
+  const result = trySendRandomPC();
+  if (result !== 'ok') {
+    transitionToIdle();
+    if (result === 'send-error') {
+      showRuntimeError('MIDI 送信に失敗しました');
+    }
+    return;
+  }
+
+  lastSendTime = performance.now();
+  scheduleNextTick();
+}
+
+function startSelfCorrectingTimer() {
+  expected = performance.now() + intervalMs;
   timerId = window.setTimeout(tick, intervalMs);
 }
 
@@ -662,34 +692,6 @@ function restartSelfCorrectingTimer() {
   intervalMs = calcInterval();
   expected = performance.now() + intervalMs;
   lastSendTime = performance.now();
-
-  function tick() {
-    if (engineState !== 'running') return;
-
-    const result = trySendRandomPC();
-    if (result !== 'ok') {
-      transitionToIdle();
-      if (result === 'send-error') {
-        showRuntimeError('MIDI 送信に失敗しました');
-      }
-      return;
-    }
-    lastSendTime = performance.now();
-
-    const now = performance.now();
-    const drift = now - expected;
-    if (drift > intervalMs) {
-      while (expected <= now) {
-        expected += intervalMs;
-      }
-    } else {
-      expected += intervalMs;
-    }
-    const nextDelay = Math.max(0, expected - performance.now());
-
-    timerId = window.setTimeout(tick, nextDelay);
-  }
-
   timerId = window.setTimeout(tick, intervalMs);
 }
 
