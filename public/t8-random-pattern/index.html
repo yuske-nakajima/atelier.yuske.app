@@ -23,6 +23,11 @@
         </p>
       </div>
 
+      <!-- 実行時エラー表示 -->
+      <div id="runtime-error" class="error runtime-error" role="alert" hidden>
+        <p id="runtime-error-msg"></p>
+      </div>
+
       <!-- MIDI Output セクション -->
       <section class="section">
         <h2>MIDI Output</h2>
@@ -118,10 +123,30 @@
         </div>
       </section>
 
+      <!-- 説明テキスト（WAITING 状態用） -->
+      <p id="tap-hint" class="tap-hint" hidden>
+        T-8 の小節頭に合わせて TAP ♪ を押してください
+      </p>
+
       <!-- Start / Stop ボタン -->
       <button type="button" id="start-stop" class="start-stop-btn" disabled>
         START
       </button>
+
+      <!-- サブボタン -->
+      <div class="sub-buttons">
+        <button type="button" id="cancel-btn" class="sub-btn cancel-btn" hidden>
+          CANCEL
+        </button>
+        <button
+          type="button"
+          id="resync-btn"
+          class="sub-btn resync-btn"
+          hidden
+        >
+          RESYNC
+        </button>
+      </div>
 
       <!-- フッター注記 -->
       <footer>

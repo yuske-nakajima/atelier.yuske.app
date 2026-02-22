@@ -321,6 +321,84 @@ h2 {
   color: var(--color-danger);
 }
 
+.start-stop-btn.waiting {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    background-color: var(--color-accent-dim);
+  }
+  50% {
+    background-color: rgba(0, 229, 255, 0.3);
+  }
+}
+
+/* ── サブボタン（CANCEL / RESYNC） ── */
+
+.sub-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sub-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.cancel-btn {
+  background-color: rgba(255, 77, 106, 0.1);
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+}
+
+.cancel-btn:hover {
+  background-color: rgba(255, 77, 106, 0.2);
+}
+
+.resync-btn {
+  background-color: rgba(0, 230, 118, 0.1);
+  border: 1px solid var(--color-success);
+  color: var(--color-success);
+}
+
+.resync-btn:hover {
+  background-color: rgba(0, 230, 118, 0.2);
+}
+
+/* ── 説明テキスト ── */
+
+.tap-hint {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  margin: 0 0 12px;
+}
+
+/* ── 実行時エラー ── */
+
+.runtime-error {
+  animation: fade-in 0.2s ease;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* ── フッター ── */
 
 footer {
