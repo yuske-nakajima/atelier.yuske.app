@@ -373,14 +373,22 @@ for (const btn of document.querySelectorAll('.step-btn')) {
 
 // ── Bank 選択 ──
 
+/** @param {number} bank */
+function switchBank(bank) {
+  if (bank === currentBank) return;
+  currentBank = bank;
+  for (const b of document.querySelectorAll('.bank-btn')) {
+    b.classList.toggle(
+      'active',
+      Number(/** @type {HTMLElement} */ (b).dataset.bank) === bank,
+    );
+  }
+  renderPatternGrid();
+}
+
 for (const btn of document.querySelectorAll('.bank-btn')) {
   btn.addEventListener('click', () => {
-    for (const b of document.querySelectorAll('.bank-btn')) {
-      b.classList.remove('active');
-    }
-    btn.classList.add('active');
-    currentBank = Number(/** @type {HTMLElement} */ (btn).dataset.bank);
-    renderPatternGrid();
+    switchBank(Number(/** @type {HTMLElement} */ (btn).dataset.bank));
   });
 }
 
@@ -624,22 +632,22 @@ function getActivePatterns() {
 }
 
 /**
+ * 再生中パターンの Bank に表示を切り替え、該当セルをハイライトする
  * @param {number} bank
  * @param {number} pattern
  */
 function updateCurrentHighlight(bank, pattern) {
-  // 全セルから current を除去
-  for (const cell of patternGrid.querySelectorAll('.pattern-cell')) {
+  // 再生中パターンの Bank に表示を切り替え
+  switchBank(bank);
+
+  // 全セルから current を除去してから該当セルをハイライト
+  const cells = patternGrid.querySelectorAll('.pattern-cell');
+  for (const cell of cells) {
     cell.classList.remove('current');
   }
-
-  // 表示中の Bank と一致する場合のみハイライト
-  if (bank === currentBank) {
-    const cells = patternGrid.querySelectorAll('.pattern-cell');
-    const target = cells[pattern - 1];
-    if (target) {
-      target.classList.add('current');
-    }
+  const target = cells[pattern - 1];
+  if (target) {
+    target.classList.add('current');
   }
 }
 
