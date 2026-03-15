@@ -57,3 +57,4 @@ npm run format   # 自動修正
 - Biome の recommended ルールに従う
 - `jsconfig.json` で `strict: true` / `checkJs: true` を有効化済み
 - 日本語でコメント・ドキュメントを記述する
+- CSS では `px` を使わず相対単位（`rem`, `em`, `%` 等）を使用する
