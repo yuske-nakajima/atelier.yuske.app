@@ -5,16 +5,19 @@
 }
 
 :root {
-  --color-bg: #0a0a0f;
-  --color-surface: #14141f;
-  --color-border: #2a2a3a;
-  --color-text: #e0e0e0;
-  --color-muted: #7a7a8a;
-  --color-accent: #00e5ff;
-  --color-accent-dim: rgba(0, 229, 255, 0.15);
-  --color-danger: #ff4d6a;
-  --color-success: #00e676;
-  --radius: 8px;
+  --background: hsl(240 33% 4%);
+  --foreground: hsl(0 0% 88%);
+  --card: hsl(240 20% 10%);
+  --card-foreground: hsl(0 0% 88%);
+  --muted: hsl(240 10% 20%);
+  --muted-foreground: hsl(240 6% 50%);
+  --accent: hsl(187 100% 50%);
+  --accent-dim: hsl(187 100% 50% / 0.15);
+  --destructive: hsl(347 100% 65%);
+  --success: hsl(151 100% 45%);
+  --border: hsl(240 16% 20%);
+  --ring: hsl(187 100% 50%);
+  --radius: 0.5rem;
   --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
     sans-serif;
   --font-mono: "SF Mono", "Fira Code", Menlo, monospace;
@@ -24,15 +27,17 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 100%;
   line-height: 1.5;
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  color: var(--foreground);
+  background-color: var(--background);
   min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -41,57 +46,58 @@ a:hover {
 }
 
 header {
-  padding: 12px 16px;
-  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
 }
 
 main {
-  max-width: 520px;
+  max-width: 32.5rem;
   margin: 0 auto;
-  padding: 0 16px 32px;
+  padding: 0 1rem 2rem;
 }
 
 h1 {
   font-size: 1.4rem;
   font-weight: 700;
   font-family: var(--font-mono);
-  margin: 0 0 20px;
-  letter-spacing: 0.02em;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.01em;
 }
 
 h2 {
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--color-muted);
-  margin: 0 0 12px;
+  color: var(--muted-foreground);
+  margin: 0 0 0.75rem;
 }
 
 /* ── エラー表示 ── */
 
 .error {
-  background-color: rgba(255, 77, 106, 0.12);
-  border: 1px solid var(--color-danger);
+  background-color: hsl(347 100% 65% / 0.12);
+  border: 0.0625rem solid var(--destructive);
   border-radius: var(--radius);
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  color: var(--color-danger);
-  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  color: var(--destructive);
+  font-size: 0.875rem;
 }
 
 .error p {
   margin: 0;
 }
 
-/* ── セクション ── */
+/* ── セクション（shadcn card） ── */
 
 .section {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background-color: var(--card);
+  border: 0.0625rem solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 16px;
+  box-shadow: 0 0.0625rem 0.125rem 0 rgb(0 0 0 / 0.1);
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 /* ── フォームフィールド ── */
@@ -100,8 +106,8 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .field:last-child {
@@ -109,22 +115,30 @@ h2 {
 }
 
 .field label {
-  font-size: 0.9rem;
-  color: var(--color-muted);
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
   flex-shrink: 0;
 }
 
 .field select,
 .field input[type="number"] {
   flex: 1;
-  max-width: 200px;
-  padding: 8px 12px;
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
+  max-width: 12.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--background);
+  border: 0.0625rem solid var(--border);
   border-radius: var(--radius);
-  color: var(--color-text);
-  font-size: 0.95rem;
+  color: var(--foreground);
+  font-size: 0.875rem;
   font-family: var(--font-mono);
+  transition: border-color 0.15s ease;
+}
+
+.field select:focus,
+.field input[type="number"]:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 0.1875rem hsl(187 100% 50% / 0.2);
 }
 
 .field select:disabled {
@@ -134,8 +148,8 @@ h2 {
 
 #interval-display {
   font-family: var(--font-mono);
-  font-size: 0.95rem;
-  color: var(--color-accent);
+  font-size: 0.875rem;
+  color: var(--accent);
 }
 
 /* ── トグルグループ（ステップ切り替え） ── */
@@ -146,11 +160,11 @@ h2 {
 }
 
 .step-btn {
-  padding: 8px 16px;
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
-  color: var(--color-muted);
-  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--background);
+  border: 0.0625rem solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
@@ -165,9 +179,9 @@ h2 {
 }
 
 .step-btn.active {
-  background-color: var(--color-accent-dim);
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  background-color: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .step-btn.active + .step-btn {
@@ -179,54 +193,54 @@ h2 {
 .bank-group {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .bank-btn {
-  padding: 10px;
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
+  padding: 0.625rem;
+  background-color: var(--background);
+  border: 0.0625rem solid var(--border);
   border-radius: var(--radius);
-  color: var(--color-muted);
-  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .bank-btn.active {
-  background-color: var(--color-accent-dim);
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  background-color: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 /* ── パターングリッド ── */
 
 .pattern-actions {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .pattern-actions button {
-  padding: 6px 16px;
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
+  padding: 0.375rem 1rem;
+  background-color: var(--background);
+  border: 0.0625rem solid var(--border);
   border-radius: var(--radius);
-  color: var(--color-muted);
-  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
 
 .pattern-actions button:hover {
-  background-color: var(--color-border);
+  background-color: var(--muted);
 }
 
 .pattern-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  gap: 6px;
+  gap: 0.375rem;
 }
 
 .pattern-cell {
@@ -234,11 +248,11 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  color: var(--color-muted);
-  font-size: 0.8rem;
+  background-color: var(--background);
+  border: 0.0625rem solid var(--border);
+  border-radius: 0.375rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
   font-family: var(--font-mono);
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s
@@ -248,13 +262,13 @@ h2 {
 }
 
 .pattern-cell.active {
-  background-color: var(--color-accent-dim);
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  background-color: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .pattern-cell.current {
-  box-shadow: 0 0 0 2px var(--color-accent);
+  box-shadow: 0 0 0 0.125rem var(--accent);
 }
 
 /* ── Now Playing ── */
@@ -264,8 +278,8 @@ h2 {
   font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
-  color: var(--color-accent);
-  margin-bottom: 12px;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
   min-height: 2em;
   display: flex;
   align-items: center;
@@ -274,16 +288,16 @@ h2 {
 
 .progress-bar {
   width: 100%;
-  height: 4px;
-  background-color: var(--color-bg);
-  border-radius: 2px;
+  height: 0.25rem;
+  background-color: var(--background);
+  border-radius: 0.125rem;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
   width: 0;
-  background-color: var(--color-accent);
+  background-color: var(--accent);
   transition: none;
 }
 
@@ -292,12 +306,12 @@ h2 {
 .start-stop-btn {
   display: block;
   width: 100%;
-  padding: 16px;
-  margin-bottom: 16px;
-  background-color: var(--color-accent-dim);
-  border: 2px solid var(--color-accent);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--accent-dim);
+  border: 0.125rem solid var(--accent);
   border-radius: var(--radius);
-  color: var(--color-accent);
+  color: var(--accent);
   font-size: 1.1rem;
   font-weight: 700;
   font-family: var(--font-mono);
@@ -307,7 +321,12 @@ h2 {
 }
 
 .start-stop-btn:hover:not(:disabled) {
-  background-color: rgba(0, 229, 255, 0.25);
+  background-color: hsl(187 100% 50% / 0.25);
+}
+
+.start-stop-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 0.1875rem hsl(187 100% 50% / 0.3);
 }
 
 .start-stop-btn:disabled {
@@ -316,9 +335,9 @@ h2 {
 }
 
 .start-stop-btn.running {
-  background-color: rgba(255, 77, 106, 0.15);
-  border-color: var(--color-danger);
-  color: var(--color-danger);
+  background-color: hsl(347 100% 65% / 0.15);
+  border-color: var(--destructive);
+  color: var(--destructive);
 }
 
 .start-stop-btn.waiting {
@@ -328,10 +347,10 @@ h2 {
 @keyframes pulse {
   0%,
   100% {
-    background-color: var(--color-accent-dim);
+    background-color: var(--accent-dim);
   }
   50% {
-    background-color: rgba(0, 229, 255, 0.3);
+    background-color: hsl(187 100% 50% / 0.3);
   }
 }
 
@@ -339,15 +358,15 @@ h2 {
 
 .sub-buttons {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .sub-btn {
   flex: 1;
-  padding: 10px;
+  padding: 0.625rem;
   border-radius: var(--radius);
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   font-family: var(--font-mono);
   letter-spacing: 0.05em;
@@ -356,32 +375,32 @@ h2 {
 }
 
 .cancel-btn {
-  background-color: rgba(255, 77, 106, 0.1);
-  border: 1px solid var(--color-danger);
-  color: var(--color-danger);
+  background-color: hsl(347 100% 65% / 0.1);
+  border: 0.0625rem solid var(--destructive);
+  color: var(--destructive);
 }
 
 .cancel-btn:hover {
-  background-color: rgba(255, 77, 106, 0.2);
+  background-color: hsl(347 100% 65% / 0.2);
 }
 
 .resync-btn {
-  background-color: rgba(0, 230, 118, 0.1);
-  border: 1px solid var(--color-success);
-  color: var(--color-success);
+  background-color: hsl(151 100% 45% / 0.1);
+  border: 0.0625rem solid var(--success);
+  color: var(--success);
 }
 
 .resync-btn:hover {
-  background-color: rgba(0, 230, 118, 0.2);
+  background-color: hsl(151 100% 45% / 0.2);
 }
 
 /* ── 説明テキスト ── */
 
 .tap-hint {
   text-align: center;
-  font-size: 0.9rem;
-  color: var(--color-muted);
-  margin: 0 0 12px;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin: 0 0 0.75rem;
 }
 
 /* ── 実行時エラー ── */
@@ -403,8 +422,8 @@ h2 {
 
 footer {
   text-align: center;
-  padding: 16px;
-  font-size: 0.8rem;
-  color: var(--color-muted);
+  padding: 1rem;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
   font-family: var(--font-mono);
 }
