@@ -48,15 +48,19 @@ export class MovementSystem {
     const noiseAmount = 10 / (1 + windSpeed * 0.3);
     const noise = Math.sin(this.noiseOffset) * noiseAmount;
 
-    // 風向をベースに揺らぎを加えた目標角度
-    this.targetAngle = windDirection + noise;
+    // 目標角度も急変させず、じわじわ追従させる
+    const rawTarget = windDirection + noise;
+    const targetDiff = normalizeDeg(rawTarget - this.targetAngle);
+    const maxTargetChange = 5 * deltaTime;
+    this.targetAngle += Math.max(
+      -maxTargetChange,
+      Math.min(maxTargetChange, targetDiff),
+    );
 
-    // 現在角度を目標に向けてゆっくり補間
-    // 1フレームあたり最大2度まで（急旋回を防止）
+    // 現在角度を目標に向けてゆっくり補間（秒速1度まで）
     const angleDiff = normalizeDeg(this.targetAngle - this.currentAngle);
-    const maxTurnPerSec = 2;
-    const maxTurn = maxTurnPerSec * deltaTime;
-    const turn = Math.max(-maxTurn, Math.min(maxTurn, angleDiff * 0.02));
+    const maxTurn = 1 * deltaTime;
+    const turn = Math.max(-maxTurn, Math.min(maxTurn, angleDiff * 0.1));
     this.currentAngle += turn;
 
     // 速度: 風速で増減（基本速度を高めに設定し、ずんずん進む）
@@ -67,15 +71,14 @@ export class MovementSystem {
     this.lat += Math.cos(rad) * this.speed * deltaTime;
     this.lng += Math.sin(rad) * this.speed * deltaTime;
 
-    // 緯度: クランプ（極で折り返し）
-    if (this.lat > 85) {
-      this.lat = 85 - (this.lat - 85);
-      this.currentAngle = normalizeDeg(this.currentAngle + 180);
+    // 緯度: 極に近づいたら目標角度を赤道方向に誘導（急旋回させない）
+    if (this.lat > 80) {
+      this.targetAngle = normalizeDeg(this.targetAngle + 3 * deltaTime);
     }
-    if (this.lat < -85) {
-      this.lat = -85 - (this.lat + 85);
-      this.currentAngle = normalizeDeg(this.currentAngle + 180);
+    if (this.lat < -80) {
+      this.targetAngle = normalizeDeg(this.targetAngle + 3 * deltaTime);
     }
+    this.lat = Math.max(-85, Math.min(85, this.lat));
 
     // 経度: ラップアラウンド
     if (this.lng > 180) this.lng -= 360;

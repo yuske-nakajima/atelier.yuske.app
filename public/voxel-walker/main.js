@@ -88,6 +88,9 @@ async function init() {
   const movement = new MovementSystem();
 
   let lastTime = performance.now();
+  let prevLat = movement.lat;
+  let prevLng = movement.lng;
+  let smoothHeading = 0;
 
   // 初回天気データ取得
   weather.fetch(movement.lat, movement.lng);
@@ -109,13 +112,28 @@ async function init() {
     // 背景色更新
     updateBackground(scene, w);
 
+    // 実際の移動方向をグリッド座標系で計算
+    // グリッド: X=-lng方向, Z=+lat方向
+    const dlng = movement.lng - prevLng;
+    const dlat = movement.lat - prevLat;
+    prevLat = movement.lat;
+    prevLng = movement.lng;
+
+    if (Math.abs(dlng) > 0.0001 || Math.abs(dlat) > 0.0001) {
+      // キャラの進行方向をグリッド座標系で計算
+      // グリッドスクロール: X -= dlng, Z += dlat
+      // キャラの見かけの進行方向はスクロールの逆: (+dlng, -dlat)
+      // rotation.y=0 で -Z 方向が正面なので atan2(x, z)
+      smoothHeading = Math.atan2(dlng, -dlat);
+    }
+
     // キャラクター更新
     character.update(
       deltaTime,
       time,
       w.weatherCode,
       w.windSpeed,
-      movement.currentAngle,
+      smoothHeading,
     );
 
     // 地面更新

@@ -18,7 +18,7 @@ const HALF = Math.floor(TILE_COUNT / 2);
 function tempToTileColor(temp) {
   const t = Math.max(0, Math.min(1, (temp + 10) / 45));
   const color = new THREE.Color();
-  color.setHSL(0.6 - t * 0.6, 0.3, 0.25);
+  color.setHSL(0.6 - t * 0.6, 0.15, 0.18);
   return color;
 }
 
@@ -48,8 +48,8 @@ export class GroundGrid {
     this.cities = cities;
 
     const tileGeom = new THREE.PlaneGeometry(
-      TILE_SIZE * 0.95,
-      TILE_SIZE * 0.95,
+      TILE_SIZE * 0.995,
+      TILE_SIZE * 0.995,
     );
     const tileMat = new THREE.MeshLambertMaterial({
       color: 0x2a3a2a,
@@ -101,15 +101,18 @@ export class GroundGrid {
       (c) => Math.abs(c.lat - lat) < HALF && Math.abs(c.lng - lng) < HALF,
     );
 
+    // 足跡の色（明るいシアン）
+    const footprintColor = new THREE.Color();
+    footprintColor.setHSL(0.5, 0.8, 0.55);
+
     // 各タイルの色を決定
     let idx = 0;
     for (let row = -HALF; row <= HALF; row++) {
       for (let col = -HALF; col <= HALF; col++) {
-        // このタイルが対応する緯度経度
         const tileLat = lat + row;
         const tileLng = lng + col;
 
-        // 最も近い都市を探す
+        // 都市の色
         let closestDist = Number.POSITIVE_INFINITY;
         let closestPop = 0;
         for (const city of nearbyCities) {
@@ -120,11 +123,17 @@ export class GroundGrid {
           }
         }
 
-        // 都市が近い（2度以内）ならその色、遠ければベース色
         const color =
           closestDist < 2
             ? popToCityColor(closestPop).lerp(baseColor, closestDist / 2)
-            : baseColor;
+            : baseColor.clone();
+
+        // 足跡エフェクト: 中心からの距離で明るさを変える
+        const distFromCenter = Math.sqrt(row * row + col * col);
+        if (distFromCenter < 4) {
+          const glow = 1 - distFromCenter / 4;
+          color.lerp(footprintColor, glow);
+        }
 
         this.tiles.setColorAt(idx, color);
         idx++;
@@ -148,12 +157,13 @@ export class GroundGrid {
     this.scrollX -= dlng * TILE_SIZE;
     this.scrollZ += dlat * TILE_SIZE;
 
-    if (Math.abs(this.scrollX) > TILE_SIZE) {
-      this.scrollX %= TILE_SIZE;
-    }
-    if (Math.abs(this.scrollZ) > TILE_SIZE) {
-      this.scrollZ %= TILE_SIZE;
-    }
+    // タイル1つ分を超えたら巻き戻し（均一グリッドなので見た目は変わらない）
+    // 正負どちらでも正しく動くよう、加算してから modulo
+    const half = TILE_SIZE / 2;
+    this.scrollX =
+      ((((this.scrollX + half) % TILE_SIZE) + TILE_SIZE) % TILE_SIZE) - half;
+    this.scrollZ =
+      ((((this.scrollZ + half) % TILE_SIZE) + TILE_SIZE) % TILE_SIZE) - half;
 
     this.group.position.x = this.scrollX;
     this.group.position.z = this.scrollZ;

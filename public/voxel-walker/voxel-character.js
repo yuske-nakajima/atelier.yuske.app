@@ -222,15 +222,16 @@ export class VoxelCharacter {
    * @param {number} time - 累計時間
    * @param {number} weatherCode
    * @param {number} windSpeed
-   * @param {number} headingDeg - 進行方向（度、北=0、時計回り）
+   * @param {number} headingRad - 進行方向（ラジアン、グリッド座標系）
    */
-  update(deltaTime, time, weatherCode, windSpeed, headingDeg) {
-    // 進行方向にキャラの広い面（Z軸正面）を向ける
-    const targetRotation = ((headingDeg - 90) * Math.PI) / 180;
-    this.group.rotation.y +=
-      (targetRotation - this.group.rotation.y) * Math.min(deltaTime * 2, 1);
-    // 歩きフレーム更新（風速で速度変化）
-    const walkSpeed = 0.3 + windSpeed * 0.02;
+  update(deltaTime, time, weatherCode, windSpeed, headingRad) {
+    // 進行方向にキャラの狭い面を向ける
+    const diff = headingRad - this.group.rotation.y;
+    // 最短回転方向に補間
+    const normalized = ((diff + Math.PI) % (Math.PI * 2)) - Math.PI;
+    this.group.rotation.y += normalized * Math.min(deltaTime * 2, 1);
+    // 歩きフレーム更新（移動速度に連動して速く切り替え）
+    const walkSpeed = 0.12;
     this.walkTimer += deltaTime;
     if (this.walkTimer > walkSpeed) {
       this.walkTimer = 0;
