@@ -8,6 +8,7 @@
 | --- | --- |
 | `/` | トップページ（ダーク/ライト切り替え付き） |
 | `/t8-random-pattern/` | T-8 Random Pattern Switcher（ランダムパターン生成） |
+| `/voxel-walker/` | Voxel Walker（天気連動ジェネラティブアート壁紙） |
 
 ## トップページ仕様
 
