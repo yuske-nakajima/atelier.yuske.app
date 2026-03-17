@@ -64,7 +64,7 @@ export class MovementSystem {
     this.currentAngle += turn;
 
     // 速度: 風速で増減（基本速度を高めに設定し、ずんずん進む）
-    this.speed = 0.75 * (1 + windSpeed / 10);
+    this.speed = 0.5 * (1 + windSpeed / 10);
 
     // 位置を更新
     const rad = (this.currentAngle * Math.PI) / 180;

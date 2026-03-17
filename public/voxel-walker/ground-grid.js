@@ -5,21 +5,23 @@
  */
 
 import * as THREE from 'https://esm.sh/three@0.172.0';
+import { theme } from './background.js';
 
 const TILE_COUNT = 21;
-const TILE_SIZE = 1.5;
+const TILE_SIZE = 6.0;
 const HALF = Math.floor(TILE_COUNT / 2);
 
 /**
- * 気温からベースタイル色を計算
- * @param {number} temp
+ * テーマカラーベースのタイル色を計算
+ * @param {number} dnFactor - 昼夜係数（0=夜, 1=昼）
  * @returns {THREE.Color}
  */
-function tempToTileColor(temp) {
-  const t = Math.max(0, Math.min(1, (temp + 10) / 45));
-  const color = new THREE.Color();
-  color.setHSL(0.6 - t * 0.6, 0.15, 0.18);
-  return color;
+function tileBaseColor(dnFactor) {
+  const dayTile = theme.daySky.clone();
+  dayTile.offsetHSL(0.05, -0.2, -0.25);
+  const nightTile = theme.nightSky.clone();
+  nightTile.offsetHSL(0, -0.1, -0.05);
+  return nightTile.lerp(dayTile, dnFactor);
 }
 
 /**
@@ -92,18 +94,27 @@ export class GroundGrid {
    * @param {number} lat
    * @param {number} lng
    * @param {number} temperature
+   * @param {number} localHour - 現地時刻（0-24）
    */
-  update(lat, lng, temperature) {
-    const baseColor = tempToTileColor(temperature);
+  update(lat, lng, temperature, localHour) {
+    const dnFactor =
+      localHour >= 7 && localHour < 17
+        ? 1
+        : localHour >= 6 && localHour < 7
+          ? localHour - 6
+          : localHour >= 17 && localHour < 18
+            ? 1 - (localHour - 17)
+            : 0;
+    const baseColor = tileBaseColor(dnFactor);
 
     // 近くの都市を取得
     const nearbyCities = this.cities.filter(
       (c) => Math.abs(c.lat - lat) < HALF && Math.abs(c.lng - lng) < HALF,
     );
 
-    // 足跡の色（明るいシアン）
-    const footprintColor = new THREE.Color();
-    footprintColor.setHSL(0.5, 0.8, 0.55);
+    // 足跡の色（テーマの補色で光る）
+    const footprintColor = theme.dayLight.clone();
+    footprintColor.offsetHSL(0.3, 0.1, 0.1);
 
     // 各タイルの色を決定
     let idx = 0;

@@ -15,26 +15,6 @@ import { createScene } from './scene.js';
 import { VoxelCharacter } from './voxel-character.js';
 import { WeatherManager } from './weather.js';
 
-// UI要素
-const cityNameEl = document.getElementById('city-name');
-const temperatureEl = document.getElementById('temperature');
-const weatherIconEl = document.getElementById('weather-icon');
-
-/**
- * 天気コードから絵文字アイコンを返す
- * @param {number} code
- * @returns {string}
- */
-function weatherCodeToIcon(code) {
-  if (code <= 3) return '\u2600\uFE0F';
-  if (code <= 48) return '\u2601\uFE0F';
-  if (code <= 57) return '\uD83C\uDF27\uFE0F';
-  if (code <= 67) return '\uD83C\uDF27\uFE0F';
-  if (code <= 77) return '\uD83C\uDF28\uFE0F';
-  if (code >= 95) return '\u26C8\uFE0F';
-  return '\u2601\uFE0F';
-}
-
 /**
  * 都市データを読み込む
  * @returns {Promise<Array<{name: string, lat: number, lng: number, pop: number}>>}
@@ -50,27 +30,18 @@ async function loadCities() {
 }
 
 /**
- * 最寄りの都市名を取得
- * @param {Array<{name: string, lat: number, lng: number, pop: number}>} cities
- * @param {number} lat
- * @param {number} lng
- * @returns {string}
+ * アプリ内の経過時間から昼夜サイクルを計算（約2分で1日）
+ * 経度の移動も加味して、東に進むと朝、西に進むと夜になる感覚を出す
+ * @param {number} elapsedSec - アプリ起動からの経過秒数
+ * @param {number} lng - 現在の経度
+ * @returns {number} 0〜24
  */
-function findNearestCity(cities, lat, lng) {
-  if (cities.length === 0) return '';
-
-  let nearest = cities[0];
-  let minDist = Number.POSITIVE_INFINITY;
-
-  for (const city of cities) {
-    const d = Math.abs(city.lat - lat) + Math.abs(city.lng - lng);
-    if (d < minDist) {
-      minDist = d;
-      nearest = city;
-    }
-  }
-
-  return minDist < 5 ? nearest.name : '';
+function calcLocalHour(elapsedSec, lng) {
+  // 120秒で24時間（1日サイクル）
+  const timeHour = (elapsedSec / 120) * 24;
+  // 経度による時差も加味
+  const lngOffset = lng / 15;
+  return (((timeHour + lngOffset) % 24) + 24) % 24;
 }
 
 async function init() {
@@ -109,21 +80,19 @@ async function init() {
     // 移動更新
     movement.update(w.windDirection, w.windSpeed, deltaTime);
 
-    // 背景色更新
-    updateBackground(scene, w);
+    // 昼夜サイクル（約2分で1日）
+    const localHour = calcLocalHour(time, movement.lng);
+
+    // 背景色更新（昼夜対応）
+    updateBackground(scene, w, localHour);
 
     // 実際の移動方向をグリッド座標系で計算
-    // グリッド: X=-lng方向, Z=+lat方向
     const dlng = movement.lng - prevLng;
     const dlat = movement.lat - prevLat;
     prevLat = movement.lat;
     prevLng = movement.lng;
 
     if (Math.abs(dlng) > 0.0001 || Math.abs(dlat) > 0.0001) {
-      // キャラの進行方向をグリッド座標系で計算
-      // グリッドスクロール: X -= dlng, Z += dlat
-      // キャラの見かけの進行方向はスクロールの逆: (+dlng, -dlat)
-      // rotation.y=0 で -Z 方向が正面なので atan2(x, z)
       smoothHeading = Math.atan2(dlng, -dlat);
     }
 
@@ -137,22 +106,10 @@ async function init() {
     );
 
     // 地面更新
-    ground.update(movement.lat, movement.lng, w.temperature);
+    ground.update(movement.lat, movement.lng, w.temperature, localHour);
 
     // パーティクル更新
     particles.update(deltaTime, w);
-
-    // UI更新
-    if (cityNameEl) {
-      const cityName = findNearestCity(cities, movement.lat, movement.lng);
-      cityNameEl.textContent = cityName || '\u6D77\u4E0A';
-    }
-    if (temperatureEl) {
-      temperatureEl.textContent = `${w.temperature.toFixed(1)}\u00B0C`;
-    }
-    if (weatherIconEl) {
-      weatherIconEl.textContent = weatherCodeToIcon(w.weatherCode);
-    }
 
     renderer.render(scene, camera);
   }

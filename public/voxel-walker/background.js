@@ -1,53 +1,70 @@
 // @ts-check
 
 /**
- * 天気データに基づく背景色の計算
+ * 昼夜カラーテーマ（リロードごとにランダム）
  */
 
 import * as THREE from 'https://esm.sh/three@0.172.0';
 
+// リロードごとにランダムなカラーテーマを生成
+const baseHue = Math.random();
+const theme = {
+  // 昼の空
+  daySky: new THREE.Color().setHSL(baseHue, 0.5, 0.45),
+  // 夜の空（補色 or 隣接色で鮮やかに）
+  nightSky: new THREE.Color().setHSL(
+    (baseHue + 0.4 + Math.random() * 0.2) % 1,
+    0.6,
+    0.15,
+  ),
+  // 日差し
+  dayLight: new THREE.Color().setHSL((baseHue + 0.1) % 1, 0.5, 0.7),
+  // 月明かり（夜も色を持つ）
+  nightLight: new THREE.Color().setHSL((baseHue + 0.5) % 1, 0.4, 0.4),
+};
+
 /**
- * 気温を色相にマッピング
- * -10° → 240°(青紫), 0° → 200°(水色), 20° → 80°(黄緑), 35° → 20°(オレンジ赤)
- * @param {number} temp - 気温（℃）
- * @returns {number} 色相（0-360）
+ * 昼夜係数（0=夜, 1=昼）
+ * @param {number} hour
+ * @returns {number}
  */
-function temperatureToHue(temp) {
-  const clamped = Math.max(-10, Math.min(35, temp));
-  // -10→240, 0→200, 20→80, 35→20 の区間線形補間
-  if (clamped <= 0) {
-    const t = (clamped + 10) / 10;
-    return 240 + (200 - 240) * t;
-  }
-  if (clamped <= 20) {
-    const t = clamped / 20;
-    return 200 + (80 - 200) * t;
-  }
-  const t = (clamped - 20) / 15;
-  return 80 + (20 - 80) * t;
+function dayNightFactor(hour) {
+  if (hour >= 6 && hour < 7) return hour - 6;
+  if (hour >= 7 && hour < 17) return 1;
+  if (hour >= 17 && hour < 18) return 1 - (hour - 17);
+  return 0;
 }
 
 /**
- * 雲量から明度を計算
- * @param {number} cloudCover - 雲量（0-100%）
- * @returns {number} 明度（0-1）
- */
-function cloudToLightness(cloudCover) {
-  const c = Math.max(0, Math.min(100, cloudCover));
-  return 0.5 - c * 0.002;
-}
-
-/**
- * 背景色を計算してシーンに適用
  * @param {THREE.Scene} scene
  * @param {import('./weather.js').WeatherData} weather
+ * @param {number} localHour
  */
-export function updateBackground(scene, weather) {
-  const hue = temperatureToHue(weather.temperature);
-  const lightness = cloudToLightness(weather.cloudCover);
-  const saturation = 0.4;
+export function updateBackground(scene, weather, localHour) {
+  const dnFactor = dayNightFactor(localHour);
 
-  const color = new THREE.Color();
-  color.setHSL(hue / 360, saturation, lightness);
+  // 背景色: 昼テーマ ↔ 夜テーマをブレンド
+  const color = theme.nightSky.clone().lerp(theme.daySky, dnFactor);
+  // 雲量でわずかに彩度を落とす
+  const grey = new THREE.Color(0x888888);
+  color.lerp(grey, weather.cloudCover * 0.003);
   scene.background = color;
+
+  // ライティング
+  const ambient = scene.children.find((c) => c.type === 'AmbientLight');
+  const directional = scene.children.find((c) => c.type === 'DirectionalLight');
+
+  if (ambient) {
+    const light = /** @type {THREE.AmbientLight} */ (ambient);
+    light.intensity = 0.4 + dnFactor * 0.5;
+    light.color.copy(theme.nightLight).lerp(theme.dayLight, dnFactor);
+  }
+  if (directional) {
+    const light = /** @type {THREE.DirectionalLight} */ (directional);
+    light.intensity = 0.2 + dnFactor * 0.9;
+    light.color.copy(theme.nightLight).lerp(theme.dayLight, dnFactor);
+  }
 }
+
+// カラーテーマをエクスポート（地面タイルでも使う）
+export { theme };
