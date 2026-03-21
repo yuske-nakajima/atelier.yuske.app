@@ -12,6 +12,7 @@ import { GroundGrid } from './ground-grid.js';
 import { MovementSystem } from './movement.js';
 import { ParticleSystem } from './particles.js';
 import { createScene } from './scene.js';
+import { setupTrailMap } from './trail-map.js';
 import { VoxelCharacter } from './voxel-character.js';
 import { WeatherManager } from './weather.js';
 
@@ -65,6 +66,9 @@ async function init() {
 
   // 初回天気データ取得
   weather.fetch(movement.lat, movement.lng);
+
+  // 軌跡マップオーバーレイ
+  setupTrailMap(ground.visited, movement);
 
   function animate() {
     requestAnimationFrame(animate);

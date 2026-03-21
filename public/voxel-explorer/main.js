@@ -12,6 +12,7 @@ import { TopDownCharacter } from './character.js';
 import { Ground } from './ground.js';
 import { MovementSystem } from './movement.js';
 import { Particles } from './particles.js';
+import { setupTrailMap } from './trail-map.js';
 import { WeatherManager } from './weather.js';
 
 /**
@@ -75,6 +76,9 @@ async function init() {
 
   // 初回天気データ取得
   weather.fetch(movement.lat, movement.lng);
+
+  // 軌跡マップオーバーレイ
+  setupTrailMap(ground.visited, movement);
 
   /** キャンバスサイズをウィンドウに合わせる */
   function resizeCanvas() {
