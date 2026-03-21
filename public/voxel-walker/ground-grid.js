@@ -3,6 +3,7 @@
 /**
  * アイソメトリック地面グリッド（都市位置を色で表現）
  * ワールド整数座標に固定されたタイルが、キャラの下をスクロールする
+ * 通過したタイルに「◯」を表示して軌跡を残す
  */
 
 import * as THREE from 'https://esm.sh/three@0.172.0';
@@ -11,6 +12,25 @@ import { theme } from './background.js';
 const TILE_COUNT = 41;
 const TILE_SIZE = 3.0;
 const HALF = Math.floor(TILE_COUNT / 2);
+
+/**
+ * 「◯」テクスチャを Canvas で生成
+ * @returns {THREE.CanvasTexture}
+ */
+function createMarkerTexture() {
+  const size = 128;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
+  ctx.clearRect(0, 0, size, size);
+  ctx.font = `${size * 0.8}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+  ctx.fillText('◯', size / 2, size / 2);
+  return new THREE.CanvasTexture(canvas);
+}
 
 /**
  * テーマカラーベースのタイル色を計算
@@ -33,7 +53,6 @@ function tileBaseColor(dnFactor) {
 function popToCityColor(pop) {
   const color = new THREE.Color();
   const t = Math.max(0, Math.min(1, Math.log10(pop / 100000) / 2.5));
-  // 小都市→シアン(0.5), 大都市→オレンジ(0.06) 彩度・明度を大幅アップ
   const hue = 0.5 - t * 0.44;
   const lightness = 0.45 + t * 0.25;
   color.setHSL(hue, 0.9, lightness);
@@ -50,6 +69,7 @@ export class GroundGrid {
     this.cities = cities;
     this.dummy = new THREE.Object3D();
 
+    // 地面タイル
     const tileGeom = new THREE.PlaneGeometry(
       TILE_SIZE * 0.995,
       TILE_SIZE * 0.995,
@@ -66,6 +86,23 @@ export class GroundGrid {
     );
     this.tiles.receiveShadow = true;
 
+    // 「◯」マーカー用 InstancedMesh
+    const markerGeom = new THREE.PlaneGeometry(
+      TILE_SIZE * 0.9,
+      TILE_SIZE * 0.9,
+    );
+    const markerMat = new THREE.MeshBasicMaterial({
+      map: createMarkerTexture(),
+      transparent: true,
+      depthTest: false,
+      side: THREE.DoubleSide,
+    });
+    this.markers = new THREE.InstancedMesh(
+      markerGeom,
+      markerMat,
+      TILE_COUNT * TILE_COUNT,
+    );
+
     // 初期配置
     let idx = 0;
     for (let row = -HALF; row <= HALF; row++) {
@@ -75,12 +112,20 @@ export class GroundGrid {
         this.dummy.updateMatrix();
         this.tiles.setMatrixAt(idx, this.dummy.matrix);
         this.tiles.setColorAt(idx, new THREE.Color(0x2a3a2a));
+        // マーカーは画面外に初期配置
+        this.dummy.position.set(0, -100, 0);
+        this.dummy.updateMatrix();
+        this.markers.setMatrixAt(idx, this.dummy.matrix);
         idx++;
       }
     }
 
     this.group.add(this.tiles);
+    this.group.add(this.markers);
     scene.add(this.group);
+
+    /** 通過済みタイルのセット（"row,col" 形式のキー） @type {Set<string>} */
+    this.visited = new Set();
   }
 
   /**
@@ -106,6 +151,9 @@ export class GroundGrid {
     const fracLat = lat - charTileRow;
     const fracLng = lng - charTileCol;
 
+    // キャラの中心がいるタイルを通過済みに記録
+    this.visited.add(`${charTileRow},${charTileCol}`);
+
     // 近くの都市を取得
     const nearbyCities = this.cities.filter(
       (c) => Math.abs(c.lat - lat) < HALF && Math.abs(c.lng - lng) < HALF,
@@ -120,14 +168,26 @@ export class GroundGrid {
         const worldCol = charTileCol + col;
 
         // タイル位置: 小数部オフセットでスムーズスクロール
-        this.dummy.position.set(
-          col * TILE_SIZE - fracLng * TILE_SIZE,
-          -2,
-          -row * TILE_SIZE + fracLat * TILE_SIZE,
-        );
+        const posX = col * TILE_SIZE - fracLng * TILE_SIZE;
+        const posZ = -row * TILE_SIZE + fracLat * TILE_SIZE;
+
+        this.dummy.position.set(posX, -2, posZ);
         this.dummy.rotation.x = -Math.PI / 2;
         this.dummy.updateMatrix();
         this.tiles.setMatrixAt(idx, this.dummy.matrix);
+
+        // 通過済みタイルにマーカーを表示
+        const key = `${worldRow},${worldCol}`;
+        if (this.visited.has(key)) {
+          this.dummy.position.set(posX, -1.99, posZ);
+          this.dummy.rotation.x = -Math.PI / 2;
+          this.dummy.updateMatrix();
+          this.markers.setMatrixAt(idx, this.dummy.matrix);
+        } else {
+          this.dummy.position.set(0, -100, 0);
+          this.dummy.updateMatrix();
+          this.markers.setMatrixAt(idx, this.dummy.matrix);
+        }
 
         // 都市の色判定
         let closestDist = Number.POSITIVE_INFINITY;
@@ -142,7 +202,6 @@ export class GroundGrid {
         }
 
         // 地形（都市）があればその色、なければベース一色
-        // 影響範囲 3 タイル、近いほど都市色が強い
         const color =
           closestDist < 3
             ? popToCityColor(closestPop).lerp(baseColor, closestDist / 3)
@@ -154,6 +213,7 @@ export class GroundGrid {
     }
 
     this.tiles.instanceMatrix.needsUpdate = true;
+    this.markers.instanceMatrix.needsUpdate = true;
     if (this.tiles.instanceColor) {
       this.tiles.instanceColor.needsUpdate = true;
     }

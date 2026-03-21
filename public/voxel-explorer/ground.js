@@ -64,14 +64,8 @@ export class Ground {
     const fracLat = lat - charTileRow;
     const fracLng = lng - charTileCol;
 
-    // キャラが被るタイルをすべて通過済みに記録（最大4タイル）
-    const nextRow = charTileRow + 1;
-    const nextCol = charTileCol + 1;
+    // キャラの中心がいるタイルを通過済みに記録
     this.visited.add(`${charTileRow},${charTileCol}`);
-    if (fracLat > 0.5) this.visited.add(`${nextRow},${charTileCol}`);
-    if (fracLng > 0.5) this.visited.add(`${charTileRow},${nextCol}`);
-    if (fracLat > 0.5 && fracLng > 0.5)
-      this.visited.add(`${nextRow},${nextCol}`);
 
     // 描画範囲のタイル数
     const cols = Math.ceil(width / TILE_PX) + 2;
