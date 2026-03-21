@@ -2,13 +2,14 @@
 
 /**
  * アイソメトリック地面グリッド（都市位置を色で表現）
+ * ワールド整数座標に固定されたタイルが、キャラの下をスクロールする
  */
 
 import * as THREE from 'https://esm.sh/three@0.172.0';
 import { theme } from './background.js';
 
-const TILE_COUNT = 21;
-const TILE_SIZE = 6.0;
+const TILE_COUNT = 41;
+const TILE_SIZE = 3.0;
 const HALF = Math.floor(TILE_COUNT / 2);
 
 /**
@@ -18,25 +19,24 @@ const HALF = Math.floor(TILE_COUNT / 2);
  */
 function tileBaseColor(dnFactor) {
   const dayTile = theme.daySky.clone();
-  dayTile.offsetHSL(0.05, -0.2, -0.25);
+  dayTile.offsetHSL(0.05, -0.1, -0.15);
   const nightTile = theme.nightSky.clone();
-  nightTile.offsetHSL(0, -0.1, -0.05);
+  nightTile.offsetHSL(0, -0.05, -0.03);
   return nightTile.lerp(dayTile, dnFactor);
 }
 
 /**
- * 人口から都市タイルの色を計算（人口が多いほど明るく暖色に）
+ * 人口から都市タイルの色を計算（コントラスト強め）
  * @param {number} pop
  * @returns {THREE.Color}
  */
 function popToCityColor(pop) {
   const color = new THREE.Color();
-  // 人口 10万〜3000万 を 0〜1 にマッピング
   const t = Math.max(0, Math.min(1, Math.log10(pop / 100000) / 2.5));
-  // 小都市→青緑(0.5), 大都市→オレンジ(0.08)
-  const hue = 0.5 - t * 0.42;
-  const lightness = 0.3 + t * 0.25;
-  color.setHSL(hue, 0.6, lightness);
+  // 小都市→シアン(0.5), 大都市→オレンジ(0.06) 彩度・明度を大幅アップ
+  const hue = 0.5 - t * 0.44;
+  const lightness = 0.45 + t * 0.25;
+  color.setHSL(hue, 0.9, lightness);
   return color;
 }
 
@@ -48,6 +48,7 @@ export class GroundGrid {
   constructor(scene, cities) {
     this.group = new THREE.Group();
     this.cities = cities;
+    this.dummy = new THREE.Object3D();
 
     const tileGeom = new THREE.PlaneGeometry(
       TILE_SIZE * 0.995,
@@ -65,15 +66,14 @@ export class GroundGrid {
     );
     this.tiles.receiveShadow = true;
 
-    const dummy = new THREE.Object3D();
+    // 初期配置
     let idx = 0;
-
     for (let row = -HALF; row <= HALF; row++) {
       for (let col = -HALF; col <= HALF; col++) {
-        dummy.position.set(col * TILE_SIZE, -2, row * TILE_SIZE);
-        dummy.rotation.x = -Math.PI / 2;
-        dummy.updateMatrix();
-        this.tiles.setMatrixAt(idx, dummy.matrix);
+        this.dummy.position.set(col * TILE_SIZE, -2, row * TILE_SIZE);
+        this.dummy.rotation.x = -Math.PI / 2;
+        this.dummy.updateMatrix();
+        this.tiles.setMatrixAt(idx, this.dummy.matrix);
         this.tiles.setColorAt(idx, new THREE.Color(0x2a3a2a));
         idx++;
       }
@@ -81,13 +81,6 @@ export class GroundGrid {
 
     this.group.add(this.tiles);
     scene.add(this.group);
-
-    this.scrollX = 0;
-    this.scrollZ = 0;
-    /** @type {number|undefined} */
-    this.prevLat = undefined;
-    /** @type {number|undefined} */
-    this.prevLng = undefined;
   }
 
   /**
@@ -107,76 +100,62 @@ export class GroundGrid {
             : 0;
     const baseColor = tileBaseColor(dnFactor);
 
+    // キャラの整数タイル座標と小数部
+    const charTileRow = Math.floor(lat);
+    const charTileCol = Math.floor(lng);
+    const fracLat = lat - charTileRow;
+    const fracLng = lng - charTileCol;
+
     // 近くの都市を取得
     const nearbyCities = this.cities.filter(
       (c) => Math.abs(c.lat - lat) < HALF && Math.abs(c.lng - lng) < HALF,
     );
 
-    // 足跡の色（テーマの補色で光る）
-    const footprintColor = theme.dayLight.clone();
-    footprintColor.offsetHSL(0.3, 0.1, 0.1);
-
-    // 各タイルの色を決定
+    // 各タイルの位置と色を更新
     let idx = 0;
     for (let row = -HALF; row <= HALF; row++) {
       for (let col = -HALF; col <= HALF; col++) {
-        const tileLat = lat + row;
-        const tileLng = lng + col;
+        // ワールド整数座標（固定）
+        const worldRow = charTileRow + row;
+        const worldCol = charTileCol + col;
 
-        // 都市の色
+        // タイル位置: 小数部オフセットでスムーズスクロール
+        this.dummy.position.set(
+          col * TILE_SIZE - fracLng * TILE_SIZE,
+          -2,
+          -row * TILE_SIZE + fracLat * TILE_SIZE,
+        );
+        this.dummy.rotation.x = -Math.PI / 2;
+        this.dummy.updateMatrix();
+        this.tiles.setMatrixAt(idx, this.dummy.matrix);
+
+        // 都市の色判定
         let closestDist = Number.POSITIVE_INFINITY;
         let closestPop = 0;
         for (const city of nearbyCities) {
-          const d = Math.abs(city.lat - tileLat) + Math.abs(city.lng - tileLng);
+          const d =
+            Math.abs(city.lat - worldRow) + Math.abs(city.lng - worldCol);
           if (d < closestDist) {
             closestDist = d;
             closestPop = city.pop;
           }
         }
 
+        // 地形（都市）があればその色、なければベース一色
+        // 影響範囲 3 タイル、近いほど都市色が強い
         const color =
-          closestDist < 2
-            ? popToCityColor(closestPop).lerp(baseColor, closestDist / 2)
+          closestDist < 3
+            ? popToCityColor(closestPop).lerp(baseColor, closestDist / 3)
             : baseColor.clone();
-
-        // 足跡エフェクト: 中心からの距離で明るさを変える
-        const distFromCenter = Math.sqrt(row * row + col * col);
-        if (distFromCenter < 4) {
-          const glow = 1 - distFromCenter / 4;
-          color.lerp(footprintColor, glow);
-        }
 
         this.tiles.setColorAt(idx, color);
         idx++;
       }
     }
 
+    this.tiles.instanceMatrix.needsUpdate = true;
     if (this.tiles.instanceColor) {
       this.tiles.instanceColor.needsUpdate = true;
     }
-
-    // グリッドスクロール（差分累積で滑らかに移動）
-    if (this.prevLat === undefined) {
-      this.prevLat = lat;
-      this.prevLng = lng;
-    }
-    const dlat = lat - this.prevLat;
-    const dlng = lng - this.prevLng;
-    this.prevLat = lat;
-    this.prevLng = lng;
-
-    this.scrollX -= dlng * TILE_SIZE;
-    this.scrollZ += dlat * TILE_SIZE;
-
-    // タイル1つ分を超えたら巻き戻し（均一グリッドなので見た目は変わらない）
-    // 正負どちらでも正しく動くよう、加算してから modulo
-    const half = TILE_SIZE / 2;
-    this.scrollX =
-      ((((this.scrollX + half) % TILE_SIZE) + TILE_SIZE) % TILE_SIZE) - half;
-    this.scrollZ =
-      ((((this.scrollZ + half) % TILE_SIZE) + TILE_SIZE) % TILE_SIZE) - half;
-
-    this.group.position.x = this.scrollX;
-    this.group.position.z = this.scrollZ;
   }
 }
