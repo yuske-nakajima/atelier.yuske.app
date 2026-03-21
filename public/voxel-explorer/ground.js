@@ -3,6 +3,7 @@
 /**
  * トップダウン タイルマップ地面（都市色・昼夜対応）
  * ワールド整数座標に固定されたタイルが、キャラの下をスクロールする
+ * 通過したタイルに「済」を表示して軌跡を残す
  */
 
 import { dayNightFactor, hslToString, lerpHSL, theme } from './background.js';
@@ -29,6 +30,8 @@ export class Ground {
    */
   constructor(cities) {
     this.cities = cities;
+    /** 通過済みタイルのセット（"row,col" 形式のキー） @type {Set<string>} */
+    this.visited = new Set();
   }
 
   /**
@@ -61,6 +64,15 @@ export class Ground {
     const fracLat = lat - charTileRow;
     const fracLng = lng - charTileCol;
 
+    // キャラが被るタイルをすべて通過済みに記録（最大4タイル）
+    const nextRow = charTileRow + 1;
+    const nextCol = charTileCol + 1;
+    this.visited.add(`${charTileRow},${charTileCol}`);
+    if (fracLat > 0.5) this.visited.add(`${nextRow},${charTileCol}`);
+    if (fracLng > 0.5) this.visited.add(`${charTileRow},${nextCol}`);
+    if (fracLat > 0.5 && fracLng > 0.5)
+      this.visited.add(`${nextRow},${nextCol}`);
+
     // 描画範囲のタイル数
     const cols = Math.ceil(width / TILE_PX) + 2;
     const rows = Math.ceil(height / TILE_PX) + 2;
@@ -76,6 +88,12 @@ export class Ground {
     // 画面中央からのピクセルオフセット（小数部でスムーズスクロール）
     const offsetX = -fracLng * TILE_PX;
     const offsetY = fracLat * TILE_PX;
+
+    // テキスト設定（タイル目一杯に「済」を表示）
+    const fontSize = TILE_PX * 0.8;
+    ctx.font = `${fontSize}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
 
     for (let row = -halfRows; row <= halfRows; row++) {
       for (let col = -halfCols; col <= halfCols; col++) {
@@ -107,6 +125,13 @@ export class Ground {
 
         ctx.fillStyle = hslToString(tileColor);
         ctx.fillRect(px, py, TILE_PX - 1, TILE_PX - 1);
+
+        // 通過済みタイルに「済」を表示
+        const key = `${worldRow},${worldCol}`;
+        if (this.visited.has(key)) {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+          ctx.fillText('◯', px + TILE_PX / 2, py + TILE_PX / 2);
+        }
       }
     }
   }
