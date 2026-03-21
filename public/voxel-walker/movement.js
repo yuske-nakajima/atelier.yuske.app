@@ -30,11 +30,13 @@ export class MovementSystem {
     this.lat = 35.6762;
     this.lng = 139.6503;
     // 移動方向（度）
-    this.currentAngle = 0;
-    this.targetAngle = 0;
+    this.currentAngle = Math.random() * 360;
+    this.targetAngle = this.currentAngle;
     // 移動速度（度/秒）
     this.speed = 0.02;
     this.noiseOffset = Math.random() * 1000;
+    this.noiseOffset2 = Math.random() * 1000;
+    this.noiseOffset3 = Math.random() * 1000;
   }
 
   /**
@@ -43,15 +45,22 @@ export class MovementSystem {
    * @param {number} deltaTime - 経過秒数
    */
   update(windDirection, windSpeed, deltaTime) {
-    // ノイズ揺らぎ: ゆっくり変化（1分程度で方向転換）
-    this.noiseOffset += deltaTime * 0.02;
-    const noiseAmount = 10 / (1 + windSpeed * 0.3);
-    const noise = Math.sin(this.noiseOffset) * noiseAmount;
+    // ノイズ揺らぎ: 複数波の重ね合わせで左右均等に方向転換
+    this.noiseOffset += deltaTime * 0.1;
+    this.noiseOffset2 += deltaTime * 0.23;
+    this.noiseOffset3 += deltaTime * 0.07;
+    const noise =
+      Math.sin(this.noiseOffset) * 0.5 +
+      Math.sin(this.noiseOffset2) * 0.3 +
+      Math.sin(this.noiseOffset3) * 0.2;
 
-    // 目標角度も急変させず、じわじわ追従させる
-    const rawTarget = windDirection + noise;
+    // ノイズ主導（±120度）に風向を軽く混ぜる（±20度）
+    const rawTarget =
+      this.currentAngle +
+      noise * 120 +
+      normalizeDeg(windDirection - this.currentAngle) * 0.05;
     const targetDiff = normalizeDeg(rawTarget - this.targetAngle);
-    const maxTargetChange = 5 * deltaTime;
+    const maxTargetChange = 20 * deltaTime;
     this.targetAngle += Math.max(
       -maxTargetChange,
       Math.min(maxTargetChange, targetDiff),
@@ -59,8 +68,8 @@ export class MovementSystem {
 
     // 現在角度を目標に向けてゆっくり補間（秒速1度まで）
     const angleDiff = normalizeDeg(this.targetAngle - this.currentAngle);
-    const maxTurn = 1 * deltaTime;
-    const turn = Math.max(-maxTurn, Math.min(maxTurn, angleDiff * 0.1));
+    const maxTurn = 5 * deltaTime;
+    const turn = Math.max(-maxTurn, Math.min(maxTurn, angleDiff * 0.3));
     this.currentAngle += turn;
 
     // 速度: 風速で増減（基本速度を高めに設定し、ずんずん進む）
