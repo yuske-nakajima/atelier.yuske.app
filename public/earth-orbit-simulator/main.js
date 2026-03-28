@@ -126,7 +126,7 @@ async function init() {
   // 地軸傾斜を設定
   earth.rotation.z = AXIAL_TILT;
 
-  // ユーザー位置を取得
+  // ユーザー位置を取得（情報パネル表示にも使用）
   const userCoords = await getUserLocation();
 
   // ユーザーマーカーを作成
@@ -167,8 +167,23 @@ async function init() {
     );
     userMarker.position.copy(worldPos);
 
-    // 軌跡を更新
-    updateTrail(trail, worldPos);
+    // 軌跡を更新（一時停止中はスキップ）
+    if (ui.playing) {
+      updateTrail(trail, worldPos);
+    }
+
+    // 情報パネルを更新
+    const orbitalAngleDeg = ((pos.angle * 180) / Math.PI) % 360;
+    const rotationAngleDeg = ((rotationY * 180) / Math.PI) % 360;
+    const sunDistance = Math.sqrt(pos.x * pos.x + pos.z * pos.z);
+    ui.updateInfoPanel({
+      latitude: userCoords.latitude,
+      longitude: userCoords.longitude,
+      simDate,
+      orbitalAngleDeg,
+      rotationAngleDeg,
+      sunDistance,
+    });
 
     controls.update();
     renderer.render(scene, camera);

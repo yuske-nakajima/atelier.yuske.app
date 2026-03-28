@@ -180,6 +180,85 @@ test.describe('Earth Orbit Simulator', () => {
     await expect(x100Btn).not.toHaveClass(/active/);
   });
 
+  test('情報パネルが表示されシミュレーション情報がリアルタイム更新される', async ({
+    page,
+  }) => {
+    await page.goto(PAGE_URL);
+
+    // 情報パネルが存在する
+    const infoPanel = page.locator('#info-panel');
+    await expect(infoPanel).toBeVisible();
+
+    // 情報パネルの各要素が DOM に存在する
+    await expect(page.locator('#info-coords')).toBeVisible();
+    await expect(page.locator('#info-datetime')).toBeVisible();
+    await expect(page.locator('#info-orbital')).toBeVisible();
+    await expect(page.locator('#info-distance')).toBeVisible();
+
+    // WebGL が有効な場合のみリアルタイム更新をテスト
+    const webglAvailable = await page.evaluate(() => {
+      const canvas = document.createElement('canvas');
+      return !!(canvas.getContext('webgl') || canvas.getContext('webgl2'));
+    });
+
+    if (webglAvailable) {
+      // 3D レンダリングループによる情報更新を待つ
+      const infoCoords = page.locator('#info-coords');
+      await expect(infoCoords).toHaveText(/緯度: [\d.-]+ \/ 経度: [\d.-]+/, {
+        timeout: 20000,
+      });
+
+      const infoDatetime = page.locator('#info-datetime');
+      await expect(infoDatetime).toHaveText(
+        /日時: \d{4}-\d{2}-\d{2} \d{2}:\d{2}/,
+        { timeout: 20000 },
+      );
+
+      // リアルタイム更新の確認（日時が変化する）
+      const datetime1 = await infoDatetime.textContent();
+      await page.waitForTimeout(2000);
+      const datetime2 = await infoDatetime.textContent();
+      expect(datetime2).not.toBe(datetime1);
+    }
+  });
+
+  test('レスポンシブ（モバイルビューポート 375x667）でUI要素が操作可能', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto(PAGE_URL);
+
+    // UI 初期化完了を待つ
+    await expect(page.locator('#time-display')).toHaveText(
+      /\d{4}-\d{2}-\d{2}/,
+      { timeout: 20000 },
+    );
+
+    // コントロール要素が表示されている
+    const controls = page.locator('#controls');
+    await expect(controls).toBeVisible();
+
+    // 再生/一時停止ボタンが操作可能
+    const playBtn = page.locator('#play-pause-btn');
+    await expect(playBtn).toBeVisible();
+    await playBtn.click();
+    await expect(playBtn).toHaveText('\u25B6');
+
+    // 速度ボタンが操作可能
+    const x100Btn = page.locator('.speed-btn[data-speed="100"]');
+    await expect(x100Btn).toBeVisible();
+    await x100Btn.click();
+    await expect(x100Btn).toHaveClass(/active/);
+
+    // スライダーが操作可能
+    const slider = page.locator('#time-slider');
+    await expect(slider).toBeVisible();
+
+    // 情報パネルも表示されている
+    const infoPanel = page.locator('#info-panel');
+    await expect(infoPanel).toBeVisible();
+  });
+
   test('orbit.js の公転計算が異なる日時で異なる位置を返す', async ({
     page,
   }) => {

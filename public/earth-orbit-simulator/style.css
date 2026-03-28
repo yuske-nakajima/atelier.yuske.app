@@ -121,3 +121,49 @@ main {
   border-color: #4488ff;
   color: #fff;
 }
+
+/* 情報パネル */
+#info-panel {
+  position: fixed;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 20;
+  padding: 0.625rem 0.875rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.375rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, monospace;
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  pointer-events: none;
+}
+
+/* モバイル対応 */
+@media (max-width: 48rem) {
+  #controls {
+    padding: 0.5rem 0.75rem;
+  }
+
+  #play-pause-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.375rem;
+  }
+
+  .speed-btn {
+    font-size: 0.8125rem;
+    padding: 0.375rem 0.625rem;
+  }
+
+  #time-slider {
+    height: 2rem;
+  }
+
+  #info-panel {
+    font-size: 0.5625rem;
+    padding: 0.375rem 0.5rem;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}

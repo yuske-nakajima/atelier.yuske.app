@@ -38,6 +38,58 @@ function createSun(scene) {
 }
 
 /**
+ * 地球にワイヤーフレーム（経緯線グリッド）を追加する
+ * @param {THREE.Mesh} earth - 地球メッシュ
+ */
+function addWireframeGrid(earth) {
+  // 薄いワイヤーフレームを球体にオーバーレイ
+  const wireGeo = new THREE.WireframeGeometry(
+    new THREE.SphereGeometry(EARTH_RADIUS * 1.002, 24, 16),
+  );
+  const wireMat = new THREE.LineBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.08,
+  });
+  const wireframe = new THREE.LineSegments(wireGeo, wireMat);
+  earth.add(wireframe);
+
+  // 赤道線（太い）
+  const equatorSegments = 64;
+  const equatorPositions = new Float32Array((equatorSegments + 1) * 3);
+  for (let i = 0; i <= equatorSegments; i++) {
+    const angle = (i / equatorSegments) * Math.PI * 2;
+    equatorPositions[i * 3] = EARTH_RADIUS * 1.003 * Math.cos(angle);
+    equatorPositions[i * 3 + 1] = 0;
+    equatorPositions[i * 3 + 2] = EARTH_RADIUS * 1.003 * Math.sin(angle);
+  }
+  const equatorGeo = new THREE.BufferGeometry();
+  equatorGeo.setAttribute(
+    'position',
+    new THREE.BufferAttribute(equatorPositions, 3),
+  );
+  const equatorMat = new THREE.LineBasicMaterial({
+    color: 0x44ff88,
+    transparent: true,
+    opacity: 0.4,
+  });
+  const equatorLine = new THREE.Line(equatorGeo, equatorMat);
+  earth.add(equatorLine);
+}
+
+/**
+ * 北極に白い点マーカーを追加して極を区別可能にする
+ * @param {THREE.Mesh} earth - 地球メッシュ
+ */
+function addPoleMarker(earth) {
+  const poleGeo = new THREE.SphereGeometry(EARTH_RADIUS * 0.06, 8, 8);
+  const poleMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const northPole = new THREE.Mesh(poleGeo, poleMat);
+  northPole.position.set(0, EARTH_RADIUS * 1.01, 0);
+  earth.add(northPole);
+}
+
+/**
  * 地球を作成してシーンに追加する
  * @param {THREE.Scene} scene
  * @returns {THREE.Mesh}
@@ -52,6 +104,10 @@ function createEarth(scene) {
   const earth = new THREE.Mesh(geometry, material);
   earth.position.set(30, 0, 0);
   scene.add(earth);
+
+  // ワイヤーフレームグリッドと北極マーカーを追加
+  addWireframeGrid(earth);
+  addPoleMarker(earth);
 
   return earth;
 }
