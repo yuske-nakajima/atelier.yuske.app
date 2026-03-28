@@ -108,11 +108,7 @@ test.describe('Earth Orbit Simulator', () => {
       timeout: 20000,
     });
 
-    // 一時停止してからスライダーを操作
-    await page.locator('#play-pause-btn').click();
-    await page.waitForTimeout(200);
-
-    // 一時停止後の日時表示を取得
+    // 初期の日時表示を取得
     const initialText = await timeDisplay.textContent();
 
     // スライダーを最大値（+365日）に変更
@@ -128,59 +124,7 @@ test.describe('Earth Orbit Simulator', () => {
     expect(afterText).not.toBe(initialText);
   });
 
-  test('再生/停止ボタンが機能する', async ({ page }) => {
-    await page.goto(PAGE_URL);
-
-    // UI 初期化完了を待つ
-    await expect(page.locator('#time-display')).toHaveText(
-      /\d{4}-\d{2}-\d{2}/,
-      { timeout: 10000 },
-    );
-
-    const btn = page.locator('#play-pause-btn');
-    await expect(btn).toBeVisible();
-
-    // クリックで一時停止に切り替え（▶ に変わる）
-    await btn.click();
-    await expect(btn).toHaveText('\u25B6');
-
-    // もう一度クリックで再生に戻る（⏸ に変わる）
-    await btn.click();
-    await expect(btn).toHaveText('\u23F8');
-  });
-
-  test('速度切替ボタンが存在し操作可能である', async ({ page }) => {
-    await page.goto(PAGE_URL);
-
-    // UI 初期化完了を待つ
-    await expect(page.locator('#time-display')).toHaveText(
-      /\d{4}-\d{2}-\d{2}/,
-      { timeout: 10000 },
-    );
-
-    // 4つの速度ボタンが存在する
-    const speedBtns = page.locator('.speed-btn');
-    await expect(speedBtns).toHaveCount(4);
-
-    // 初期状態で x1 がアクティブ
-    const x1Btn = page.locator('.speed-btn[data-speed="1"]');
-    await expect(x1Btn).toHaveClass(/active/);
-
-    // x10 をクリック
-    const x10Btn = page.locator('.speed-btn[data-speed="10"]');
-    await x10Btn.click();
-    await expect(x10Btn).toHaveClass(/active/);
-    // x1 はアクティブでなくなる
-    await expect(x1Btn).not.toHaveClass(/active/);
-
-    // x1000 をクリック
-    const x1000Btn = page.locator('.speed-btn[data-speed="1000"]');
-    await x1000Btn.click();
-    await expect(x1000Btn).toHaveClass(/active/);
-    await expect(x10Btn).not.toHaveClass(/active/);
-  });
-
-  test('情報パネルが表示されシミュレーション情報がリアルタイム更新される', async ({
+  test('情報パネルが表示されシミュレーション情報が更新される', async ({
     page,
   }) => {
     await page.goto(PAGE_URL);
@@ -195,7 +139,7 @@ test.describe('Earth Orbit Simulator', () => {
     await expect(page.locator('#info-orbital')).toBeVisible();
     await expect(page.locator('#info-distance')).toBeVisible();
 
-    // WebGL が有効な場合のみリアルタイム更新をテスト
+    // WebGL が有効な場合のみ更新をテスト
     const webglAvailable = await page.evaluate(() => {
       const canvas = document.createElement('canvas');
       return !!(canvas.getContext('webgl') || canvas.getContext('webgl2'));
@@ -213,12 +157,6 @@ test.describe('Earth Orbit Simulator', () => {
         /日時: \d{4}-\d{2}-\d{2} \d{2}:\d{2}/,
         { timeout: 20000 },
       );
-
-      // リアルタイム更新の確認（日時が変化する）
-      const datetime1 = await infoDatetime.textContent();
-      await page.waitForTimeout(2000);
-      const datetime2 = await infoDatetime.textContent();
-      expect(datetime2).not.toBe(datetime1);
     }
   });
 
@@ -237,18 +175,6 @@ test.describe('Earth Orbit Simulator', () => {
     // コントロール要素が表示されている
     const controls = page.locator('#controls');
     await expect(controls).toBeVisible();
-
-    // 再生/一時停止ボタンが操作可能
-    const playBtn = page.locator('#play-pause-btn');
-    await expect(playBtn).toBeVisible();
-    await playBtn.click();
-    await expect(playBtn).toHaveText('\u25B6');
-
-    // 速度ボタンが操作可能
-    const x10Btn = page.locator('.speed-btn[data-speed="10"]');
-    await expect(x10Btn).toBeVisible();
-    await x10Btn.click();
-    await expect(x10Btn).toHaveClass(/active/);
 
     // スライダーが操作可能
     const slider = page.locator('#time-slider');

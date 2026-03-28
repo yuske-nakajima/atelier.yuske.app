@@ -9,9 +9,6 @@ import { createScene } from './scene.js';
 import { createTrail, updateTrail } from './trail.js';
 import { createUI } from './ui.js';
 
-/** 基本時間加速倍率（x1 で 1秒 = 約6分、1日が約4分で進む） */
-const BASE_TIME_SCALE = 360 * 1000;
-
 /** 1日のミリ秒数 */
 const MS_PER_DAY = 24 * 3600 * 1000;
 
@@ -64,14 +61,6 @@ function localToWorldPosition(localPos, rotationY, axialTilt, orbitalPos) {
 // UI コントロールを早期初期化（WebGL に依存しない）
 const ui = createUI();
 
-/**
- * シミュレーション時間を管理するモジュール
- * UI コントロールと連携して時刻を計算する
- */
-/** 現在のシミュレーション時刻（ミリ秒） */
-let simTimeMs = Date.now();
-/** 前フレームの実時間 */
-let lastRealTime = Date.now();
 /** スライダーによるオフセット（日数） */
 let sliderOffsetDays = 0;
 
@@ -82,27 +71,17 @@ ui.onSliderChange((offset) => {
 
 /**
  * 現在のシミュレーション日時を計算して返す
+ * 現在時刻 + スライダーオフセット（日数）
  * @returns {Date}
  */
-function updateSimTime() {
-  const now = Date.now();
-  const deltaReal = now - lastRealTime;
-  lastRealTime = now;
-
-  // 再生中は時間を自動進行させる
-  if (ui.playing) {
-    simTimeMs += deltaReal * BASE_TIME_SCALE * ui.speed;
-  }
-
-  // スライダーオフセットを加算したシミュレーション日時を算出
-  return new Date(simTimeMs + sliderOffsetDays * MS_PER_DAY);
+function getSimDate() {
+  return new Date(Date.now() + sliderOffsetDays * MS_PER_DAY);
 }
 
 // UI の時刻表示を常に更新（WebGL に依存しない独立ループ）
 function updateTimeDisplayLoop() {
   requestAnimationFrame(updateTimeDisplayLoop);
-  const simDate = updateSimTime();
-  ui.updateTimeDisplay(simDate);
+  ui.updateTimeDisplay(getSimDate());
 }
 updateTimeDisplayLoop();
 
@@ -142,12 +121,15 @@ async function init() {
     EARTH_RADIUS,
   );
 
+  /** 前フレームのスライダーオフセット（変化検出用） */
+  let prevSliderOffset = sliderOffsetDays;
+
   // レンダリングループ（3D 描画のみ担当）
   function animate() {
     requestAnimationFrame(animate);
 
     // 現在のシミュレーション日時を取得
-    const simDate = new Date(simTimeMs + sliderOffsetDays * MS_PER_DAY);
+    const simDate = getSimDate();
 
     // 公転位置を更新
     const pos = getOrbitalPosition(simDate);
@@ -167,9 +149,10 @@ async function init() {
     );
     userMarker.position.copy(worldPos);
 
-    // 軌跡を更新（一時停止中はスキップ）
-    if (ui.playing) {
+    // スライダーが動いたときのみ軌跡を更新
+    if (sliderOffsetDays !== prevSliderOffset) {
       updateTrail(trail, worldPos);
+      prevSliderOffset = sliderOffsetDays;
     }
 
     // 情報パネルを更新
