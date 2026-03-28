@@ -5,6 +5,7 @@
  * @property {(note: number, velocity: number) => void} onNoteOn
  * @property {(note: number) => void} onNoteOff
  * @property {(cc: number, value: number) => void} onCC
+ * @property {(hasDevice: boolean) => void} onConnectionChange
  */
 
 /** MIDI ステータスバイト */
@@ -14,8 +15,8 @@ const STATUS_CC = 0xb0;
 
 /**
  * MIDI メッセージをパースしてコールバックに通知する
- * @param {MIDIMessageEvent} event - MIDI メッセージイベント
- * @param {MidiCallbacks} callbacks - コールバック関数群
+ * @param {MIDIMessageEvent} event
+ * @param {MidiCallbacks} callbacks
  */
 function handleMidiMessage(event, callbacks) {
   const data = event.data;
@@ -44,25 +45,26 @@ function handleMidiMessage(event, callbacks) {
 }
 
 /**
- * 全 MIDI 入力にイベントリスナーを登録する
- * @param {MIDIAccess} midiAccess - MIDI アクセスオブジェクト
- * @param {MidiCallbacks} callbacks - コールバック関数群
+ * 全 MIDI 入力にイベントリスナーを登録する（重複を防ぐため onmidimessage を使用）
+ * @param {MIDIAccess} midiAccess
+ * @param {MidiCallbacks} callbacks
+ * @returns {number} 接続されたデバイス数
  */
 function bindInputs(midiAccess, callbacks) {
+  let count = 0;
   for (const input of midiAccess.inputs.values()) {
-    input.addEventListener(
-      'midimessage',
-      (/** @type {MIDIMessageEvent} */ event) => {
-        handleMidiMessage(event, callbacks);
-      },
-    );
+    input.onmidimessage = (/** @type {MIDIMessageEvent} */ event) => {
+      handleMidiMessage(event, callbacks);
+    };
+    count++;
   }
+  return count;
 }
 
 /**
  * Web MIDI API でデバイスに接続する
- * @param {MidiCallbacks} callbacks - コールバック関数群
- * @returns {Promise<boolean>} 接続成功なら true
+ * @param {MidiCallbacks} callbacks
+ * @returns {Promise<boolean>} MIDI API に対応していれば true
  */
 export async function connectMidi(callbacks) {
   if (!navigator.requestMIDIAccess) {
@@ -71,10 +73,12 @@ export async function connectMidi(callbacks) {
 
   try {
     const midiAccess = await navigator.requestMIDIAccess();
-    bindInputs(midiAccess, callbacks);
+    const deviceCount = bindInputs(midiAccess, callbacks);
+    callbacks.onConnectionChange(deviceCount > 0);
 
     midiAccess.addEventListener('statechange', () => {
-      bindInputs(midiAccess, callbacks);
+      const newCount = bindInputs(midiAccess, callbacks);
+      callbacks.onConnectionChange(newCount > 0);
     });
 
     return true;

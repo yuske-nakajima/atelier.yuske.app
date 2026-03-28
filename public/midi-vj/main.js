@@ -55,30 +55,7 @@ async function init() {
   /** @type {import('./visuals.js').Particle[]} */
   let particles = [];
   let fadeAmount = FADE_DEFAULT;
-
-  const connected = await connectMidi({
-    onNoteOn(note, velocity) {
-      const p = createParticle(note, velocity, canvas.width, canvas.height);
-      particles = addParticle(particles, p);
-    },
-    onNoteOff() {
-      // ノートオフ時は特に処理しない
-    },
-    onCC(cc, value) {
-      if (cc === CC_MODULATION) {
-        fadeAmount = ccToFade(value);
-      }
-    },
-  });
-
-  if (!connected) {
-    showFallback(fallback, 'このブラウザは Web MIDI API に対応していません');
-    return;
-  }
-
-  hideFallback(fallback);
-
-  let lastTime = performance.now();
+  let animationStarted = false;
 
   /** アニメーションループ */
   function loop() {
@@ -98,7 +75,42 @@ async function init() {
     requestAnimationFrame(loop);
   }
 
-  requestAnimationFrame(loop);
+  let lastTime = performance.now();
+
+  /** アニメーションループを開始する（初回のみ） */
+  function startAnimation() {
+    if (animationStarted) return;
+    animationStarted = true;
+    lastTime = performance.now();
+    requestAnimationFrame(loop);
+  }
+
+  const midiSupported = await connectMidi({
+    onNoteOn(note, velocity) {
+      const p = createParticle(note, velocity, canvas.width, canvas.height);
+      particles = addParticle(particles, p);
+    },
+    onNoteOff() {
+      // ノートオフ時は特に処理しない
+    },
+    onCC(cc, value) {
+      if (cc === CC_MODULATION) {
+        fadeAmount = ccToFade(value);
+      }
+    },
+    onConnectionChange(hasDevice) {
+      if (hasDevice) {
+        hideFallback(fallback);
+        startAnimation();
+        return;
+      }
+      showFallback(fallback, 'MIDI デバイスを接続してください');
+    },
+  });
+
+  if (!midiSupported) {
+    showFallback(fallback, 'このブラウザは Web MIDI API に対応していません');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', init);
