@@ -6,7 +6,7 @@ import { createBodies, createUserMarker } from './bodies.js';
 import { getUserLocation } from './geolocation.js';
 import { AXIAL_TILT, getOrbitalPosition, getRotationAngle } from './orbit.js';
 import { createScene } from './scene.js';
-import { createTrail, updateTrail } from './trail.js';
+import { createTrail, rebuildTrail } from './trail.js';
 import { createUI } from './ui.js';
 
 /** 1日のミリ秒数 */
@@ -26,7 +26,6 @@ function geoToLocalPosition(latitude, longitude, radius) {
   const latRad = (latitude * Math.PI) / 180;
   const lonRad = (longitude * Math.PI) / 180;
 
-  // Three.js の座標系: Y が上、X-Z が水平面
   const x = radius * Math.cos(latRad) * Math.sin(lonRad);
   const y = radius * Math.sin(latRad);
   const z = radius * Math.cos(latRad) * Math.cos(lonRad);
@@ -71,14 +70,13 @@ ui.onSliderChange((offset) => {
 
 /**
  * 現在のシミュレーション日時を計算して返す
- * 現在時刻 + スライダーオフセット（日数）
  * @returns {Date}
  */
 function getSimDate() {
   return new Date(Date.now() + sliderOffsetDays * MS_PER_DAY);
 }
 
-// UI の時刻表示を常に更新（WebGL に依存しない独立ループ）
+// UI の時刻表示を常に更新
 function updateTimeDisplayLoop() {
   requestAnimationFrame(updateTimeDisplayLoop);
   ui.updateTimeDisplay(getSimDate());
@@ -96,39 +94,38 @@ async function init() {
     throw new Error('canvas 要素が見つかりません');
   }
 
-  // シーンセットアップ
   const { scene, camera, renderer, controls } = createScene(canvas);
-
-  // 天体オブジェクト作成
   const { earth } = createBodies(scene);
-
-  // 地軸傾斜を設定
   earth.rotation.z = AXIAL_TILT;
 
-  // ユーザー位置を取得（情報パネル表示にも使用）
   const userCoords = await getUserLocation();
-
-  // ユーザーマーカーを作成
   const userMarker = createUserMarker(scene);
-
-  // 軌跡を作成
   const trail = createTrail(scene);
 
-  // ユーザーの地球表面上ローカル座標を事前計算
   const userLocalPos = geoToLocalPosition(
     userCoords.latitude,
     userCoords.longitude,
     EARTH_RADIUS,
   );
 
+  /**
+   * 指定日数オフセットでのユーザーのワールド座標を計算する
+   * @param {number} dayOffset - 現在時刻からのオフセット（日）
+   * @returns {THREE.Vector3}
+   */
+  function calcUserWorldPos(dayOffset) {
+    const date = new Date(Date.now() + dayOffset * MS_PER_DAY);
+    const orbPos = getOrbitalPosition(date);
+    const rotY = getRotationAngle(date);
+    return localToWorldPosition(userLocalPos, rotY, AXIAL_TILT, orbPos);
+  }
+
   /** 前フレームのスライダーオフセット（変化検出用） */
   let prevSliderOffset = sliderOffsetDays;
 
-  // レンダリングループ（3D 描画のみ担当）
   function animate() {
     requestAnimationFrame(animate);
 
-    // 現在のシミュレーション日時を取得
     const simDate = getSimDate();
 
     // 公転位置を更新
@@ -149,9 +146,9 @@ async function init() {
     );
     userMarker.position.copy(worldPos);
 
-    // スライダーが動いたときのみ軌跡を更新
+    // スライダーが変化したときに軌跡を再構築
     if (sliderOffsetDays !== prevSliderOffset) {
-      updateTrail(trail, worldPos);
+      rebuildTrail(trail, sliderOffsetDays, calcUserWorldPos);
       prevSliderOffset = sliderOffsetDays;
     }
 
