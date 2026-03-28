@@ -10,6 +10,7 @@
 | `/t8-random-pattern/` | T-8 Random Pattern Switcher（ランダムパターン生成） |
 | `/voxel-walker/` | Voxel Walker（天気連動ジェネラティブアート壁紙） |
 | `/voxel-explorer/` | Voxel Explorer（天気連動ドラクエ風俯瞰ジェネラティブアート） |
+| `/earth-orbit-simulator/` | Earth Orbit Simulator（地球軌道シミュレーター） |
 
 ## トップページ仕様
 

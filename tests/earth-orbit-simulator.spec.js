@@ -259,6 +259,15 @@ test.describe('Earth Orbit Simulator', () => {
     await expect(infoPanel).toBeVisible();
   });
 
+  test('トップページのリンクから遷移できる', async ({ page }) => {
+    await page.goto('/');
+    const link = page.locator('a[href="/earth-orbit-simulator/"]');
+    await expect(link).toBeVisible();
+    await link.click();
+    await page.waitForURL('**/earth-orbit-simulator/');
+    expect(page.url()).toContain('/earth-orbit-simulator/');
+  });
+
   test('orbit.js の公転計算が異なる日時で異なる位置を返す', async ({
     page,
   }) => {
