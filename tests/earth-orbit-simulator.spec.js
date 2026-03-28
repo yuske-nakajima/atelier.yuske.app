@@ -58,6 +58,47 @@ test.describe('Earth Orbit Simulator', () => {
     expect(dataUrl.length).toBeGreaterThan(1000);
   });
 
+  test('Geolocation 拒否時にデフォルト座標でエラーなく動作する', async ({
+    context,
+    page,
+  }) => {
+    // Geolocation の権限を拒否する
+    await context.clearPermissions();
+
+    await page.goto(PAGE_URL);
+
+    // Three.js の初期化とレンダリングを待つ
+    await page.waitForTimeout(3000);
+
+    // コンソールエラーを収集
+    /** @type {string[]} */
+    const errors = [];
+    page.on('pageerror', (error) => {
+      errors.push(error.message);
+    });
+
+    // 追加で少し待って安定性を確認
+    await page.waitForTimeout(1000);
+
+    // canvas に描画がされていることを確認（エラーで止まっていない）
+    const dataUrl = await page.evaluate(() => {
+      const canvas = /** @type {HTMLCanvasElement | null} */ (
+        document.getElementById('canvas')
+      );
+      if (!canvas) return '';
+      return canvas.toDataURL();
+    });
+
+    expect(dataUrl.length).toBeGreaterThan(1000);
+    // Geolocation 関連の致命的エラーがないことを確認
+    const geoErrors = errors.filter(
+      (e) =>
+        e.toLowerCase().includes('geolocation') ||
+        e.toLowerCase().includes('location'),
+    );
+    expect(geoErrors).toHaveLength(0);
+  });
+
   test('orbit.js の公転計算が異なる日時で異なる位置を返す', async ({
     page,
   }) => {

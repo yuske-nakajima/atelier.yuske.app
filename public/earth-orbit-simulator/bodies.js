@@ -12,6 +12,9 @@ import { ORBIT_RADIUS } from './orbit.js';
  * @property {THREE.Line} orbitLine - 公転軌道の線
  */
 
+/** 地球の半径（SphereGeometry の第1引数と一致させる） */
+const EARTH_RADIUS = 1;
+
 /**
  * 太陽を作成してシーンに追加する
  * @param {THREE.Scene} scene
@@ -117,6 +120,20 @@ function createOrbitLine(scene) {
   scene.add(orbitLine);
 
   return orbitLine;
+}
+
+/**
+ * ユーザーマーカー（赤い小さな球体）を作成してシーンに追加する
+ * @param {THREE.Scene} scene
+ * @returns {THREE.Mesh}
+ */
+export function createUserMarker(scene) {
+  const radius = EARTH_RADIUS * 0.07;
+  const geometry = new THREE.SphereGeometry(radius, 16, 16);
+  const material = new THREE.MeshBasicMaterial({ color: 0xff3333 });
+  const marker = new THREE.Mesh(geometry, material);
+  scene.add(marker);
+  return marker;
 }
 
 /**
