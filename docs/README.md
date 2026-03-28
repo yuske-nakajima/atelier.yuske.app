@@ -11,6 +11,7 @@
 | `/voxel-walker/` | Voxel Walker（天気連動ジェネラティブアート壁紙） |
 | `/voxel-explorer/` | Voxel Explorer（天気連動ドラクエ風俯瞰ジェネラティブアート） |
 | `/earth-orbit-simulator/` | Earth Orbit Simulator（地球軌道シミュレーター） |
+| `/midi-vj/` | MIDI VJ（MIDI キーボードで操作するビジュアルジョッキー） |
 
 ## トップページ仕様
 
