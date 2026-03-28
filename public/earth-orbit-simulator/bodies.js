@@ -2,11 +2,14 @@
 
 import * as THREE from 'https://esm.sh/three@0.172.0';
 
+import { ORBIT_RADIUS } from './orbit.js';
+
 /**
  * @typedef {object} Bodies
  * @property {THREE.Mesh} sun - 太陽メッシュ
  * @property {THREE.Mesh} earth - 地球メッシュ
  * @property {THREE.Points} starField - 星空パーティクル
+ * @property {THREE.Line} orbitLine - 公転軌道の線
  */
 
 /**
@@ -86,6 +89,37 @@ function createStarField(scene) {
 }
 
 /**
+ * 公転軌道を薄い線で描画してシーンに追加する
+ * @param {THREE.Scene} scene
+ * @returns {THREE.Line}
+ */
+function createOrbitLine(scene) {
+  const segments = 128;
+  const positions = new Float32Array((segments + 1) * 3);
+
+  for (let i = 0; i <= segments; i++) {
+    const angle = (i / segments) * Math.PI * 2;
+    positions[i * 3] = ORBIT_RADIUS * Math.cos(angle);
+    positions[i * 3 + 1] = 0;
+    positions[i * 3 + 2] = ORBIT_RADIUS * Math.sin(angle);
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  const material = new THREE.LineBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.2,
+  });
+
+  const orbitLine = new THREE.Line(geometry, material);
+  scene.add(orbitLine);
+
+  return orbitLine;
+}
+
+/**
  * 全天体オブジェクトを作成してシーンに追加する
  * @param {THREE.Scene} scene
  * @returns {Bodies}
@@ -94,6 +128,7 @@ export function createBodies(scene) {
   const sun = createSun(scene);
   const earth = createEarth(scene);
   const starField = createStarField(scene);
+  const orbitLine = createOrbitLine(scene);
 
-  return { sun, earth, starField };
+  return { sun, earth, starField, orbitLine };
 }
