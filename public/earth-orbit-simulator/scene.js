@@ -23,7 +23,7 @@ export function createScene(canvas) {
   // カメラ（パースペクティブ）
   const aspect = window.innerWidth / window.innerHeight;
   const camera = new THREE.PerspectiveCamera(60, aspect, 0.1, 2000);
-  camera.position.set(0, 30, 60);
+  camera.position.set(0, 50, 80);
   camera.lookAt(0, 0, 0);
 
   // レンダラー
@@ -43,7 +43,7 @@ export function createScene(canvas) {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
-  controls.minDistance = 10;
+  controls.minDistance = 40;
   controls.maxDistance = 500;
 
   // ウィンドウリサイズ対応
