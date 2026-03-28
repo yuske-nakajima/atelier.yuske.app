@@ -8,8 +8,8 @@ import * as THREE from 'https://esm.sh/three@0.172.0';
  * プラス方向は青、マイナス方向は赤
  */
 
-/** 1日あたりの軌跡ポイント数（滑らかさの調整） */
-const POINTS_PER_DAY = 4;
+/** 1日あたりの軌跡ポイント数（自転の螺旋を滑らかに描画するため24点/日） */
+const POINTS_PER_DAY = 24;
 
 /** 軌跡の最大ポイント数 */
 const MAX_POINTS = 365 * POINTS_PER_DAY;
