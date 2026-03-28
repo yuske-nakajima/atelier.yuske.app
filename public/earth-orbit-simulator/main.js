@@ -9,8 +9,8 @@ import { createScene } from './scene.js';
 import { createTrail, updateTrail } from './trail.js';
 import { createUI } from './ui.js';
 
-/** 基本時間加速倍率（1秒 = 1時間相当） */
-const BASE_TIME_SCALE = 3600 * 1000;
+/** 基本時間加速倍率（x1 で 1秒 = 約6分、1日が約4分で進む） */
+const BASE_TIME_SCALE = 360 * 1000;
 
 /** 1日のミリ秒数 */
 const MS_PER_DAY = 24 * 3600 * 1000;

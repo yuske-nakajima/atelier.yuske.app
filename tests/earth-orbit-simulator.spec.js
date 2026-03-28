@@ -166,18 +166,18 @@ test.describe('Earth Orbit Simulator', () => {
     const x1Btn = page.locator('.speed-btn[data-speed="1"]');
     await expect(x1Btn).toHaveClass(/active/);
 
-    // x100 をクリック
-    const x100Btn = page.locator('.speed-btn[data-speed="100"]');
-    await x100Btn.click();
-    await expect(x100Btn).toHaveClass(/active/);
+    // x10 をクリック
+    const x10Btn = page.locator('.speed-btn[data-speed="10"]');
+    await x10Btn.click();
+    await expect(x10Btn).toHaveClass(/active/);
     // x1 はアクティブでなくなる
     await expect(x1Btn).not.toHaveClass(/active/);
 
-    // x10000 をクリック
-    const x10000Btn = page.locator('.speed-btn[data-speed="10000"]');
-    await x10000Btn.click();
-    await expect(x10000Btn).toHaveClass(/active/);
-    await expect(x100Btn).not.toHaveClass(/active/);
+    // x1000 をクリック
+    const x1000Btn = page.locator('.speed-btn[data-speed="1000"]');
+    await x1000Btn.click();
+    await expect(x1000Btn).toHaveClass(/active/);
+    await expect(x10Btn).not.toHaveClass(/active/);
   });
 
   test('情報パネルが表示されシミュレーション情報がリアルタイム更新される', async ({
@@ -245,10 +245,10 @@ test.describe('Earth Orbit Simulator', () => {
     await expect(playBtn).toHaveText('\u25B6');
 
     // 速度ボタンが操作可能
-    const x100Btn = page.locator('.speed-btn[data-speed="100"]');
-    await expect(x100Btn).toBeVisible();
-    await x100Btn.click();
-    await expect(x100Btn).toHaveClass(/active/);
+    const x10Btn = page.locator('.speed-btn[data-speed="10"]');
+    await expect(x10Btn).toBeVisible();
+    await x10Btn.click();
+    await expect(x10Btn).toHaveClass(/active/);
 
     // スライダーが操作可能
     const slider = page.locator('#time-slider');
