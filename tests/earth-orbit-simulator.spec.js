@@ -99,6 +99,87 @@ test.describe('Earth Orbit Simulator', () => {
     expect(geoErrors).toHaveLength(0);
   });
 
+  test('スライダー操作で日時表示が変化する', async ({ page }) => {
+    await page.goto(PAGE_URL);
+
+    // UI 初期化完了を待つ（日時表示にテキストが入るまで）
+    const timeDisplay = page.locator('#time-display');
+    await expect(timeDisplay).toHaveText(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}/, {
+      timeout: 20000,
+    });
+
+    // 一時停止してからスライダーを操作
+    await page.locator('#play-pause-btn').click();
+    await page.waitForTimeout(200);
+
+    // 一時停止後の日時表示を取得
+    const initialText = await timeDisplay.textContent();
+
+    // スライダーを最大値（+365日）に変更
+    await page.locator('#time-slider').fill('365');
+    await page.locator('#time-slider').dispatchEvent('input');
+    await page.waitForTimeout(500);
+
+    const afterText = await timeDisplay.textContent();
+    expect(afterText).toBeTruthy();
+    expect(afterText).toMatch(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}/);
+
+    // 日時が変化していることを確認
+    expect(afterText).not.toBe(initialText);
+  });
+
+  test('再生/停止ボタンが機能する', async ({ page }) => {
+    await page.goto(PAGE_URL);
+
+    // UI 初期化完了を待つ
+    await expect(page.locator('#time-display')).toHaveText(
+      /\d{4}-\d{2}-\d{2}/,
+      { timeout: 10000 },
+    );
+
+    const btn = page.locator('#play-pause-btn');
+    await expect(btn).toBeVisible();
+
+    // クリックで一時停止に切り替え（▶ に変わる）
+    await btn.click();
+    await expect(btn).toHaveText('\u25B6');
+
+    // もう一度クリックで再生に戻る（⏸ に変わる）
+    await btn.click();
+    await expect(btn).toHaveText('\u23F8');
+  });
+
+  test('速度切替ボタンが存在し操作可能である', async ({ page }) => {
+    await page.goto(PAGE_URL);
+
+    // UI 初期化完了を待つ
+    await expect(page.locator('#time-display')).toHaveText(
+      /\d{4}-\d{2}-\d{2}/,
+      { timeout: 10000 },
+    );
+
+    // 4つの速度ボタンが存在する
+    const speedBtns = page.locator('.speed-btn');
+    await expect(speedBtns).toHaveCount(4);
+
+    // 初期状態で x1 がアクティブ
+    const x1Btn = page.locator('.speed-btn[data-speed="1"]');
+    await expect(x1Btn).toHaveClass(/active/);
+
+    // x100 をクリック
+    const x100Btn = page.locator('.speed-btn[data-speed="100"]');
+    await x100Btn.click();
+    await expect(x100Btn).toHaveClass(/active/);
+    // x1 はアクティブでなくなる
+    await expect(x1Btn).not.toHaveClass(/active/);
+
+    // x10000 をクリック
+    const x10000Btn = page.locator('.speed-btn[data-speed="10000"]');
+    await x10000Btn.click();
+    await expect(x10000Btn).toHaveClass(/active/);
+    await expect(x100Btn).not.toHaveClass(/active/);
+  });
+
   test('orbit.js の公転計算が異なる日時で異なる位置を返す', async ({
     page,
   }) => {

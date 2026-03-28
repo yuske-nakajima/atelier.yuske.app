@@ -7,9 +7,13 @@ import { getUserLocation } from './geolocation.js';
 import { AXIAL_TILT, getOrbitalPosition, getRotationAngle } from './orbit.js';
 import { createScene } from './scene.js';
 import { createTrail, updateTrail } from './trail.js';
+import { createUI } from './ui.js';
 
-/** 時間加速倍率（1秒 = 1日相当） */
-const TIME_SCALE = 24 * 3600 * 1000;
+/** 基本時間加速倍率（1秒 = 1日相当） */
+const BASE_TIME_SCALE = 24 * 3600 * 1000;
+
+/** 1日のミリ秒数 */
+const MS_PER_DAY = 24 * 3600 * 1000;
 
 /** 地球の半径（bodies.js の SphereGeometry と一致） */
 const EARTH_RADIUS = 1;
@@ -57,6 +61,51 @@ function localToWorldPosition(localPos, rotationY, axialTilt, orbitalPos) {
   return pos;
 }
 
+// UI コントロールを早期初期化（WebGL に依存しない）
+const ui = createUI();
+
+/**
+ * シミュレーション時間を管理するモジュール
+ * UI コントロールと連携して時刻を計算する
+ */
+/** 現在のシミュレーション時刻（ミリ秒） */
+let simTimeMs = Date.now();
+/** 前フレームの実時間 */
+let lastRealTime = Date.now();
+/** スライダーによるオフセット（日数） */
+let sliderOffsetDays = 0;
+
+// スライダー変更時の処理
+ui.onSliderChange((offset) => {
+  sliderOffsetDays = offset;
+});
+
+/**
+ * 現在のシミュレーション日時を計算して返す
+ * @returns {Date}
+ */
+function updateSimTime() {
+  const now = Date.now();
+  const deltaReal = now - lastRealTime;
+  lastRealTime = now;
+
+  // 再生中は時間を自動進行させる
+  if (ui.playing) {
+    simTimeMs += deltaReal * BASE_TIME_SCALE * ui.speed;
+  }
+
+  // スライダーオフセットを加算したシミュレーション日時を算出
+  return new Date(simTimeMs + sliderOffsetDays * MS_PER_DAY);
+}
+
+// UI の時刻表示を常に更新（WebGL に依存しない独立ループ）
+function updateTimeDisplayLoop() {
+  requestAnimationFrame(updateTimeDisplayLoop);
+  const simDate = updateSimTime();
+  ui.updateTimeDisplay(simDate);
+}
+updateTimeDisplayLoop();
+
 /**
  * アプリケーションのエントリーポイント
  */
@@ -93,17 +142,12 @@ async function init() {
     EARTH_RADIUS,
   );
 
-  // 開始時刻を記録（加速時間計算用）
-  const startRealTime = Date.now();
-  const startSimTime = Date.now();
-
-  // レンダリングループ
+  // レンダリングループ（3D 描画のみ担当）
   function animate() {
     requestAnimationFrame(animate);
 
-    // 加速されたシミュレーション時刻を算出
-    const elapsed = Date.now() - startRealTime;
-    const simDate = new Date(startSimTime + elapsed * TIME_SCALE);
+    // 現在のシミュレーション日時を取得
+    const simDate = new Date(simTimeMs + sliderOffsetDays * MS_PER_DAY);
 
     // 公転位置を更新
     const pos = getOrbitalPosition(simDate);
