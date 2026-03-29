@@ -13,6 +13,9 @@
 | `/earth-orbit-simulator/` | Earth Orbit Simulator（地球軌道シミュレーター） |
 | `/midi-vj/` | MIDI VJ（MIDI キーボードで操作するビジュアルジョッキー） |
 | `/simple-gui/` | Simple GUI（lil-gui 簡易版 GUI ライブラリ デモ） |
+| `/simple-gui-sheet/` | Simple GUI Sheet（ボトムシート型 GUI ライブラリ デモ） |
+| `/simple-gui-pill/` | Simple GUI Pill（ピル型 GUI ライブラリ デモ） |
+| `/simple-gui-tab/` | Simple GUI Tab（タブバー型 GUI ライブラリ デモ） |
 
 ## トップページ仕様
 
