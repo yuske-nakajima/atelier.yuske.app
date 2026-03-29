@@ -249,13 +249,15 @@ export function injectStyles() {
 
     .sgs-control input[type="range"] {
       flex: 1;
+      min-width: 0;
       height: 0.25rem;
       accent-color: var(--sgs-accent);
       cursor: pointer;
     }
 
     .sgs-control input[type="number"] {
-      width: 3.75rem;
+      width: 27%;
+      min-width: 2.5rem;
       background: var(--sgs-input-bg);
       border: 0.0625rem solid var(--sgs-border);
       border-radius: 0.375rem;

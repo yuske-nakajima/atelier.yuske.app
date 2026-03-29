@@ -50,6 +50,7 @@ function injectStyles() {
       z-index: 10000;
       user-select: none;
       box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.4);
+      overflow: hidden;
     }
 
     .sg-title {
@@ -103,6 +104,7 @@ function injectStyles() {
 
     .sg-control {
       flex: 1;
+      min-width: 0;
       display: flex;
       align-items: center;
       gap: 0.375rem;
@@ -110,13 +112,16 @@ function injectStyles() {
 
     .sg-control input[type="range"] {
       flex: 1;
+      min-width: 0;
       height: 0.25rem;
       accent-color: var(--sg-accent);
       cursor: pointer;
     }
 
     .sg-control input[type="number"] {
-      width: 3.5rem;
+      width: 27%;
+      min-width: 2.5rem;
+      flex-shrink: 0;
       background: var(--sg-input-bg);
       border: 0.0625rem solid var(--sg-border);
       border-radius: var(--sg-radius);
