@@ -124,6 +124,7 @@ gui.add(params, 'visible');
 
 gui.addButton('Reset', () => {
   Object.assign(params, { ...defaults });
+  gui.updateDisplay();
 });
 
 const folder = gui.addFolder('Advanced');

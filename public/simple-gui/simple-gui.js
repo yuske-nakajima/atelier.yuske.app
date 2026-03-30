@@ -247,11 +247,19 @@ class Controller {
       this._onChangeCallback(value);
     }
   }
+
+  /** DOM 表示を現在の値に同期する（サブクラスでオーバーライド） */
+  updateDisplay() {}
 }
 
 // --- NumberController ---
 
 class NumberController extends Controller {
+  /** @type {HTMLInputElement} */
+  _numberInput;
+  /** @type {HTMLInputElement | null} */
+  _rangeInput;
+
   /**
    * @param {Record<string, unknown>} obj
    * @param {string} prop
@@ -261,6 +269,8 @@ class NumberController extends Controller {
    */
   constructor(obj, prop, min, max, step) {
     super(obj, prop);
+
+    this._rangeInput = null;
 
     const label = document.createElement('span');
     label.classList.add('sg-label');
@@ -277,6 +287,7 @@ class NumberController extends Controller {
     if (min !== undefined) numberInput.min = String(min);
     if (max !== undefined) numberInput.max = String(max);
     if (step !== undefined) numberInput.step = String(step);
+    this._numberInput = numberInput;
 
     if (hasRange) {
       const rangeInput = document.createElement('input');
@@ -285,6 +296,7 @@ class NumberController extends Controller {
       rangeInput.max = String(max);
       rangeInput.step = String(step ?? 1);
       rangeInput.value = String(obj[prop]);
+      this._rangeInput = rangeInput;
 
       rangeInput.addEventListener('input', () => {
         const val = Number(rangeInput.value);
@@ -309,11 +321,23 @@ class NumberController extends Controller {
     this.domElement.appendChild(label);
     this.domElement.appendChild(control);
   }
+
+  /** DOM 表示を現在の値に同期する */
+  updateDisplay() {
+    const val = String(this._obj[this._prop]);
+    this._numberInput.value = val;
+    if (this._rangeInput) {
+      this._rangeInput.value = val;
+    }
+  }
 }
 
 // --- BooleanController ---
 
 class BooleanController extends Controller {
+  /** @type {HTMLInputElement} */
+  _checkbox;
+
   /**
    * @param {Record<string, unknown>} obj
    * @param {string} prop
@@ -331,6 +355,7 @@ class BooleanController extends Controller {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = /** @type {boolean} */ (obj[prop]);
+    this._checkbox = checkbox;
 
     checkbox.addEventListener('change', () => {
       this._setValue(checkbox.checked);
@@ -340,11 +365,19 @@ class BooleanController extends Controller {
     this.domElement.appendChild(label);
     this.domElement.appendChild(control);
   }
+
+  /** DOM 表示を現在の値に同期する */
+  updateDisplay() {
+    this._checkbox.checked = /** @type {boolean} */ (this._obj[this._prop]);
+  }
 }
 
 // --- ColorController ---
 
 class ColorController extends Controller {
+  /** @type {HTMLInputElement} */
+  _colorInput;
+
   /**
    * @param {Record<string, unknown>} obj
    * @param {string} prop
@@ -362,6 +395,7 @@ class ColorController extends Controller {
     const colorInput = document.createElement('input');
     colorInput.type = 'color';
     colorInput.value = /** @type {string} */ (obj[prop]);
+    this._colorInput = colorInput;
 
     colorInput.addEventListener('input', () => {
       this._setValue(colorInput.value);
@@ -370,6 +404,11 @@ class ColorController extends Controller {
     control.appendChild(colorInput);
     this.domElement.appendChild(label);
     this.domElement.appendChild(control);
+  }
+
+  /** DOM 表示を現在の値に同期する */
+  updateDisplay() {
+    this._colorInput.value = /** @type {string} */ (this._obj[this._prop]);
   }
 }
 
@@ -412,6 +451,10 @@ class SimpleGui {
   _childrenEl;
   /** @type {boolean} */
   _isRoot;
+  /** @type {Controller[]} */
+  _controllers;
+  /** @type {SimpleGui[]} */
+  _folders;
 
   /**
    * @param {{ title?: string, parent?: HTMLElement }} [options]
@@ -422,6 +465,8 @@ class SimpleGui {
     injectStyles();
 
     this._isRoot = !parent;
+    this._controllers = [];
+    this._folders = [];
 
     if (this._isRoot) {
       // ルートパネル
@@ -500,11 +545,13 @@ class SimpleGui {
     if (typeof value === 'boolean') {
       const ctrl = new BooleanController(obj, prop);
       this._childrenEl.appendChild(ctrl.domElement);
+      this._controllers.push(ctrl);
       return ctrl;
     }
 
     const ctrl = new NumberController(obj, prop, min, max, step);
     this._childrenEl.appendChild(ctrl.domElement);
+    this._controllers.push(ctrl);
     return ctrl;
   }
 
@@ -517,6 +564,7 @@ class SimpleGui {
   addColor(obj, prop) {
     const ctrl = new ColorController(obj, prop);
     this._childrenEl.appendChild(ctrl.domElement);
+    this._controllers.push(ctrl);
     return ctrl;
   }
 
@@ -538,7 +586,19 @@ class SimpleGui {
    * @returns {SimpleGui}
    */
   addFolder(title) {
-    return new SimpleGui({ title, parent: this._childrenEl });
+    const folder = new SimpleGui({ title, parent: this._childrenEl });
+    this._folders.push(folder);
+    return folder;
+  }
+
+  /** 全コントローラーとフォルダの DOM 表示を現在の値に同期する */
+  updateDisplay() {
+    for (const ctrl of this._controllers) {
+      ctrl.updateDisplay();
+    }
+    for (const folder of this._folders) {
+      folder.updateDisplay();
+    }
   }
 }
 

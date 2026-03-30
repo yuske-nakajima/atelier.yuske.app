@@ -80,6 +80,10 @@ class SimpleGuiSheet {
   _dragMoved;
   /** @type {Array<() => void>} */
   _cleanupFns;
+  /** @type {Controller[]} */
+  _controllers;
+  /** @type {SimpleGuiSheet[]} */
+  _folders;
 
   /**
    * @param {{ title?: string, parent?: HTMLElement }} [options]
@@ -90,6 +94,8 @@ class SimpleGuiSheet {
     injectStyles();
 
     this._isRoot = !parent;
+    this._controllers = [];
+    this._folders = [];
     this._state = SheetState.HALF;
     this._corner = SnapCorner.BOTTOM_RIGHT;
     this._isDragging = false;
@@ -382,10 +388,12 @@ class SimpleGuiSheet {
     if (typeof obj[prop] === 'boolean') {
       const ctrl = new BooleanController(obj, prop);
       this._childrenEl.appendChild(ctrl.domElement);
+      this._controllers.push(ctrl);
       return ctrl;
     }
     const ctrl = new NumberController(obj, prop, min, max, step);
     this._childrenEl.appendChild(ctrl.domElement);
+    this._controllers.push(ctrl);
     return ctrl;
   }
 
@@ -398,6 +406,7 @@ class SimpleGuiSheet {
   addColor(obj, prop) {
     const ctrl = new ColorController(obj, prop);
     this._childrenEl.appendChild(ctrl.domElement);
+    this._controllers.push(ctrl);
     return ctrl;
   }
 
@@ -419,7 +428,19 @@ class SimpleGuiSheet {
    * @returns {SimpleGuiSheet}
    */
   addFolder(title) {
-    return new SimpleGuiSheet({ title, parent: this._childrenEl });
+    const folder = new SimpleGuiSheet({ title, parent: this._childrenEl });
+    this._folders.push(folder);
+    return folder;
+  }
+
+  /** 全コントローラーとフォルダの DOM 表示を現在の値に同期する */
+  updateDisplay() {
+    for (const ctrl of this._controllers) {
+      ctrl.updateDisplay();
+    }
+    for (const folder of this._folders) {
+      folder.updateDisplay();
+    }
   }
 
   /** DOM とイベントリスナーを完全に除去する */
