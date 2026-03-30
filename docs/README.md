@@ -16,6 +16,7 @@
 | `/simple-gui-sheet/` | Simple GUI Sheet（ボトムシート型 GUI ライブラリ デモ） |
 | `/simple-gui-pill/` | Simple GUI Pill（ピル型 GUI ライブラリ デモ） |
 | `/simple-gui-tab/` | Simple GUI Tab（タブバー型 GUI ライブラリ デモ） |
+| `/simple-gui-grid/` | Simple GUI Grid（グリッドタイル型 GUI ライブラリ デモ） |
 
 ## トップページ仕様
 
