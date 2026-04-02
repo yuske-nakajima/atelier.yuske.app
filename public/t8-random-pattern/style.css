@@ -18,8 +18,8 @@
   --border: hsl(240 16% 20%);
   --ring: hsl(187 100% 50%);
   --radius: 0.5rem;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
-    sans-serif;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", sans-serif;
   --font-mono: "SF Mono", "Fira Code", Menlo, monospace;
 }
 
@@ -166,7 +166,9 @@ h2 {
   color: var(--muted-foreground);
   font-size: 0.8125rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .step-btn:first-child {
@@ -205,7 +207,9 @@ h2 {
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .bank-btn.active {
@@ -255,8 +259,10 @@ h2 {
   font-size: 0.8125rem;
   font-family: var(--font-mono);
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s
-    ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
   user-select: none;
   -webkit-user-select: none;
 }

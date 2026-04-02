@@ -1,6 +1,6 @@
 // @ts-check
 
-import { CC_MODULATION, FADE_DEFAULT, ccToFade } from './config.js';
+import { CC_MODULATION, ccToFade, FADE_DEFAULT } from './config.js';
 import { connectMidi } from './midi.js';
 import {
   addParticle,

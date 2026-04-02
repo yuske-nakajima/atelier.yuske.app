@@ -10,7 +10,7 @@
  * @param {number} t
  * @returns {number}
  */
-function lerp(a, b, t) {
+function _lerp(a, b, t) {
   return a + (b - a) * t;
 }
 

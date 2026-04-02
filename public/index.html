@@ -6,7 +6,7 @@
     <title>atelier.yuske.app</title>
     <script>
       // FOUC 防止: CSS 読み込み前にテーマを即座に適用
-      (function () {
+      (() => {
         var s = localStorage.getItem('theme');
         var t =
           s === 'light' || s === 'dark'
