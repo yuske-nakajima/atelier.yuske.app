@@ -214,4 +214,4 @@ export class TopDownCharacter {
   }
 }
 
-export { SIZE, DIRECTIONS };
+export { DIRECTIONS, SIZE };

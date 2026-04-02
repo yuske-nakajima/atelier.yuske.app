@@ -134,7 +134,7 @@ export class GroundGrid {
    * @param {number} temperature
    * @param {number} localHour - 現地時刻（0-24）
    */
-  update(lat, lng, temperature, localHour) {
+  update(lat, lng, _temperature, localHour) {
     const dnFactor =
       localHour >= 7 && localHour < 17
         ? 1

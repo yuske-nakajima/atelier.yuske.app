@@ -22,8 +22,8 @@
   --border: hsl(0 0% 89.8%);
   --ring: hsl(0 0% 3.9%);
   --radius: 0.625rem;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
-    sans-serif;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", sans-serif;
   --font-mono: "SF Mono", "Fira Code", "Fira Mono", Menlo, monospace;
 }
 
@@ -54,7 +54,9 @@ body {
   line-height: 1.6;
   color: var(--foreground);
   background-color: var(--background);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -155,16 +157,19 @@ nav li a {
   color: var(--card-foreground);
   font-weight: 500;
   font-size: 0.95rem;
-  transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color
-    0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
 }
 
 nav li a:hover {
   text-decoration: none;
   background-color: var(--accent);
   border-color: var(--ring);
-  box-shadow: 0 0.0625rem 0.1875rem 0 rgb(0 0 0 / 0.1), 0 0.0625rem 0.125rem
-    -0.0625rem rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 0.0625rem 0.1875rem 0 rgb(0 0 0 / 0.1),
+    0 0.0625rem 0.125rem -0.0625rem rgb(0 0 0 / 0.1);
 }
 
 nav li a:focus-visible {
