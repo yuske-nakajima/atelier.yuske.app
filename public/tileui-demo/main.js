@@ -149,7 +149,13 @@ requestAnimationFrame(draw);
 
 // --- GUI セットアップ ---
 
-const gui = new TileUI({ title: 'Particles' });
+const guiContainer = /** @type {HTMLElement} */ (
+  document.getElementById('gui-container')
+);
+const gui = new TileUI({
+  title: 'Particles',
+  container: guiContainer,
+});
 
 gui.add(params, 'count', 10, 500, 10).onChange(() => {
   createParticles();
@@ -160,6 +166,27 @@ gui.add(params, 'size', 0.5, 10, 0.5);
 gui.add(params, 'spread', 0.1, 2, 0.1);
 gui.addBoolean(params, 'visible');
 
+gui.addColor(params, 'color');
+gui.addColor(params, 'bgColor');
+gui.addBoolean(params, 'glow');
+gui.addBoolean(params, 'trail');
+
+gui.addButton('Random', () => {
+  params.count = Math.round((10 + Math.random() * 490) / 10) * 10;
+  params.radius = Math.round((50 + Math.random() * 450) / 10) * 10;
+  params.speed = Math.round((0.1 + Math.random() * 4.9) * 10) / 10;
+  params.size = Math.round((0.5 + Math.random() * 9.5) * 2) / 2;
+  params.spread = Math.round((0.1 + Math.random() * 1.9) * 10) / 10;
+  params.color = `#${Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padStart(6, '0')}`;
+  params.glow = Math.random() > 0.3;
+  params.trail = Math.random() > 0.3;
+  createParticles();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  gui.updateDisplay();
+});
+
 gui.addButton('Reset', () => {
   Object.assign(params, { ...defaults });
   createParticles();
@@ -167,9 +194,3 @@ gui.addButton('Reset', () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   gui.updateDisplay();
 });
-
-const styleFolder = gui.addFolder('Style');
-styleFolder.addColor(params, 'color');
-styleFolder.addColor(params, 'bgColor');
-styleFolder.addBoolean(params, 'glow');
-styleFolder.addBoolean(params, 'trail');
