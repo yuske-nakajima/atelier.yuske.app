@@ -6,6 +6,7 @@ node_modules
 .playwright-mcp
 
 # Test
+e2e
 test-results
 
 # AI tools
