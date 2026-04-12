@@ -46,12 +46,25 @@ canvas {
   height: 100%;
 }
 
-#gui-container {
+/* --- GUI ラッパー（デスクトップ） --- */
+
+#gui-wrapper {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#gui-toggle {
+  display: none;
+}
+
+#gui-container {
+  width: 100%;
   display: flex;
   justify-content: center;
   padding: 0.5rem;
@@ -74,4 +87,51 @@ canvas {
 
 #gui-container .tileui-panel {
   justify-content: center;
+}
+
+/* --- モバイル: オーバーレイ + トグル --- */
+
+@media (max-width: 768px) {
+  #gui-wrapper {
+    transition: transform 0.3s ease;
+  }
+
+  /* 閉じた状態: コンテナを画面外に押し下げ、トグルだけ見える */
+  #gui-wrapper.collapsed {
+    transform: translateY(calc(100% - 2.5rem));
+  }
+
+  #gui-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 2.5rem;
+    border: none;
+    background: rgba(10, 10, 26, 0.85);
+    color: #e0e0e0;
+    font-size: 0.75rem;
+    cursor: pointer;
+    border-radius: 0.5rem 0.5rem 0 0;
+    pointer-events: auto;
+    transition: background 0.2s;
+  }
+
+  #gui-toggle:hover {
+    background: rgba(20, 20, 40, 0.95);
+  }
+
+  /* アイコンの回転アニメーション */
+  #gui-toggle-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  #gui-wrapper.collapsed #gui-toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  #gui-container {
+    --tileui-bg: rgba(10, 10, 26, 0.75);
+  }
 }

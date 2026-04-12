@@ -1,5 +1,5 @@
 // @ts-check
-import TileUI from 'https://cdn.jsdelivr.net/npm/@yuske-nakajima/tileui@0.2.1/dist/tileui.js';
+import TileUI from 'https://cdn.jsdelivr.net/npm/@yuske-nakajima/tileui/dist/tileui.js';
 
 // --- パラメータ ---
 
@@ -146,6 +146,32 @@ function draw() {
 }
 
 requestAnimationFrame(draw);
+
+// --- GUI トグル（モバイル） ---
+
+const guiWrapper = /** @type {HTMLElement} */ (
+  document.getElementById('gui-wrapper')
+);
+const guiToggle = /** @type {HTMLButtonElement} */ (
+  document.getElementById('gui-toggle')
+);
+
+// モバイルでは初期状態を閉じておく
+const mql = window.matchMedia('(max-width: 768px)');
+if (mql.matches) {
+  guiWrapper.classList.add('collapsed');
+}
+mql.addEventListener('change', (e) => {
+  if (e.matches) {
+    guiWrapper.classList.add('collapsed');
+  } else {
+    guiWrapper.classList.remove('collapsed');
+  }
+});
+
+guiToggle.addEventListener('click', () => {
+  guiWrapper.classList.toggle('collapsed');
+});
 
 // --- GUI セットアップ ---
 
