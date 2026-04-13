@@ -11,6 +11,8 @@ const params = {
   sway: 1,
   petalColor: '#f9a8d4',
   bgColor: '#e8f4f8',
+  petalNoise: false,
+  bgNoise: false,
   trail: false,
   visible: true,
 };
@@ -110,19 +112,115 @@ function clamp(val, min, max) {
   return Math.max(min, Math.min(max, val));
 }
 
+// --- カラーノイズ（fBm 風の重ね合わせ） ---
+
+/**
+ * 複数の sin 波を重ねて滑らかなノイズを生成する（fBm 風）
+ * @param {number} t - 時間
+ * @param {number} seed - オフセット用シード
+ * @returns {number} -1〜1 の値
+ */
+function fbmNoise(t, seed) {
+  return (
+    Math.sin(t * 0.7 + seed) * 0.5 +
+    Math.sin(t * 1.3 + seed * 2.3) * 0.3 +
+    Math.sin(t * 2.1 + seed * 0.7) * 0.2
+  );
+}
+
+/**
+ * RGB → HSL 変換
+ * @param {number} r - 0-255
+ * @param {number} g - 0-255
+ * @param {number} b - 0-255
+ * @returns {{ h: number, s: number, l: number }} h: 0-360, s/l: 0-1
+ */
+function rgbToHsl(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return { h: 0, s: 0, l };
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / d + 2) / 6;
+  else h = ((r - g) / d + 4) / 6;
+  return { h: h * 360, s, l };
+}
+
+/**
+ * HSL → RGB 変換
+ * @param {number} h - 0-360
+ * @param {number} s - 0-1
+ * @param {number} l - 0-1
+ * @returns {{ r: number, g: number, b: number }} 0-255
+ */
+function hslToRgb(h, s, l) {
+  h /= 360;
+  if (s === 0) {
+    const v = Math.round(l * 255);
+    return { r: v, g: v, b: v };
+  }
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  /** @param {number} t */
+  const hue2rgb = (t) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+  return {
+    r: Math.round(hue2rgb(h + 1 / 3) * 255),
+    g: Math.round(hue2rgb(h) * 255),
+    b: Math.round(hue2rgb(h - 1 / 3) * 255),
+  };
+}
+
+/**
+ * hex カラーにノイズを適用して RGB を返す
+ * @param {string} hex
+ * @param {number} t - 時間
+ * @param {number} seed - シード
+ * @returns {{ r: number, g: number, b: number }}
+ */
+function applyColorNoise(hex, t, seed) {
+  const { r, g, b } = hexToRgb(hex);
+  const hsl = rgbToHsl(r, g, b);
+  // 色相を ±30° ゆるやかに変動
+  hsl.h = (hsl.h + fbmNoise(t * 0.3, seed) * 30 + 360) % 360;
+  // 彩度を ±0.15 変動
+  hsl.s = clamp(hsl.s + fbmNoise(t * 0.2, seed + 10) * 0.15, 0, 1);
+  // 明度を ±0.08 変動
+  hsl.l = clamp(hsl.l + fbmNoise(t * 0.25, seed + 20) * 0.08, 0, 1);
+  return hslToRgb(hsl.h, hsl.s, hsl.l);
+}
+
 // --- 描画 ---
 
 let time = 0;
 
 /** メインの描画ループ */
 function draw() {
+  // 背景色（ノイズ適用時は HSL 空間でゆるやかに変化）
+  const bgRgb = params.bgNoise
+    ? applyColorNoise(params.bgColor, time, 100)
+    : hexToRgb(params.bgColor);
+  const bgCss = `rgb(${bgRgb.r}, ${bgRgb.g}, ${bgRgb.b})`;
+
   if (params.trail) {
     // 残像効果
-    ctx.fillStyle = `${params.bgColor}33`;
+    ctx.fillStyle = `rgba(${bgRgb.r}, ${bgRgb.g}, ${bgRgb.b}, 0.2)`;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   } else {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = params.bgColor;
+    ctx.fillStyle = bgCss;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
@@ -131,7 +229,10 @@ function draw() {
     return;
   }
 
-  const { r, g, b } = hexToRgb(params.petalColor);
+  // 花びらのベース色（ノイズ適用時は全体が時間で変化）
+  const petalBase = params.petalNoise
+    ? applyColorNoise(params.petalColor, time, 0)
+    : hexToRgb(params.petalColor);
 
   for (const p of petals) {
     // 重力による落下
@@ -158,20 +259,32 @@ function draw() {
       p.x = canvas.width + 10;
     }
 
-    // 色のバリエーション
-    const pr = clamp(r + p.colorShift, 0, 255);
-    const pg = clamp(g + p.colorShift * 0.5, 0, 255);
-    const pb = clamp(b + p.colorShift * 0.3, 0, 255);
+    // 色のバリエーション（ベース色に個別シフトを加算）
+    const pr = clamp(petalBase.r + p.colorShift, 0, 255);
+    const pg = clamp(petalBase.g + p.colorShift * 0.5, 0, 255);
+    const pb = clamp(petalBase.b + p.colorShift * 0.3, 0, 255);
     const alpha = p.alphaBase + Math.sin(time + p.phase) * 0.15;
 
-    // 花びらの描画（楕円 + 回転）
+    // 花びらの描画（ベジェ曲線で桜の花びら形状）
     ctx.save();
     ctx.translate(p.x, p.y);
     ctx.rotate(p.angle);
     ctx.scale(p.scaleX, p.scaleY);
 
+    const s = params.size * 2.5;
     ctx.beginPath();
-    ctx.ellipse(0, 0, params.size * 3, params.size * 1.8, 0, 0, Math.PI * 2);
+    // 先端（上部）から開始
+    ctx.moveTo(0, -s * 1.2);
+    // 右側の膨らみ
+    ctx.bezierCurveTo(s * 0.8, -s * 1.0, s * 1.0, -s * 0.2, s * 0.5, s * 0.3);
+    // 右下から切れ込みへ
+    ctx.quadraticCurveTo(s * 0.2, s * 0.6, 0, s * 0.4);
+    // 切れ込みから左下へ
+    ctx.quadraticCurveTo(-s * 0.2, s * 0.6, -s * 0.5, s * 0.3);
+    // 左側の膨らみから先端へ
+    ctx.bezierCurveTo(-s * 1.0, -s * 0.2, -s * 0.8, -s * 1.0, 0, -s * 1.2);
+    ctx.closePath();
+
     ctx.fillStyle = `rgba(${Math.round(pr)}, ${Math.round(pg)}, ${Math.round(pb)}, ${clamp(alpha, 0, 1)})`;
     ctx.fill();
     ctx.restore();
@@ -230,7 +343,9 @@ gui.add(params, 'sway', 0, 3, 0.1);
 gui.addBoolean(params, 'visible');
 
 gui.addColor(params, 'petalColor');
+gui.addBoolean(params, 'petalNoise');
 gui.addColor(params, 'bgColor');
+gui.addBoolean(params, 'bgNoise');
 gui.addBoolean(params, 'trail');
 
 gui.addButton('Random', () => {
