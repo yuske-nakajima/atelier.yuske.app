@@ -91,7 +91,7 @@ canvas {
 
 /* --- モバイル: オーバーレイ + トグル --- */
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   #gui-wrapper {
     transition: transform 0.3s ease;
   }

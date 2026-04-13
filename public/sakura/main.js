@@ -194,7 +194,7 @@ const guiToggle = /** @type {HTMLButtonElement} */ (
 );
 
 // モバイルでは初期状態を閉じておく
-const mql = window.matchMedia('(max-width: 768px)');
+const mql = window.matchMedia('(max-width: 48rem)');
 if (mql.matches) {
   guiWrapper.classList.add('collapsed');
 }
