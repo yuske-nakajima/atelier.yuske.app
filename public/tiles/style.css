@@ -79,6 +79,7 @@ canvas {
 /* tileui テーマ調整（タイルパレット系） */
 #gui-container {
   --tileui-bg: rgba(245, 241, 230, 0.92);
+  --tileui-text: #333;
   --tileui-tile-bg: rgba(167, 216, 242, 0.25);
   --tileui-tile-bg-hover: rgba(168, 230, 225, 0.4);
   --tileui-border: rgba(167, 216, 242, 0.3);
