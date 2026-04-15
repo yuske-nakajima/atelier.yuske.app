@@ -1,5 +1,6 @@
 // @ts-check
 import * as THREE from 'https://esm.sh/three@0.172.0';
+import { setupGui } from './gui.js';
 import { activateRipple, createRipplePool, updateRipples } from './ripple.js';
 import { createWater, updateWaterSurface } from './water.js';
 
@@ -23,6 +24,9 @@ const isMobile = window.innerWidth < 768;
 if (isMobile) {
   params.rainCount = 500;
 }
+
+/** 初期値（リセット用） */
+const defaults = { ...params };
 
 // --- Three.js セットアップ ---
 
@@ -97,7 +101,7 @@ function createRainParticles(count) {
   return { lines, positions };
 }
 
-const { lines: rainLines, positions: rainPositions } = createRainParticles(
+let { lines: rainLines, positions: rainPositions } = createRainParticles(
   params.rainCount,
 );
 scene.add(rainLines);
@@ -211,4 +215,24 @@ mql.addEventListener('change', (e) => {
 
 guiToggle.addEventListener('click', () => {
   guiWrapper.classList.toggle('collapsed');
+});
+
+// --- GUI セットアップ ---
+
+setupGui({
+  params,
+  defaults,
+  isMobile,
+  scene,
+  pointLight,
+  ripplePool,
+  createRainParticles,
+  getRain: () => ({ rainLines, rainPositions }),
+  setRain: (lines, positions) => {
+    rainLines = lines;
+    rainPositions = positions;
+  },
+  resetTime: () => {
+    time = 0;
+  },
 });

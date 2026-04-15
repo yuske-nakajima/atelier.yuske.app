@@ -88,6 +88,7 @@ canvas {
   --tileui-tile-bg-hover: rgba(50, 50, 90, 0.8);
   --tileui-border: rgba(96, 128, 176, 0.25);
   --tileui-knob-track: rgba(96, 128, 176, 0.25);
+  --tileui-text: #c0c8e0;
 }
 
 #gui-container .tileui-panel {
