@@ -32,9 +32,6 @@ function resize() {
   createDust();
 }
 
-window.addEventListener('resize', resize);
-resize();
-
 // --- ユーティリティ ---
 
 /**
@@ -144,6 +141,11 @@ function createDust() {
     dust.push(createSingleDust());
   }
 }
+
+// --- 初期化 ---
+
+window.addEventListener('resize', resize);
+resize();
 
 // --- 描画関数 ---
 
@@ -354,6 +356,7 @@ const gui = new TileUI({
   container: /** @type {HTMLElement} */ (
     document.getElementById('gui-container')
   ),
+  columns: 3,
   dock: 'right',
   collapsible: true,
   overlay: true,

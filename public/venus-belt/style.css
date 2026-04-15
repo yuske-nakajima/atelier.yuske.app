@@ -33,14 +33,15 @@ header a:hover {
 main {
   width: 100%;
   height: 100dvh;
+  position: relative;
+  z-index: 0;
 }
 
 canvas {
   display: block;
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 0;
 }
 
-#gui-container {
-  display: none;
-}
