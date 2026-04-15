@@ -183,6 +183,21 @@ function drawCross(c, cx, cy, size) {
   c.closePath();
 }
 
+// --- ユーティリティ ---
+
+/**
+ * hex カラーを rgba 文字列に変換する
+ * @param {string} hex - '#rrggbb' 形式のカラーコード
+ * @param {number} alpha - 不透明度（0〜1）
+ * @returns {string} rgba 文字列
+ */
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 /** 全図形描画関数の配列 */
 const shapeFunctions = [
   drawTriangle,
@@ -238,17 +253,36 @@ function draw() {
     createGrid();
   }
 
-  // 背景クリア
-  ctx.fillStyle = params.bgColor;
+  // --- 時間・BPM 計算 ---
+  const now = performance.now();
+  const time = now / 1000;
+  const msPerBeat = 60000 / params.bpm;
+  const beatProgress = (now / msPerBeat) % 1;
+  const beatCount = Math.floor(now / msPerBeat);
+
+  // --- 背景クリア（トレイル対応） ---
+  if (params.trail) {
+    // 半透明で塗ることで前フレームの残像を残す
+    ctx.fillStyle = hexToRgba(params.bgColor, params.trailAlpha);
+  } else {
+    ctx.fillStyle = params.bgColor;
+  }
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // グリッド計算
+  // --- パルス係数（BPM 同期） ---
+  const pulse = 1 + Math.sin(beatProgress * Math.PI * 2) * params.pulseAmount;
+
+  // --- 色相シフト（時間経過） ---
+  const hueShift = time * params.hueSpeed * 30;
+
+  // --- グリッド計算 ---
   const cellW = canvas.width / params.cols;
   const cellH = canvas.height / params.rows;
   const cellSize = Math.min(cellW, cellH);
-  const shapeSize = cellSize * 0.35 * params.scale;
+  const baseShapeSize = cellSize * 0.35 * params.scale;
+  const shapeSize = baseShapeSize * pulse;
 
-  // 各セルに図形を描画
+  // --- 各セルに図形を描画 ---
   ctx.lineWidth = params.strokeWidth;
 
   for (let row = 0; row < params.rows; row++) {
@@ -257,15 +291,24 @@ function draw() {
       const cx = cellW * col + cellW / 2;
       const cy = cellH * row + cellH / 2;
 
-      // セル位置に応じて色相をずらす
+      // セル位置に応じて色相をずらす + 時間による色相シフト
       const hueOffset = ((col + row) / (params.cols + params.rows)) * 360;
-      const hue = (params.baseHue + hueOffset) % 360;
+      const hue = (params.baseHue + hueOffset + hueShift) % 360;
       const color = `hsl(${hue}, ${params.saturation}%, ${params.lightness}%)`;
 
-      // 図形のパスを作成
+      // 回転角度（セルごとに位相をずらす）
+      const phaseOffset = (index / (params.cols * params.rows)) * Math.PI * 2;
+      const angle = time * params.rotationSpeed + phaseOffset;
+
+      // 回転を適用して描画
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+
+      // 図形のパスを作成（原点中心で描画）
       const shapeIndex = shapeGrid[index];
       const drawFn = shapeFunctions[shapeIndex];
-      drawFn(ctx, cx, cy, shapeSize);
+      drawFn(ctx, 0, 0, shapeSize);
 
       // 塗りまたは線で描画
       if (params.strokeOnly) {
@@ -275,7 +318,19 @@ function draw() {
         ctx.fillStyle = color;
         ctx.fill();
       }
+
+      ctx.restore();
     }
+  }
+
+  // --- ストロボエフェクト ---
+  if (
+    params.strobe &&
+    beatCount % params.strobeInterval === 0 &&
+    beatProgress < 0.1
+  ) {
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
   requestAnimationFrame(draw);
