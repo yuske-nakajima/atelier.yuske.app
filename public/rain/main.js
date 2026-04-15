@@ -1,5 +1,7 @@
 // @ts-check
 import * as THREE from 'https://esm.sh/three@0.172.0';
+import { activateRipple, createRipplePool, updateRipples } from './ripple.js';
+import { createWater, updateWaterSurface } from './water.js';
 
 // --- パラメータ ---
 
@@ -10,6 +12,10 @@ const params = {
   fogDensity: 0.03,
   bgColor: '#0a0a1e',
   autoRotate: true,
+  rippleColor: '#00ccff',
+  rippleSpeed: 1,
+  rippleCount: 20,
+  waveHeight: 0.1,
 };
 
 // モバイル判定で雨粒数を制限
@@ -65,11 +71,8 @@ function createRainParticles(count) {
 
   for (let i = 0; i < count; i++) {
     const i3 = i * 3;
-    // x: -15 ~ 15
     positions[i3] = (Math.random() - 0.5) * 30;
-    // y: 0 ~ 20
     positions[i3 + 1] = Math.random() * 20;
-    // z: -15 ~ 15
     positions[i3 + 2] = (Math.random() - 0.5) * 30;
   }
 
@@ -92,40 +95,55 @@ const { points: rainPoints, positions: rainPositions } = createRainParticles(
 );
 scene.add(rainPoints);
 
+// --- 水面 ---
+
+const { geometry: waterGeometry } = createWater(scene);
+
+// --- 波紋プール ---
+
+const ripplePool = createRipplePool(scene, params);
+
 // --- アニメーションループ ---
 
 let cameraAngle = 0;
-/** カメラの原点からの距離 */
 const cameraRadius = Math.sqrt(camera.position.x ** 2 + camera.position.z ** 2);
-/** カメラの初期高さ */
 const cameraHeight = camera.position.y;
+let time = 0;
 
 /** メインのアニメーションループ */
 function animate() {
   requestAnimationFrame(animate);
+  time += 0.016;
 
   // --- 雨粒の更新 ---
   const count = params.rainCount;
   for (let i = 0; i < count; i++) {
     const i3 = i * 3;
 
-    // y を下降させる
     rainPositions[i3 + 1] -= params.rainSpeed * 0.05;
-
-    // x に風を加算
     rainPositions[i3] += params.wind * 0.01;
 
-    // y < 0 でリセット
+    // 着水判定: y < 0 でリセット
     if (rainPositions[i3 + 1] < 0) {
+      // 30% の確率で波紋を発生させる
+      if (Math.random() < 0.3) {
+        activateRipple(ripplePool, rainPositions[i3], rainPositions[i3 + 2]);
+      }
+
       rainPositions[i3 + 1] = 20;
       rainPositions[i3] = (Math.random() - 0.5) * 30;
       rainPositions[i3 + 2] = (Math.random() - 0.5) * 30;
     }
   }
 
-  // position 属性の更新フラグ
   const posAttr = rainPoints.geometry.getAttribute('position');
   posAttr.needsUpdate = true;
+
+  // --- 波紋の更新 ---
+  updateRipples(ripplePool, params);
+
+  // --- 水面の頂点変位 ---
+  updateWaterSurface(waterGeometry, time, ripplePool, params);
 
   // --- カメラ自動回転 ---
   if (params.autoRotate) {
@@ -150,7 +168,6 @@ const guiToggle = /** @type {HTMLButtonElement} */ (
   document.getElementById('gui-toggle')
 );
 
-// モバイルでは初期状態を閉じておく
 const mql = window.matchMedia('(max-width: 48rem)');
 if (mql.matches) {
   guiWrapper.classList.add('collapsed');
