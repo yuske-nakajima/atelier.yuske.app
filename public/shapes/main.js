@@ -10,8 +10,9 @@ const params = {
   colorful: true,
   bgColor: '#1a1a2e',
   shapeColor: '#e94560',
-  strokeWt: 0,
-  showStroke: false,
+  strokeColor: '#ffffff',
+  strokeWt: 2,
+  fill: true,
 };
 
 /** 初期値（リセット用） */
@@ -75,29 +76,67 @@ function drawHeart(x, y, size) {
 
 /** 図形描画関数のリスト */
 const shapeDrawers = [
-  (x, y, r) => drawPolygon(x, y, r, 3), // 三角形
-  (x, y, r) => drawPolygon(x, y, r, 4), // 四角形
-  (x, y, r) => drawPolygon(x, y, r, 5), // 五角形
-  (x, y, r) => drawPolygon(x, y, r, 6), // 六角形
-  (x, y, r) => drawPolygon(x, y, r, 8), // 八角形
-  (x, y, r) => circle(x, y, r * 2), // 円
-  (x, y, r) => drawStar(x, y, r, r * 0.4, 5), // 五芒星
-  (x, y, r) => drawStar(x, y, r, r * 0.5, 4), // 四芒星
-  (x, y, r) => drawHeart(x, y, r), // ハート
-  (x, y, r) => drawPolygon(x, y, r, 10), // 十角形
+  (x, y, r) => circle(x, y, r * 2), // 0: 円
+  (x, y, r) => drawPolygon(x, y, r, 3), // 1: 三角形
+  (x, y, r) => drawPolygon(x, y, r, 4), // 2: 四角形
+  (x, y, r) => drawPolygon(x, y, r, 5), // 3: 五角形
+  (x, y, r) => drawPolygon(x, y, r, 6), // 4: 六角形
+  (x, y, r) => drawPolygon(x, y, r, 8), // 5: 八角形
+  (x, y, r) => drawPolygon(x, y, r, 10), // 6: 十角形
+  (x, y, r) => drawStar(x, y, r, r * 0.4, 3), // 7: 三芒星
+  (x, y, r) => drawStar(x, y, r, r * 0.5, 4), // 8: 四芒星
+  (x, y, r) => drawStar(x, y, r, r * 0.4, 5), // 9: 五芒星
+  (x, y, r) => drawStar(x, y, r, r * 0.4, 6), // 10: 六芒星
+  (x, y, r) => drawHeart(x, y, r), // 11: ハート
 ];
 
 /**
- * 現在と異なるランダムな図形インデックスを返す
+ * モーフィング時の相性の良いペア候補
+ * 円↔多角形、多角形↔同辺数の星
+ */
+/** 各図形の相対的な面積（円=1 基準、大きい順にソート用） */
+const shapeArea = {
+  0: 1.0, // 円
+  1: 0.41, // 三角形
+  2: 0.64, // 四角形
+  3: 0.59, // 五角形
+  4: 0.65, // 六角形
+  5: 0.71, // 八角形
+  6: 0.74, // 十角形
+  7: 0.25, // 三芒星
+  8: 0.32, // 四芒星
+  9: 0.28, // 五芒星
+  10: 0.3, // 六芒星
+  11: 0.5, // ハート
+};
+
+/**
+ * モーフィング時の相性の良いペア候補
+ * 円↔多角形、多角形↔同辺数の星のみ（多角形↔多角形は禁止）
+ */
+const morphPairs = {
+  0: [1, 2, 3, 4, 5, 6], // 円 → 任意の多角形
+  1: [0, 7], // 三角形 → 円, 三芒星
+  2: [0, 8], // 四角形 → 円, 四芒星
+  3: [0, 9], // 五角形 → 円, 五芒星
+  4: [0, 10], // 六角形 → 円, 六芒星
+  5: [0], // 八角形 → 円
+  6: [0], // 十角形 → 円
+  7: [1, 0], // 三芒星 → 三角形, 円
+  8: [2, 0], // 四芒星 → 四角形, 円
+  9: [3, 0], // 五芒星 → 五角形, 円
+  10: [4, 0], // 六芒星 → 六角形, 円
+  11: [0], // ハート → 円
+};
+
+/**
+ * 相性の良いモーフ先をランダムに返す
  * @param {number} currentIndex - 現在の図形インデックス
  * @returns {number}
  */
-function randomShapeIndex(currentIndex) {
-  let next = floor(random(shapeDrawers.length));
-  while (next === currentIndex) {
-    next = floor(random(shapeDrawers.length));
-  }
-  return next;
+function randomMorphTarget(currentIndex) {
+  const candidates = morphPairs[currentIndex] || [0];
+  return candidates[floor(random(candidates.length))];
 }
 
 /** タイルデータを生成する */
@@ -108,7 +147,7 @@ function createTiles() {
     const shapeIndex = floor(random(shapeDrawers.length));
     tiles.push({
       shapeIndex,
-      nextShapeIndex: randomShapeIndex(shapeIndex),
+      nextShapeIndex: randomMorphTarget(shapeIndex),
       hueOffset: random(360),
       phase: random(1),
       prevT: 0,
@@ -151,30 +190,47 @@ function draw() {
       const t = (frameCount * params.speed * 0.01 + tile.phase) % 1;
 
       // 色の設定
-      if (params.colorful) {
-        const hue = (tile.hueOffset + frameCount * 0.5) % 360;
-        fill(hue, 70, 60);
-      } else {
-        fill(params.shapeColor);
-      }
+      const shapeHue = (tile.hueOffset + frameCount * 0.5) % 360;
 
-      if (params.showStroke) {
-        stroke(255);
-        strokeWeight(params.strokeWt);
-      } else {
-        noStroke();
-      }
+      // アウトライン（常に表示）
+      stroke(params.strokeColor);
+      strokeWeight(params.strokeWt);
 
-      // lerpShape でモーフィング
+      // 面積で描画順を決定（大きい方が奥＝先に描画）
+      const areaA = shapeArea[tile.shapeIndex] || 0.5;
+      const areaB = shapeArea[tile.nextShapeIndex] || 0.5;
+      const bigIdx = areaA >= areaB ? tile.shapeIndex : tile.nextShapeIndex;
+      const smallIdx = areaA >= areaB ? tile.nextShapeIndex : tile.shapeIndex;
+
+      // lerpShape でモーフィングアニメーション
+      // 奥（面積大）→ 手前（面積小・明度差）の順に描画
       withLerpShape(t, () => {
-        shapeDrawers[tile.shapeIndex](cx, cy, r);
-        shapeDrawers[tile.nextShapeIndex](cx, cy, r);
+        if (params.fill) {
+          if (params.colorful) {
+            fill(shapeHue, 70, 60);
+          } else {
+            fill(params.shapeColor);
+          }
+        } else {
+          noFill();
+        }
+        shapeDrawers[bigIdx](cx, cy, r);
+
+        if (params.fill) {
+          if (params.colorful) {
+            fill(shapeHue, 50, 40);
+          } else {
+            const c = color(params.shapeColor);
+            fill(hue(c), saturation(c) * 0.8, lightness(c) * 0.7);
+          }
+        }
+        shapeDrawers[smallIdx](cx, cy, r);
       });
 
-      // モーフ完了時に次の図形を設定（t が 0 をまたいだら切り替え）
+      // 一定間隔で次の図形に切り替え
       if (t < tile.prevT) {
         tile.shapeIndex = tile.nextShapeIndex;
-        tile.nextShapeIndex = randomShapeIndex(tile.shapeIndex);
+        tile.nextShapeIndex = randomMorphTarget(tile.shapeIndex);
       }
       tile.prevT = t;
     }
@@ -205,10 +261,11 @@ function setupGUI() {
     gui.add(params, 'rows', 2, 8, 1).onChange(() => createTiles());
     gui.add(params, 'speed', 0.1, 3, 0.1);
     gui.addBoolean(params, 'colorful');
+    gui.addBoolean(params, 'fill');
     gui.addColor(params, 'shapeColor');
+    gui.addColor(params, 'strokeColor');
     gui.addColor(params, 'bgColor');
-    gui.add(params, 'strokeWt', 0, 5, 0.5);
-    gui.addBoolean(params, 'showStroke');
+    gui.add(params, 'strokeWt', 0.5, 5, 0.5);
 
     gui.addButton('Random', () => {
       params.cols = floor(random(2, 9));
