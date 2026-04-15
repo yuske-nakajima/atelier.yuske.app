@@ -1,5 +1,7 @@
 // @ts-check
 
+import TileUI from 'https://cdn.jsdelivr.net/npm/@yuske-nakajima/tileui/dist/tileui.js';
+
 // --- パラメータ ---
 
 const params = {
@@ -22,8 +24,7 @@ const params = {
   strobeInterval: 4,
 };
 
-/** 初期値（リセット用。Sprint 2 以降の GUI リセットで使用） */
-// biome-ignore lint/correctness/noUnusedVariables: Sprint 2 の GUI リセットで使用予定
+/** 初期値（リセット用） */
 const defaults = { ...params };
 
 // --- Canvas セットアップ ---
@@ -337,3 +338,83 @@ function draw() {
 }
 
 requestAnimationFrame(draw);
+
+// --- GUI セットアップ ---
+
+const gui = new TileUI({
+  title: 'SVG ベクター VJ',
+  container: /** @type {HTMLElement} */ (
+    document.getElementById('gui-container')
+  ),
+  columns: 3,
+  dock: 'right',
+  collapsible: true,
+  overlay: true,
+  toggleKey: 'g',
+});
+
+// BPM・レイアウト
+gui.add(params, 'bpm', 60, 200, 1);
+gui.add(params, 'cols', 2, 12, 1).onChange(() => {
+  prevCols = params.cols;
+  prevRows = params.rows;
+  createGrid();
+});
+gui.add(params, 'rows', 2, 12, 1).onChange(() => {
+  prevCols = params.cols;
+  prevRows = params.rows;
+  createGrid();
+});
+gui.add(params, 'scale', 0.1, 3.0, 0.1);
+
+// アニメーション
+gui.add(params, 'pulseAmount', 0, 1, 0.05);
+gui.add(params, 'rotationSpeed', 0, 4, 0.1);
+gui.add(params, 'hueSpeed', 0, 5, 0.1);
+
+// カラー
+gui.add(params, 'baseHue', 0, 360, 1);
+gui.add(params, 'saturation', 0, 100, 1);
+gui.add(params, 'lightness', 10, 90, 1);
+gui.addColor(params, 'bgColor');
+
+// 描画スタイル
+gui.addBoolean(params, 'strokeOnly');
+gui.add(params, 'strokeWidth', 0.5, 5, 0.5);
+
+// エフェクト
+gui.addBoolean(params, 'trail');
+gui.add(params, 'trailAlpha', 0.01, 0.5, 0.01);
+gui.addBoolean(params, 'strobe');
+gui.add(params, 'strobeInterval', 1, 8, 1);
+
+// ボタン
+gui.addButton('Random', () => {
+  params.bpm = 60 + Math.floor(Math.random() * 141);
+  params.cols = 2 + Math.floor(Math.random() * 11);
+  params.rows = 2 + Math.floor(Math.random() * 11);
+  params.scale = Math.round((0.1 + Math.random() * 2.9) * 10) / 10;
+  params.pulseAmount = Math.round(Math.random() * 20) / 20;
+  params.rotationSpeed = Math.round(Math.random() * 40) / 10;
+  params.hueSpeed = Math.round(Math.random() * 50) / 10;
+  params.baseHue = Math.floor(Math.random() * 361);
+  params.saturation = Math.floor(Math.random() * 101);
+  params.lightness = 10 + Math.floor(Math.random() * 81);
+  params.bgColor = `#${Math.floor(Math.random() * 0x333333)
+    .toString(16)
+    .padStart(6, '0')}`;
+  params.strokeOnly = Math.random() > 0.5;
+  params.strokeWidth = Math.round((0.5 + Math.random() * 4.5) * 2) / 2;
+  params.trail = Math.random() > 0.3;
+  params.trailAlpha = Math.round((0.01 + Math.random() * 0.49) * 100) / 100;
+  params.strobe = Math.random() > 0.7;
+  params.strobeInterval = 1 + Math.floor(Math.random() * 8);
+  createGrid();
+  gui.updateDisplay();
+});
+
+gui.addButton('Reset', () => {
+  Object.assign(params, { ...defaults });
+  createGrid();
+  gui.updateDisplay();
+});
