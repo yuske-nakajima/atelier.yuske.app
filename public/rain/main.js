@@ -61,43 +61,50 @@ window.addEventListener('resize', () => {
 // --- 雨粒パーティクル ---
 
 /**
- * 雨粒のジオメトリとマテリアルを生成する
+ * 雨粒のジオメトリとマテリアルを生成する（Line ベースのストリーク表現）
  * @param {number} count - 雨粒の数
- * @returns {{ points: THREE.Points, positions: Float32Array }}
+ * @returns {{ lines: THREE.LineSegments, positions: Float32Array }}
  */
 function createRainParticles(count) {
   const geometry = new THREE.BufferGeometry();
-  const positions = new Float32Array(count * 3);
+  // 各雨粒に始点と終点が必要なので count * 2 * 3
+  const positions = new Float32Array(count * 2 * 3);
 
   for (let i = 0; i < count; i++) {
-    const i3 = i * 3;
-    positions[i3] = (Math.random() - 0.5) * 30;
-    positions[i3 + 1] = Math.random() * 20;
-    positions[i3 + 2] = (Math.random() - 0.5) * 30;
+    const i6 = i * 6;
+    const x = (Math.random() - 0.5) * 30;
+    const y = Math.random() * 20;
+    const z = (Math.random() - 0.5) * 30;
+    // 始点
+    positions[i6] = x;
+    positions[i6 + 1] = y;
+    positions[i6 + 2] = z;
+    // 終点（下に少しずらす = ストリーク長）
+    positions[i6 + 3] = x;
+    positions[i6 + 4] = y - 0.3;
+    positions[i6 + 5] = z;
   }
 
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-  const material = new THREE.PointsMaterial({
+  const material = new THREE.LineBasicMaterial({
     color: '#aaccff',
-    size: 0.05,
     transparent: true,
-    opacity: 0.6,
-    sizeAttenuation: true,
+    opacity: 0.4,
   });
 
-  const points = new THREE.Points(geometry, material);
-  return { points, positions };
+  const lines = new THREE.LineSegments(geometry, material);
+  return { lines, positions };
 }
 
-const { points: rainPoints, positions: rainPositions } = createRainParticles(
+const { lines: rainLines, positions: rainPositions } = createRainParticles(
   params.rainCount,
 );
-scene.add(rainPoints);
+scene.add(rainLines);
 
 // --- 水面 ---
 
-const { geometry: waterGeometry } = createWater(scene);
+const { geometry: waterGeometry, pointLight } = createWater(scene);
 
 // --- 波紋プール ---
 
@@ -110,34 +117,56 @@ const cameraRadius = Math.sqrt(camera.position.x ** 2 + camera.position.z ** 2);
 const cameraHeight = camera.position.y;
 let time = 0;
 
+// ライトフラッシュの強度（波紋発生時に増加、毎フレーム減衰）
+let flashIntensity = 0;
+
 /** メインのアニメーションループ */
 function animate() {
   requestAnimationFrame(animate);
   time += 0.016;
 
-  // --- 雨粒の更新 ---
+  // --- 雨粒の更新（LineSegments: 始点・終点ペア） ---
   const count = params.rainCount;
   for (let i = 0; i < count; i++) {
-    const i3 = i * 3;
+    const i6 = i * 6;
+    const speed = params.rainSpeed * 0.05;
+    const windDrift = params.wind * 0.01;
 
-    rainPositions[i3 + 1] -= params.rainSpeed * 0.05;
-    rainPositions[i3] += params.wind * 0.01;
+    // 始点と終点の両方を更新
+    rainPositions[i6 + 1] -= speed;
+    rainPositions[i6 + 4] -= speed;
+    rainPositions[i6] += windDrift;
+    rainPositions[i6 + 3] += windDrift;
+
+    // ストリーク長を速度に応じて伸縮
+    const streakLength = 0.1 + params.rainSpeed * 0.15;
+    rainPositions[i6 + 4] = rainPositions[i6 + 1] - streakLength;
 
     // 着水判定: y < 0 でリセット
-    if (rainPositions[i3 + 1] < 0) {
+    if (rainPositions[i6 + 1] < 0) {
       // 30% の確率で波紋を発生させる
       if (Math.random() < 0.3) {
-        activateRipple(ripplePool, rainPositions[i3], rainPositions[i3 + 2]);
+        activateRipple(ripplePool, rainPositions[i6], rainPositions[i6 + 2]);
+        flashIntensity = 2;
       }
 
-      rainPositions[i3 + 1] = 20;
-      rainPositions[i3] = (Math.random() - 0.5) * 30;
-      rainPositions[i3 + 2] = (Math.random() - 0.5) * 30;
+      const newX = (Math.random() - 0.5) * 30;
+      const newZ = (Math.random() - 0.5) * 30;
+      rainPositions[i6] = newX;
+      rainPositions[i6 + 1] = 20;
+      rainPositions[i6 + 2] = newZ;
+      rainPositions[i6 + 3] = newX;
+      rainPositions[i6 + 4] = 20 - streakLength;
+      rainPositions[i6 + 5] = newZ;
     }
   }
 
-  const posAttr = rainPoints.geometry.getAttribute('position');
+  const posAttr = rainLines.geometry.getAttribute('position');
   posAttr.needsUpdate = true;
+
+  // --- フラッシュの減衰とライト更新 ---
+  flashIntensity *= 0.95;
+  pointLight.intensity = 1 + flashIntensity;
 
   // --- 波紋の更新 ---
   updateRipples(ripplePool, params);

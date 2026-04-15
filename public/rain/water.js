@@ -4,7 +4,7 @@ import * as THREE from 'https://esm.sh/three@0.172.0';
 /**
  * 水面メッシュを作成してシーンに追加する
  * @param {THREE.Scene} scene - シーン
- * @returns {{ mesh: THREE.Mesh, geometry: THREE.PlaneGeometry }}
+ * @returns {{ mesh: THREE.Mesh, geometry: THREE.PlaneGeometry, pointLight: THREE.PointLight }}
  */
 export function createWater(scene) {
   const geometry = new THREE.PlaneGeometry(30, 30, 50, 50);
@@ -12,8 +12,8 @@ export function createWater(scene) {
     color: '#0a1628',
     transparent: true,
     opacity: 0.7,
-    roughness: 0.3,
-    metalness: 0.5,
+    roughness: 0.2,
+    metalness: 0.6,
   });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.rotation.x = -Math.PI / 2;
@@ -23,7 +23,12 @@ export function createWater(scene) {
   const ambientLight = new THREE.AmbientLight('#1a1a3e', 0.5);
   scene.add(ambientLight);
 
-  return { mesh, geometry };
+  // 水面を上から照らすポイントライト（ネオンカラー反射用）
+  const pointLight = new THREE.PointLight('#00ccff', 1, 30);
+  pointLight.position.set(0, 5, 0);
+  scene.add(pointLight);
+
+  return { mesh, geometry, pointLight };
 }
 
 /**
