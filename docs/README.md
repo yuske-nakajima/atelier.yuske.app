@@ -21,6 +21,7 @@
 | `/firefly-sync/` | Firefly Sync（蔵本モデルで群れが同期して明滅する蛍） |
 | `/wave-interference/` | Wave Interference（複数波源が重なる同心円波の干渉パターン） |
 | `/penrose-tiling/` | Penrose Tiling（黄金比で分割されるペンローズタイル） |
+| `/voronoi-mosaic/` | Voronoi Mosaic（ランダム点群から生成するボロノイ分割モザイク） |
 
 ## トップページ仕様
 
