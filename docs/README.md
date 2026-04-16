@@ -22,6 +22,7 @@
 | `/wave-interference/` | Wave Interference（複数波源が重なる同心円波の干渉パターン） |
 | `/penrose-tiling/` | Penrose Tiling（黄金比で分割されるペンローズタイル） |
 | `/voronoi-mosaic/` | Voronoi Mosaic（ランダム点群から生成するボロノイ分割モザイク） |
+| `/fractal-tree/` | Fractal Tree（再帰的に枝分かれするフラクタルの木） |
 
 ## トップページ仕様
 
