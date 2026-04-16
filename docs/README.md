@@ -23,6 +23,7 @@
 | `/penrose-tiling/` | Penrose Tiling（黄金比で分割されるペンローズタイル） |
 | `/voronoi-mosaic/` | Voronoi Mosaic（ランダム点群から生成するボロノイ分割モザイク） |
 | `/fractal-tree/` | Fractal Tree（再帰的に枝分かれするフラクタルの木） |
+| `/spirograph-engine/` | Spirograph Engine（ハイポ/エピサイクロイドで描くスピログラフ） |
 
 ## トップページ仕様
 
