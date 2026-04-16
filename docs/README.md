@@ -24,6 +24,7 @@
 | `/voronoi-mosaic/` | Voronoi Mosaic（ランダム点群から生成するボロノイ分割モザイク） |
 | `/fractal-tree/` | Fractal Tree（再帰的に枝分かれするフラクタルの木） |
 | `/spirograph-engine/` | Spirograph Engine（ハイポ/エピサイクロイドで描くスピログラフ） |
+| `/erosion-landscape/` | Erosion Landscape（雨粒の侵食で変化する地形シミュレーション） |
 
 ## トップページ仕様
 
