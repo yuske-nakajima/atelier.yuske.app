@@ -24,6 +24,11 @@
 | `/voronoi-mosaic/` | Voronoi Mosaic（ランダム点群から生成するボロノイ分割モザイク） |
 | `/fractal-tree/` | Fractal Tree（再帰的に枝分かれするフラクタルの木） |
 | `/spirograph-engine/` | Spirograph Engine（ハイポ/エピサイクロイドで描くスピログラフ） |
+| `/erosion-landscape/` | Erosion Landscape（雨粒の侵食で変化する地形シミュレーション） |
+| `/magnetic-field-lines/` | Magnetic Field Lines（N/S 極の配置から描く磁力線ビジュアル） |
+| `/crystal-growth/` | Crystal Growth（DLA 風に結晶が枝分かれしながら成長する） |
+| `/smoke-plume/` | Smoke Plume（ゆらぎながら立ち昇る煙の流体風シミュレーション） |
+| `/tessellation-lab/` | Tessellation Lab（正多角形タイルの敷き詰めパターン生成・変形） |
 
 ## トップページ仕様
 
