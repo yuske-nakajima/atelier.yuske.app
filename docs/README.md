@@ -19,6 +19,7 @@
 | `/simple-gui-grid/` | Simple GUI Grid（グリッドタイル型 GUI ライブラリ デモ） |
 | `/strange-attractor/` | Strange Attractor（Lorenz アトラクター、Simple GUI Grid 適用例） |
 | `/firefly-sync/` | Firefly Sync（蔵本モデルで群れが同期して明滅する蛍） |
+| `/penrose-tiling/` | Penrose Tiling（黄金比で分割されるペンローズタイル） |
 
 ## トップページ仕様
 
