@@ -19,6 +19,7 @@
 | `/simple-gui-grid/` | Simple GUI Grid（グリッドタイル型 GUI ライブラリ デモ） |
 | `/strange-attractor/` | Strange Attractor（Lorenz アトラクター、Simple GUI Grid 適用例） |
 | `/firefly-sync/` | Firefly Sync（蔵本モデルで群れが同期して明滅する蛍） |
+| `/wave-interference/` | Wave Interference（複数波源が重なる同心円波の干渉パターン） |
 | `/penrose-tiling/` | Penrose Tiling（黄金比で分割されるペンローズタイル） |
 
 ## トップページ仕様
