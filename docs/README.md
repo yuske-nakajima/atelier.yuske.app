@@ -18,6 +18,7 @@
 | `/simple-gui-tab/` | Simple GUI Tab（タブバー型 GUI ライブラリ デモ） |
 | `/simple-gui-grid/` | Simple GUI Grid（グリッドタイル型 GUI ライブラリ デモ） |
 | `/strange-attractor/` | Strange Attractor（Lorenz アトラクター、Simple GUI Grid 適用例） |
+| `/firefly-sync/` | Firefly Sync（蔵本モデルで群れが同期して明滅する蛍） |
 
 ## トップページ仕様
 
