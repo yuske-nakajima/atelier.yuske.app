@@ -25,6 +25,7 @@
 | `/fractal-tree/` | Fractal Tree（再帰的に枝分かれするフラクタルの木） |
 | `/spirograph-engine/` | Spirograph Engine（ハイポ/エピサイクロイドで描くスピログラフ） |
 | `/erosion-landscape/` | Erosion Landscape（雨粒の侵食で変化する地形シミュレーション） |
+| `/magnetic-field-lines/` | Magnetic Field Lines（N/S 極の配置から描く磁力線ビジュアル） |
 
 ## トップページ仕様
 
