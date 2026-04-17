@@ -43,6 +43,13 @@ function rnd() {
 let pageSeed = Math.floor(Math.random() * 1e9);
 
 /**
+ * 世代ごとに線幅が変わるため、世代別にセグメント配列を蓄積して
+ * 最後に 1 本のパスとしてまとめて stroke する（描画コスト削減）。
+ * @type {Map<number, number[]>}
+ */
+let segmentsByGen = new Map();
+
+/**
  * @param {number} cx
  * @param {number} cy
  * @param {number} x0
@@ -56,35 +63,47 @@ function grow(cx, cy, x0, y0, angle0, stepsLeft, gen) {
   let y = y0;
   let angle = angle0;
   const arms = Math.round(params.arms);
-  ctx.strokeStyle = `hsl(${params.hue}, ${params.saturation}%, ${params.lightness}%)`;
-  ctx.lineWidth = Math.max(0.25, params.thickness / (gen + 1));
+  let bucket = segmentsByGen.get(gen);
+  if (!bucket) {
+    bucket = [];
+    segmentsByGen.set(gen, bucket);
+  }
+  // 三角関数を事前計算
+  const cosA = new Float64Array(arms);
+  const sinA = new Float64Array(arms);
+  for (let s = 0; s < arms; s++) {
+    const a = (s / arms) * Math.PI * 2;
+    cosA[s] = Math.cos(a);
+    sinA[s] = Math.sin(a);
+  }
+  const radiusSq = params.radius * params.radius;
   for (let i = 0; i < stepsLeft; i++) {
     const nx = x + Math.cos(angle) * params.stepSize;
     const ny = y + Math.sin(angle) * params.stepSize;
-    const dist = Math.hypot(nx - cx, ny - cy);
-    if (dist > params.radius) return;
-    // 対称描画
+    const dx = nx - cx;
+    const dy = ny - cy;
+    if (dx * dx + dy * dy > radiusSq) return;
+    const ox = x - cx;
+    const oy = y - cy;
+    const onx = nx - cx;
+    const ony = ny - cy;
     for (let s = 0; s < arms; s++) {
-      const a = (s / arms) * Math.PI * 2;
-      const ca = Math.cos(a);
-      const sa = Math.sin(a);
-      const rx1 = (x - cx) * ca - (y - cy) * sa + cx;
-      const ry1 = (x - cx) * sa + (y - cy) * ca + cy;
-      const rx2 = (nx - cx) * ca - (ny - cy) * sa + cx;
-      const ry2 = (nx - cx) * sa + (ny - cy) * ca + cy;
-      ctx.beginPath();
-      ctx.moveTo(rx1, ry1);
-      ctx.lineTo(rx2, ry2);
-      ctx.stroke();
+      const ca = cosA[s];
+      const sa = sinA[s];
+      // 回転
+      bucket.push(
+        ox * ca - oy * sa + cx,
+        ox * sa + oy * ca + cy,
+        onx * ca - ony * sa + cx,
+        onx * sa + ony * ca + cy,
+      );
       // 鏡面
-      const mx1 = (x - cx) * ca + (y - cy) * sa + cx;
-      const my1 = (x - cx) * sa - (y - cy) * ca + cy;
-      const mx2 = (nx - cx) * ca + (ny - cy) * sa + cx;
-      const my2 = (nx - cx) * sa - (ny - cy) * ca + cy;
-      ctx.beginPath();
-      ctx.moveTo(mx1, my1);
-      ctx.lineTo(mx2, my2);
-      ctx.stroke();
+      bucket.push(
+        ox * ca + oy * sa + cx,
+        ox * sa - oy * ca + cy,
+        onx * ca + ony * sa + cx,
+        onx * sa - ony * ca + cy,
+      );
     }
     angle += (rnd() - 0.5) * params.wobble;
     x = nx;
@@ -112,21 +131,39 @@ function grow(cx, cy, x0, y0, angle0, stepsLeft, gen) {
   }
 }
 
+let drawScheduled = false;
 function draw() {
+  drawScheduled = false;
   ctx.fillStyle = `hsl(${params.hue}, 30%, ${params.bgLightness}%)`;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   setSeed(pageSeed);
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = `hsl(${params.hue}, ${params.saturation}%, ${params.lightness}%)`;
   ctx.shadowBlur = params.glow * 12;
   ctx.shadowColor = `hsla(${params.hue}, ${params.saturation}%, 80%, 1)`;
-  ctx.lineCap = 'round';
+  segmentsByGen = new Map();
   grow(cx, cy, cx, cy, 0, Math.round(params.steps), 0);
+  // 世代ごとに 1 回だけ stroke することで shadowBlur のコストを最小化
+  const gens = [...segmentsByGen.keys()].sort((a, b) => a - b);
+  for (const gen of gens) {
+    const seg = /** @type {number[]} */ (segmentsByGen.get(gen));
+    ctx.lineWidth = Math.max(0.25, params.thickness / (gen + 1));
+    ctx.beginPath();
+    for (let i = 0; i < seg.length; i += 4) {
+      ctx.moveTo(seg[i], seg[i + 1]);
+      ctx.lineTo(seg[i + 2], seg[i + 3]);
+    }
+    ctx.stroke();
+  }
   ctx.shadowBlur = 0;
 }
 draw();
 
 function redraw() {
+  if (drawScheduled) return;
+  drawScheduled = true;
   requestAnimationFrame(draw);
 }
 
