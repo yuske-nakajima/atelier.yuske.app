@@ -231,3 +231,4 @@ docs/
 | `/gauss-circle-problem/` | Gauss Circle Problem（半径r円内の格子点を色分けで可視化） |
 | `/ulam-spiral/` | Ulam Spiral（自然数を螺旋状に並べ素数をマーク） |
 | `/sacks-spiral/` | Sacks Spiral（r=√n極座標で素数を配置するSacksスパイラル） |
+| `/goldbach-comet/` | Goldbach Comet（偶数を2素数の和で表す方法数のコメットプロット） |
