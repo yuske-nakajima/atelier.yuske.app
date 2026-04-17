@@ -200,3 +200,4 @@ docs/
 | `/root-growth-rrt/` | ¼ˆ¼‰ |
 | `/snowflake-dendrite/` | ¼ˆ¼‰ |
 | `/hoarfrost-needle/` | ¼ˆ¼‰ |
+| `/ant-colony-trails/` | ¼ˆ¼‰ |
