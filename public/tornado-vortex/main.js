@@ -62,8 +62,6 @@ function initParticles() {
 
 initParticles();
 
-let time = 0;
-
 /**
  * パーティクルを1ステップ更新する
  * @param {Particle} p
@@ -92,7 +90,6 @@ function updateParticle(p) {
 }
 
 function draw() {
-  time += 0.016;
   const w = canvas.width;
   const h = canvas.height;
 
