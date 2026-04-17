@@ -182,3 +182,4 @@ docs/
 | `/dendritic-snowflake/` | ¼ˆ¼‰ |
 | `/frost-fern-window/` | ¼ˆ¼‰ |
 | `/stalactite-formation/` | ¼ˆ¼‰ |
+| `/basalt-column-cracking/` | ¼ˆ¼‰ |
