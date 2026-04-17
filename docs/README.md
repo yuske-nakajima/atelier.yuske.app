@@ -135,6 +135,7 @@
 | `/neural-network-viz/` | Neural Network Viz（ニューラルネット可視化） |
 | `/leaf-venation/` | Leaf Venation（葉脈形成） |
 | `/coral-growth/` | Coral Growth（サンゴの成長） |
+| `/mycelium-network/` | Mycelium Network（菌糸ネットワーク） |
 
 ## トップページ仕様
 
