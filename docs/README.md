@@ -46,6 +46,7 @@
 | `/cantor-dust/` | Cantor Dust（区間を繰り返し分割して残すカントール塵） |
 | `/prime-spiral/` | Prime Spiral（整数を螺旋に並べ素数を強調したウラム螺旋） |
 | `/collatz-conjecture/` | Collatz Conjecture（コラッツ予想の軌道を枝として重ねた樹形） |
+| `/pascal-triangle-mod/` | Pascal Triangle Mod（パスカル三角形を mod で色分けしたフラクタル） |
 
 ## トップページ仕様
 
