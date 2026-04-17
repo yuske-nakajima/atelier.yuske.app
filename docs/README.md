@@ -227,3 +227,4 @@ docs/
 | `/ford-circles/` | Ford Circles（既約分数ごとに描くFord円のフラクタル構造） |
 | `/stern-brocot-mediant-tree/` | Stern–Brocot Mediant Tree（Stern-Brocot木をmediant生成で描画） |
 | `/farey-sequence-diagram/` | Farey Sequence Diagram（Farey数列を弧でつないだ図） |
+| `/continued-fraction-tree/` | Continued Fraction Tree（連分数展開で分岐する木状フラクタル） |
