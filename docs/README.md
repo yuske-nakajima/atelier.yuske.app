@@ -52,6 +52,7 @@
 | `/xor-fractal/` | XOR Fractal（x XOR y で描くシェルピンスキー風フラクタル） |
 | `/wolfram-code-explorer/` | Wolfram Code Explorer（1D 初等セルオートマトンをルール番号で探索） |
 | `/heart-pulse/` | Heart Pulse（心臓曲線を BPM で脈動させるパルス波） |
+| `/error-diffusion/` | Error Diffusion（Floyd-Steinberg 誤差拡散ディザで階調を量子化） |
 
 ## トップページ仕様
 
