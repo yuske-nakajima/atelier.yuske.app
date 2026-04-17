@@ -138,6 +138,7 @@
 | `/mycelium-network/` | Mycelium Network（菌糸ネットワーク） |
 | `/dna-helix/` | DNA Helix（DNAヘリックス） |
 | `/cell-division/` | Cell Division（細胞分裂） |
+| `/virus-capsid/` | Virus Capsid（ウイルスカプシド） |
 
 ## トップページ仕様
 
