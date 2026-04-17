@@ -107,6 +107,7 @@
 | `/comet-tail/` | Comet Tail（彗星の尾） |
 | `/fireflies-trail/` | Fireflies Trail（蛍の光跡） |
 | `/moth-to-flame/` | Moth to Flame（蛾と炎） |
+| `/pollen-drift/` | Pollen Drift（花粉の漂い） |
 
 ## トップページ仕様
 
