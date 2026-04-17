@@ -109,6 +109,7 @@
 | `/moth-to-flame/` | Moth to Flame（蛾と炎） |
 | `/pollen-drift/` | Pollen Drift（花粉の漂い） |
 | `/mandelbrot-zoom/` | Mandelbrot Zoom（マンデルブロ集合ズーム） |
+| `/burning-ship/` | Burning Ship（燃える船フラクタル） |
 
 ## トップページ仕様
 
