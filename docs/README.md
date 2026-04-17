@@ -88,6 +88,7 @@
 | `/peano-curve/` | Peano Curve（ペアノ曲線） |
 | `/rhombille-tiling/` | Rhombille Tiling（菱形タイリング） |
 | `/celtic-knot/` | Celtic Knot（ケルト結び目模様） |
+| `/escher-tessellation/` | Escher Tessellation（エッシャー風テセレーション） |
 
 ## トップページ仕様
 
