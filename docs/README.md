@@ -62,6 +62,7 @@
 | `/spiral-phyllotaxis/` | Spiral Phyllotaxis（黄金角でひまわり状に並ぶ種のフィロタキシス） |
 | `/meteor-shower/` | Meteor Shower（流星が尾を引いて降る夜空の流星群） |
 | `/dragon-curve/` | Dragon Curve（紙を折り畳んで展開するヘイウェイのドラゴン曲線） |
+| `/koch-snowflake/` | Koch Snowflake（辺を反復分割して形成するコッホ雪片フラクタル） |
 
 ## トップページ仕様
 
