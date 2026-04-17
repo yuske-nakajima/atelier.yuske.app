@@ -203,3 +203,4 @@ docs/
 | `/ant-colony-trails/` | ¼ˆ¼‰ |
 | `/termite-mound-cross-section/` | ¼ˆ¼‰ |
 | `/wasp-nest-hexagon/` | ¼ˆ¼‰ |
+| `/spider-web-radial/` | ¼ˆ¼‰ |
