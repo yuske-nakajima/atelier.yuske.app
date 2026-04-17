@@ -84,6 +84,7 @@
 | `/mirage-heat/` | Mirage Heat（熱気で地平線が揺らぐ蜃気楼のビジュアル） |
 | `/tornado-vortex/` | Tornado Vortex（渦巻く竜巻のパーティクル） |
 | `/avalanche-cascade/` | Avalanche Cascade（雪崩のカスケード） |
+| `/hilbert-curve/` | Hilbert Curve（ヒルベルト曲線） |
 
 ## トップページ仕様
 
