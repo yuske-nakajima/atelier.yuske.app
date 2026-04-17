@@ -129,6 +129,7 @@
 | `/granular-cloud/` | Granular Cloud（グラニュラークラウド） |
 | `/beat-interference/` | Beat Interference（ビート干渉） |
 | `/risset-rhythm/` | Risset Rhythm（リセのリズム） |
+| `/reaction-diffusion/` | Reaction Diffusion（反応拡散系） |
 
 ## トップページ仕様
 
