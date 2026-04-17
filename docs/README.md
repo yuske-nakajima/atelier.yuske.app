@@ -224,3 +224,4 @@ docs/
 | `/terdragon/` | Terdragon（120°角のL-systemによるTerdragon曲線） |
 | `/mcmullen-carpet/` | McMullen Carpet（長方形多段分割によるMcMullenカーペット） |
 | `/apollonian-network-3d/` | Apollonian Network 3D（アポロニウスの窓を擬似3Dで描画） |
+| `/ford-circles/` | Ford Circles（既約分数ごとに描くFord円のフラクタル構造） |
