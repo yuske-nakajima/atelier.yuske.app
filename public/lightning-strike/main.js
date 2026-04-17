@@ -75,7 +75,7 @@ function buildBolt(x, y, angle, amp, depth, segs) {
   }
 }
 
-/** @type {Array<{segs: Array<{x1:number,y1:number,x2:number,y2:number,depth:number}>, life:number}>} */
+/** @type {Array<{path: Path2D, hue: number, life:number}>} */
 const bolts = [];
 
 /** 新しい落雷を発生させる */
@@ -84,7 +84,14 @@ function strike() {
   /** @type {Array<{x1:number,y1:number,x2:number,y2:number,depth:number}>} */
   const segs = [];
   buildBolt(startX, 0, Math.PI / 2, params.jitter, 5, segs);
-  bolts.push({ segs, life: 1 });
+  // bolt 全体を 1 つの Path2D にまとめて 1 回の stroke で描画する
+  const path = new Path2D();
+  for (const s of segs) {
+    path.moveTo(s.x1, s.y1);
+    path.lineTo(s.x2, s.y2);
+  }
+  const boltHue = params.hue + (Math.random() - 0.5) * params.hueSpread;
+  bolts.push({ path, hue: boltHue, life: 1 });
   // フラッシュ
   ctx.fillStyle = `hsla(${params.hue}, 60%, 90%, ${params.flashAlpha})`;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -104,20 +111,14 @@ function tick() {
 
   ctx.lineCap = 'round';
   ctx.shadowBlur = params.glow;
+  ctx.lineWidth = Math.max(0.0625, params.lineWidth);
   for (let i = bolts.length - 1; i >= 0; i--) {
     const bolt = bolts[i];
-    const hue = params.hue + (Math.random() - 0.5) * params.hueSpread;
-    const color = `hsla(${hue}, 90%, 75%, ${bolt.life})`;
+    const color = `hsla(${bolt.hue}, 90%, 75%, ${bolt.life})`;
     ctx.strokeStyle = color;
     ctx.shadowColor = color;
-    ctx.lineWidth = Math.max(0.0625, params.lineWidth);
-    for (const s of bolt.segs) {
-      ctx.beginPath();
-      ctx.moveTo(s.x1, s.y1);
-      ctx.lineTo(s.x2, s.y2);
-      ctx.stroke();
-    }
-    bolt.life -= 0.05;
+    ctx.stroke(bolt.path);
+    bolt.life -= 0.03;
     if (bolt.life <= 0) bolts.splice(i, 1);
   }
   ctx.shadowBlur = 0;
