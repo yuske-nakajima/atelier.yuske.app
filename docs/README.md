@@ -99,6 +99,7 @@
 | `/bee-swarm/` | Bee Swarm（ミツバチの群れ） |
 | `/bacterial-colony/` | Bacterial Colony（バクテリアコロニー） |
 | `/plankton-bloom/` | Plankton Bloom（プランクトンブルーム） |
+| `/slime-mold/` | Slime Mold（粘菌ネットワーク） |
 
 ## トップページ仕様
 
