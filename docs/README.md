@@ -137,6 +137,7 @@
 | `/coral-growth/` | Coral Growth（サンゴの成長） |
 | `/mycelium-network/` | Mycelium Network（菌糸ネットワーク） |
 | `/dna-helix/` | DNA Helix（DNAヘリックス） |
+| `/cell-division/` | Cell Division（細胞分裂） |
 
 ## トップページ仕様
 
