@@ -96,6 +96,7 @@
 | `/lissajous-3d/` | Lissajous 3D（3D リサジュー曲線） |
 | `/schooling-fish/` | Schooling Fish（群泳する魚） |
 | `/ant-bridge/` | Ant Bridge（アリの橋） |
+| `/bee-swarm/` | Bee Swarm（ミツバチの群れ） |
 
 ## トップページ仕様
 
