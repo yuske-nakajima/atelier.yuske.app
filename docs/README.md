@@ -195,3 +195,4 @@ docs/
 | `/coral-polyp-cluster/` | ¼ˆ¼‰ |
 | `/diatom-frustule/` | ¼ˆ¼‰ |
 | `/radiolarian-skeleton/` | ¼ˆ¼‰ |
+| `/pollen-grain-microscopy/` | ¼ˆ¼‰ |
