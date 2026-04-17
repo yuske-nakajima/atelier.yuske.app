@@ -128,6 +128,7 @@
 | `/karplus-strong-strings/` | Karplus-Strong Strings（カープラス・ストロング弦） |
 | `/granular-cloud/` | Granular Cloud（グラニュラークラウド） |
 | `/beat-interference/` | Beat Interference（ビート干渉） |
+| `/risset-rhythm/` | Risset Rhythm（リセのリズム） |
 
 ## トップページ仕様
 
