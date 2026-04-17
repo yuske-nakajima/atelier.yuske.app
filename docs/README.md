@@ -77,6 +77,7 @@
 | `/cloud-formation/` | Cloud Formation（パフの集合で形作る流れる雲のジェネレーティブアート） |
 | `/aurora-borealis/` | Aurora Borealis（夜空を流れるオーロラのリボンと星のビジュアル） |
 | `/lava-flow/` | Lava Flow（メタボールで融合する溶岩流と黒皮のグラデーション） |
+| `/bubble-chamber/` | Bubble Chamber（磁場中の荷電粒子が描く螺旋軌跡の泡箱ビジュアル） |
 
 ## トップページ仕様
 
