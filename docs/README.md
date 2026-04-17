@@ -33,6 +33,7 @@
 | `/l-system-garden/` | L-System Garden（L-System で生成する植物・樹木のフラクタル） |
 | `/recursive-subdivision/` | Recursive Subdivision（矩形を再帰分割するモンドリアン風の構図） |
 | `/sierpinski-variants/` | Sierpinski Variants（シェルピンスキー三角形/カーペットのフラクタル） |
+| `/galaxy-spiral/` | Galaxy Spiral（腕を持つ渦巻銀河の星々が回転するビジュアル） |
 
 ## トップページ仕様
 
