@@ -86,6 +86,7 @@
 | `/avalanche-cascade/` | Avalanche Cascade（雪崩のカスケード） |
 | `/hilbert-curve/` | Hilbert Curve（ヒルベルト曲線） |
 | `/peano-curve/` | Peano Curve（ペアノ曲線） |
+| `/rhombille-tiling/` | Rhombille Tiling（菱形タイリング） |
 
 ## トップページ仕様
 
