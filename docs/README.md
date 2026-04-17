@@ -105,6 +105,7 @@
 | `/magnetic-dust/` | Magnetic Dust（磁性粉のパターン） |
 | `/dust-storm/` | Dust Storm（砂嵐） |
 | `/comet-tail/` | Comet Tail（彗星の尾） |
+| `/fireflies-trail/` | Fireflies Trail（蛍の光跡） |
 
 ## トップページ仕様
 
