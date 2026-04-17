@@ -95,6 +95,7 @@
 | `/mandala-generator/` | Mandala Generator（マンダラ生成器） |
 | `/lissajous-3d/` | Lissajous 3D（3D リサジュー曲線） |
 | `/schooling-fish/` | Schooling Fish（群泳する魚） |
+| `/ant-bridge/` | Ant Bridge（アリの橋） |
 
 ## トップページ仕様
 
