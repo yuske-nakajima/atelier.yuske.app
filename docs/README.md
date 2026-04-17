@@ -204,3 +204,4 @@ docs/
 | `/termite-mound-cross-section/` | ¼ˆ¼‰ |
 | `/wasp-nest-hexagon/` | ¼ˆ¼‰ |
 | `/spider-web-radial/` | ¼ˆ¼‰ |
+| `/slime-mold-transport-net/` | ¼ˆ¼‰ |
