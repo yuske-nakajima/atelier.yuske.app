@@ -183,3 +183,4 @@ docs/
 | `/frost-fern-window/` | ¼ˆ¼‰ |
 | `/stalactite-formation/` | ¼ˆ¼‰ |
 | `/basalt-column-cracking/` | ¼ˆ¼‰ |
+| `/mud-crack-polygon/` | ¼ˆ¼‰ |
