@@ -189,3 +189,4 @@ docs/
 | `/cephalopod-skin/` | ¼ˆ¼‰ |
 | `/butterfly-wing-scales/` | ¼ˆ¼‰ |
 | `/peacock-feather-eye/` | ¼ˆ¼‰ |
+| `/seashell-growth/` | ¼ˆ¼‰ |
