@@ -214,3 +214,4 @@ docs/
 | `/ammann-beenker-tiling/` | Ammann–Beenker Tiling（正八角形と菱形によるAmmann–Beenker準結晶タイル） |
 | `/pinwheel-tiling/` | Pinwheel Tiling（1:2直角三角形を再帰分割するPinwheelタイル） |
 | `/cairo-tiling/` | Cairo Tiling（4種回転の五角形によるカイロタイリング） |
+| `/rep-tiles/` | Rep-Tiles（自己相似分割によるRep-Tile） |
