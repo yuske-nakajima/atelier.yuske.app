@@ -58,6 +58,7 @@
 | `/spectral-rainbow/` | Spectral Rainbow（波長 380-780nm の可視光スペクトルを RGB 近似で描く） |
 | `/retinal-persistence/` | Retinal Persistence（視覚の残像を模したリサージュ軌跡パーティクル） |
 | `/dithering-studio/` | Dithering Studio（Bayer 行列による順序付きディザの 2 値化スタジオ） |
+| `/color-blending/` | Color Blending（ブレンドモードで 3 色円盤を混合する加法・減法混色） |
 
 ## トップページ仕様
 
