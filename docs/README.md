@@ -140,6 +140,7 @@
 | `/cell-division/` | Cell Division（細胞分裂） |
 | `/virus-capsid/` | Virus Capsid（ウイルスカプシド） |
 | `/chromatic-aberration/` | Chromatic Aberration（色収差） |
+| `/diffraction-grating/` | Diffraction Grating（回折格子） |
 
 ## トップページ仕様
 
