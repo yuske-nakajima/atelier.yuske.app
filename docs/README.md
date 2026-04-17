@@ -230,3 +230,4 @@ docs/
 | `/continued-fraction-tree/` | Continued Fraction Tree（連分数展開で分岐する木状フラクタル） |
 | `/gauss-circle-problem/` | Gauss Circle Problem（半径r円内の格子点を色分けで可視化） |
 | `/ulam-spiral/` | Ulam Spiral（自然数を螺旋状に並べ素数をマーク） |
+| `/sacks-spiral/` | Sacks Spiral（r=√n極座標で素数を配置するSacksスパイラル） |
