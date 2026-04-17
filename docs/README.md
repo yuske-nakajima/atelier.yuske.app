@@ -237,3 +237,4 @@ docs/
 | `/logistic-map-bifurcation/` | Logistic Map Bifurcation（ロジスティック写像の分岐図） |
 | `/feigenbaum-fractal/` | Feigenbaum Fractal（分岐図を密度ヒートマップで描画） |
 | `/julia-set-zoo/` | Julia Set Zoo（複数プリセットで切り替えるJulia集合ギャラリー） |
+| `/mandelbrot-buddha/` | Mandelbrot Buddha（発散軌跡を蓄積するBuddhabrot） |
