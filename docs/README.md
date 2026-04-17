@@ -45,6 +45,7 @@
 | `/double-pendulum-chaos/` | Double Pendulum Chaos（二重振り子の軌跡が描くカオス的感度依存性） |
 | `/cantor-dust/` | Cantor Dust（区間を繰り返し分割して残すカントール塵） |
 | `/prime-spiral/` | Prime Spiral（整数を螺旋に並べ素数を強調したウラム螺旋） |
+| `/collatz-conjecture/` | Collatz Conjecture（コラッツ予想の軌道を枝として重ねた樹形） |
 
 ## トップページ仕様
 
