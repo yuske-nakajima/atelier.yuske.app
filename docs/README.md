@@ -82,6 +82,7 @@
 | `/ice-crystal/` | Ice Crystal（6 回対称で再帰成長する雪の結晶フラクタル） |
 | `/rainbow-prism/` | Rainbow Prism（入射光がプリズムで分散して虹色スペクトルになる光学ビジュアル） |
 | `/mirage-heat/` | Mirage Heat（熱気で地平線が揺らぐ蜃気楼のビジュアル） |
+| `/tornado-vortex/` | Tornado Vortex（渦巻く竜巻のパーティクル） |
 
 ## トップページ仕様
 
