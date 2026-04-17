@@ -38,6 +38,7 @@
 | `/waveform-sculptor/` | Waveform Sculptor（サイン波の重ね合わせで描くリサージュ波形） |
 | `/rhythm-grid/` | Rhythm Grid（BPM 同期で点滅するステップシーケンサー風グリッド） |
 | `/gradient-mesh/` | Gradient Mesh（メッシュ頂点の色から補間する滑らかなグラデーション） |
+| `/ink-diffusion/` | Ink Diffusion（墨汁がにじみ広がる拡散シミュレーション） |
 
 ## トップページ仕様
 
