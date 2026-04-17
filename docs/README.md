@@ -89,6 +89,7 @@
 | `/rhombille-tiling/` | Rhombille Tiling（菱形タイリング） |
 | `/celtic-knot/` | Celtic Knot（ケルト結び目模様） |
 | `/escher-tessellation/` | Escher Tessellation（エッシャー風テセレーション） |
+| `/quasicrystal/` | Quasicrystal（準結晶パターン） |
 
 ## トップページ仕様
 
