@@ -55,6 +55,7 @@
 | `/error-diffusion/` | Error Diffusion（Floyd-Steinberg 誤差拡散ディザで階調を量子化） |
 | `/soap-film/` | Soap Film（薄膜干渉で揺らぐシャボン膜のイリデッセンス） |
 | `/ripple-pond/` | Ripple Pond（雨滴で広がる同心円波紋の水面ビジュアル） |
+| `/truchet-tiles/` | Truchet Tiles（ランダムな向きの弧タイルで生まれる迷路模様） |
 
 ## トップページ仕様
 
