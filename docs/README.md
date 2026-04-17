@@ -127,6 +127,7 @@
 | `/fm-synthesis-visualizer/` | FM Synthesis Visualizer（FM 合成ビジュアライザ） |
 | `/karplus-strong-strings/` | Karplus-Strong Strings（カープラス・ストロング弦） |
 | `/granular-cloud/` | Granular Cloud（グラニュラークラウド） |
+| `/beat-interference/` | Beat Interference（ビート干渉） |
 
 ## トップページ仕様
 
