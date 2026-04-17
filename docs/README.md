@@ -90,6 +90,7 @@
 | `/celtic-knot/` | Celtic Knot（ケルト結び目模様） |
 | `/escher-tessellation/` | Escher Tessellation（エッシャー風テセレーション） |
 | `/quasicrystal/` | Quasicrystal（準結晶パターン） |
+| `/girih-pattern/` | Girih Pattern（ギリパターン） |
 
 ## トップページ仕様
 
