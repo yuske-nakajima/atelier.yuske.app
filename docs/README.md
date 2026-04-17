@@ -113,6 +113,7 @@
 | `/newton-fractal/` | Newton Fractal（ニュートン法フラクタル） |
 | `/barnsley-fern/` | Barnsley Fern（バーンズリーのシダ） |
 | `/apollonian-gasket/` | Apollonian Gasket（アポロニウスのガスケット） |
+| `/h-tree/` | H Tree（H木フラクタル） |
 
 ## トップページ仕様
 
