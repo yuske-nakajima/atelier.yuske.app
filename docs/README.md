@@ -223,3 +223,4 @@ docs/
 | `/flowsnake-variants/` | Flowsnake Variants（Gosper曲線の角度・深度変種） |
 | `/terdragon/` | Terdragon（120°角のL-systemによるTerdragon曲線） |
 | `/mcmullen-carpet/` | McMullen Carpet（長方形多段分割によるMcMullenカーペット） |
+| `/apollonian-network-3d/` | Apollonian Network 3D（アポロニウスの窓を擬似3Dで描画） |
