@@ -216,3 +216,4 @@ docs/
 | `/cairo-tiling/` | Cairo Tiling（4種回転の五角形によるカイロタイリング） |
 | `/rep-tiles/` | Rep-Tiles（自己相似分割によるRep-Tile） |
 | `/aperiodic-wang-tiles/` | Aperiodic Wang Tiles（辺色付き正方形による非周期Wangタイル） |
+| `/wythoff-construction/` | Wythoff Construction（p,q鏡面対称に基づくWythoff構成パターン） |
