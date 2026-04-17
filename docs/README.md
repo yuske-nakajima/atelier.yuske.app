@@ -36,6 +36,7 @@
 | `/galaxy-spiral/` | Galaxy Spiral（腕を持つ渦巻銀河の星々が回転するビジュアル） |
 | `/particle-life/` | Particle Life（色別粒子の引力・斥力から生まれる自己組織化） |
 | `/waveform-sculptor/` | Waveform Sculptor（サイン波の重ね合わせで描くリサージュ波形） |
+| `/rhythm-grid/` | Rhythm Grid（BPM 同期で点滅するステップシーケンサー風グリッド） |
 
 ## トップページ仕様
 
