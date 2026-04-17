@@ -190,3 +190,4 @@ docs/
 | `/butterfly-wing-scales/` | ¼ˆ¼‰ |
 | `/peacock-feather-eye/` | ¼ˆ¼‰ |
 | `/seashell-growth/` | ¼ˆ¼‰ |
+| `/conus-textile-pattern/` | ¼ˆ¼‰ |
