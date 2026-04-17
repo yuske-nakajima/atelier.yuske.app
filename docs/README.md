@@ -74,6 +74,7 @@
 | `/koch-snowflake/` | Koch Snowflake（辺を反復分割して形成するコッホ雪片フラクタル） |
 | `/lightning-strike/` | Lightning Strike（確率的に分岐しながら走る稲妻のジェネラティブアート） |
 | `/sand-dune/` | Sand Dune（風に流されて重なり合う砂丘の稜線ビジュアル） |
+| `/cloud-formation/` | Cloud Formation（パフの集合で形作る流れる雲のジェネレーティブアート） |
 
 ## トップページ仕様
 
