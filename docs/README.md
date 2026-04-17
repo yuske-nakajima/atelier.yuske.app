@@ -54,6 +54,7 @@
 | `/heart-pulse/` | Heart Pulse（心臓曲線を BPM で脈動させるパルス波） |
 | `/error-diffusion/` | Error Diffusion（Floyd-Steinberg 誤差拡散ディザで階調を量子化） |
 | `/stern-brocot-tree/` | Stern-Brocot Tree（既約分数を生成するシュターン・ブロコ木） |
+| `/digit-sum-grid/` | Digit Sum Grid（整数の桁和で色分けするグリッドパターン） |
 
 ## トップページ仕様
 
