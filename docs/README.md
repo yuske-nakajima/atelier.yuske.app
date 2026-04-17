@@ -220,3 +220,4 @@ docs/
 | `/levy-c-curve/` | Lévy C Curve（45°分岐で再帰生成するLévy Cフラクタル曲線） |
 | `/moore-curve/` | Moore Curve（L-system展開によるMoore空間充填曲線） |
 | `/heighway-dragon-variants/` | Heighway Dragon Variants（角度・回転変種のHeighwayドラゴン曲線） |
+| `/flowsnake-variants/` | Flowsnake Variants（Gosper曲線の角度・深度変種） |
