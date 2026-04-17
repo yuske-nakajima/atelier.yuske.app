@@ -29,6 +29,19 @@
 | `/crystal-growth/` | Crystal Growth（DLA 風に結晶が枝分かれしながら成長する） |
 | `/smoke-plume/` | Smoke Plume（ゆらぎながら立ち昇る煙の流体風シミュレーション） |
 | `/tessellation-lab/` | Tessellation Lab（正多角形タイルの敷き詰めパターン生成・変形） |
+| `/julia-set-explorer/` | Julia Set Explorer（ジュリア集合をリアルタイムに探索するフラクタル） |
+| `/l-system-garden/` | L-System Garden（L-System で生成する植物・樹木のフラクタル） |
+| `/recursive-subdivision/` | Recursive Subdivision（矩形を再帰分割するモンドリアン風の構図） |
+| `/sierpinski-variants/` | Sierpinski Variants（シェルピンスキー三角形/カーペットのフラクタル） |
+| `/galaxy-spiral/` | Galaxy Spiral（腕を持つ渦巻銀河の星々が回転するビジュアル） |
+| `/particle-life/` | Particle Life（色別粒子の引力・斥力から生まれる自己組織化） |
+| `/waveform-sculptor/` | Waveform Sculptor（サイン波の重ね合わせで描くリサージュ波形） |
+| `/rhythm-grid/` | Rhythm Grid（BPM 同期で点滅するステップシーケンサー風グリッド） |
+| `/gradient-mesh/` | Gradient Mesh（メッシュ頂点の色から補間する滑らかなグラデーション） |
+| `/ink-diffusion/` | Ink Diffusion（墨汁がにじみ広がる拡散シミュレーション） |
+| `/islamic-geometry/` | Islamic Geometry（星形の回転対称で敷き詰めるイスラム幾何学模様） |
+| `/swarm-intelligence/` | Swarm Intelligence（アリのフェロモントレイルから生まれる自己組織化） |
+| `/cymatics/` | Cymatics（振動モード (m,n) で現れるクラドニ図形の砂模様） |
 
 ## トップページ仕様
 
