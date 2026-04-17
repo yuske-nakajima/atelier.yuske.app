@@ -236,3 +236,4 @@ docs/
 | `/collatz-tree-layout/` | Collatz Tree Layout（Collatz数列を奇偶で回転させた有機的ツリー） |
 | `/logistic-map-bifurcation/` | Logistic Map Bifurcation（ロジスティック写像の分岐図） |
 | `/feigenbaum-fractal/` | Feigenbaum Fractal（分岐図を密度ヒートマップで描画） |
+| `/julia-set-zoo/` | Julia Set Zoo（複数プリセットで切り替えるJulia集合ギャラリー） |
