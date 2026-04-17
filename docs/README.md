@@ -111,6 +111,7 @@
 | `/mandelbrot-zoom/` | Mandelbrot Zoom（マンデルブロ集合ズーム） |
 | `/burning-ship/` | Burning Ship（燃える船フラクタル） |
 | `/newton-fractal/` | Newton Fractal（ニュートン法フラクタル） |
+| `/barnsley-fern/` | Barnsley Fern（バーンズリーのシダ） |
 
 ## トップページ仕様
 
