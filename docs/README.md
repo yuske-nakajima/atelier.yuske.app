@@ -56,6 +56,7 @@
 | `/stern-brocot-tree/` | Stern-Brocot Tree（既約分数を生成するシュターン・ブロコ木） |
 | `/digit-sum-grid/` | Digit Sum Grid（整数の桁和で色分けするグリッドパターン） |
 | `/spectral-rainbow/` | Spectral Rainbow（波長 380-780nm の可視光スペクトルを RGB 近似で描く） |
+| `/retinal-persistence/` | Retinal Persistence（視覚の残像を模したリサージュ軌跡パーティクル） |
 
 ## トップページ仕様
 
