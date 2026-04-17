@@ -58,6 +58,7 @@
 | `/truchet-tiles/` | Truchet Tiles（ランダムな向きの弧タイルで生まれる迷路模様） |
 | `/harmonograph/` | Harmonograph（減衰する振り子の合成で描くハーモノグラフ） |
 | `/rose-curve/` | Rose Curve（r = cos(kθ) で描く花弁状の薔薇曲線） |
+| `/superellipse/` | Superellipse（指数 n で膨縮するラメ曲線のネストパターン） |
 
 ## トップページ仕様
 
