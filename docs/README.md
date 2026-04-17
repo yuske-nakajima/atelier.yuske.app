@@ -186,3 +186,4 @@ docs/
 | `/mud-crack-polygon/` | ¼ˆ¼‰ |
 | `/turing-stripes/` | ¼ˆ¼‰ |
 | `/turing-spots/` | ¼ˆ¼‰ |
+| `/cephalopod-skin/` | ¼ˆ¼‰ |
