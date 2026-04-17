@@ -81,23 +81,25 @@ function draw() {
     const rx = params.radius * (1 + (rnd() - 0.5) * params.deform);
     const ry = params.radius * (1 + (rnd() - 0.5) * params.deform);
     const rot = rnd() * Math.PI;
-    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, rx);
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rot);
+    ctx.scale(1, ry / rx);
+    // 変形後のローカル座標でグラデーションを作成しないと
+    // 中心がズレて最外（透明）色のみが適用されスポットが描画されない
+    const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
     grd.addColorStop(
       0,
       `hsl(${params.hueSpot}, ${params.saturation}%, ${params.lightSpot + 10}%)`,
     );
     grd.addColorStop(
-      1 - params.edgeSoft,
+      Math.max(0, Math.min(1, 1 - params.edgeSoft)),
       `hsl(${params.hueSpot}, ${params.saturation}%, ${params.lightSpot}%)`,
     );
     grd.addColorStop(
       1,
       `hsla(${params.hueSpot}, ${params.saturation}%, ${params.lightSpot}%, 0)`,
     );
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(rot);
-    ctx.scale(1, ry / rx);
     ctx.fillStyle = grd;
     ctx.beginPath();
     ctx.arc(0, 0, rx, 0, Math.PI * 2);
