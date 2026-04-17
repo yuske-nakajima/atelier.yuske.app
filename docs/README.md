@@ -91,6 +91,7 @@
 | `/escher-tessellation/` | Escher Tessellation（エッシャー風テセレーション） |
 | `/quasicrystal/` | Quasicrystal（準結晶パターン） |
 | `/girih-pattern/` | Girih Pattern（ギリパターン） |
+| `/aztec-geometry/` | Aztec Geometry（アステカ幾何模様） |
 
 ## トップページ仕様
 
