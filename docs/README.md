@@ -62,6 +62,16 @@
 | `/optical-illusion/` | Optical Illusion（回転渦・Café Wall・放射錯視を切り替える錯視スタジオ） |
 | `/cmyk-halftone/` | CMYK Halftone（CMYK 各版を異なる網角で重ねる印刷風ハーフトーン） |
 | `/holographic-interference/` | Holographic Interference（RGB 3 波を重ねて虹色干渉を生むホログラム風ビジュアル） |
+| `/soap-film/` | Soap Film（薄膜干渉で揺らぐシャボン膜のイリデッセンス） |
+| `/ripple-pond/` | Ripple Pond（雨滴で広がる同心円波紋の水面ビジュアル） |
+| `/truchet-tiles/` | Truchet Tiles（ランダムな向きの弧タイルで生まれる迷路模様） |
+| `/harmonograph/` | Harmonograph（減衰する振り子の合成で描くハーモノグラフ） |
+| `/rose-curve/` | Rose Curve（r = cos(kθ) で描く花弁状の薔薇曲線） |
+| `/superellipse/` | Superellipse（指数 n で膨縮するラメ曲線のネストパターン） |
+| `/spiral-phyllotaxis/` | Spiral Phyllotaxis（黄金角でひまわり状に並ぶ種のフィロタキシス） |
+| `/meteor-shower/` | Meteor Shower（流星が尾を引いて降る夜空の流星群） |
+| `/dragon-curve/` | Dragon Curve（紙を折り畳んで展開するヘイウェイのドラゴン曲線） |
+| `/koch-snowflake/` | Koch Snowflake（辺を反復分割して形成するコッホ雪片フラクタル） |
 
 ## トップページ仕様
 
