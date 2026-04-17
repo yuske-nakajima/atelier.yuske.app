@@ -206,3 +206,4 @@ docs/
 | `/spider-web-radial/` | ¼ˆ¼‰ |
 | `/slime-mold-transport-net/` | ¼ˆ¼‰ |
 | `/plankton-vertical-migration/` | ¼ˆ¼‰ |
+| `/fish-scale-arrangement/` | ¼ˆ¼‰ |
