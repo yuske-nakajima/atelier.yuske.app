@@ -141,6 +141,7 @@
 | `/virus-capsid/` | Virus Capsid（ウイルスカプシド） |
 | `/chromatic-aberration/` | Chromatic Aberration（色収差） |
 | `/diffraction-grating/` | Diffraction Grating（回折格子） |
+| `/polarized-light/` | Polarized Light（偏光板の干渉色） |
 
 ## トップページ仕様
 
