@@ -98,6 +98,7 @@
 | `/ant-bridge/` | Ant Bridge（アリの橋） |
 | `/bee-swarm/` | Bee Swarm（ミツバチの群れ） |
 | `/bacterial-colony/` | Bacterial Colony（バクテリアコロニー） |
+| `/plankton-bloom/` | Plankton Bloom（プランクトンブルーム） |
 
 ## トップページ仕様
 
