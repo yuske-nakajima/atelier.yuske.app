@@ -139,6 +139,7 @@
 | `/dna-helix/` | DNA Helix（DNAヘリックス） |
 | `/cell-division/` | Cell Division（細胞分裂） |
 | `/virus-capsid/` | Virus Capsid（ウイルスカプシド） |
+| `/chromatic-aberration/` | Chromatic Aberration（色収差） |
 
 ## トップページ仕様
 
