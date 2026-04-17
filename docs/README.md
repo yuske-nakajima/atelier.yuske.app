@@ -53,6 +53,15 @@
 | `/wolfram-code-explorer/` | Wolfram Code Explorer（1D 初等セルオートマトンをルール番号で探索） |
 | `/heart-pulse/` | Heart Pulse（心臓曲線を BPM で脈動させるパルス波） |
 | `/error-diffusion/` | Error Diffusion（Floyd-Steinberg 誤差拡散ディザで階調を量子化） |
+| `/stern-brocot-tree/` | Stern-Brocot Tree（既約分数を生成するシュターン・ブロコ木） |
+| `/digit-sum-grid/` | Digit Sum Grid（整数の桁和で色分けするグリッドパターン） |
+| `/spectral-rainbow/` | Spectral Rainbow（波長 380-780nm の可視光スペクトルを RGB 近似で描く） |
+| `/retinal-persistence/` | Retinal Persistence（視覚の残像を模したリサージュ軌跡パーティクル） |
+| `/dithering-studio/` | Dithering Studio（Bayer 行列による順序付きディザの 2 値化スタジオ） |
+| `/color-blending/` | Color Blending（ブレンドモードで 3 色円盤を混合する加法・減法混色） |
+| `/optical-illusion/` | Optical Illusion（回転渦・Café Wall・放射錯視を切り替える錯視スタジオ） |
+| `/cmyk-halftone/` | CMYK Halftone（CMYK 各版を異なる網角で重ねる印刷風ハーフトーン） |
+| `/holographic-interference/` | Holographic Interference（RGB 3 波を重ねて虹色干渉を生むホログラム風ビジュアル） |
 | `/soap-film/` | Soap Film（薄膜干渉で揺らぐシャボン膜のイリデッセンス） |
 | `/ripple-pond/` | Ripple Pond（雨滴で広がる同心円波紋の水面ビジュアル） |
 | `/truchet-tiles/` | Truchet Tiles（ランダムな向きの弧タイルで生まれる迷路模様） |
