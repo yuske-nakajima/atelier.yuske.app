@@ -72,6 +72,16 @@
 | `/meteor-shower/` | Meteor Shower（流星が尾を引いて降る夜空の流星群） |
 | `/dragon-curve/` | Dragon Curve（紙を折り畳んで展開するヘイウェイのドラゴン曲線） |
 | `/koch-snowflake/` | Koch Snowflake（辺を反復分割して形成するコッホ雪片フラクタル） |
+| `/lightning-strike/` | Lightning Strike（確率的に分岐しながら走る稲妻のジェネラティブアート） |
+| `/sand-dune/` | Sand Dune（風に流されて重なり合う砂丘の稜線ビジュアル） |
+| `/cloud-formation/` | Cloud Formation（パフの集合で形作る流れる雲のジェネレーティブアート） |
+| `/aurora-borealis/` | Aurora Borealis（夜空を流れるオーロラのリボンと星のビジュアル） |
+| `/lava-flow/` | Lava Flow（メタボールで融合する溶岩流と黒皮のグラデーション） |
+| `/bubble-chamber/` | Bubble Chamber（磁場中の荷電粒子が描く螺旋軌跡の泡箱ビジュアル） |
+| `/convection-cell/` | Convection Cell（熱対流セルで渦を描く粒子のベナール対流ビジュアル） |
+| `/ice-crystal/` | Ice Crystal（6 回対称で再帰成長する雪の結晶フラクタル） |
+| `/rainbow-prism/` | Rainbow Prism（入射光がプリズムで分散して虹色スペクトルになる光学ビジュアル） |
+| `/mirage-heat/` | Mirage Heat（熱気で地平線が揺らぐ蜃気楼のビジュアル） |
 
 ## トップページ仕様
 
