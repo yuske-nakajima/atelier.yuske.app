@@ -235,3 +235,4 @@ docs/
 | `/totient-function-plot/` | Totient Function Plot（オイラーのトーシェント関数φ(n)のプロット） |
 | `/collatz-tree-layout/` | Collatz Tree Layout（Collatz数列を奇偶で回転させた有機的ツリー） |
 | `/logistic-map-bifurcation/` | Logistic Map Bifurcation（ロジスティック写像の分岐図） |
+| `/feigenbaum-fractal/` | Feigenbaum Fractal（分岐図を密度ヒートマップで描画） |
