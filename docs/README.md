@@ -132,6 +132,7 @@
 | `/reaction-diffusion/` | Reaction Diffusion（反応拡散系） |
 | `/gray-scott-model/` | Gray-Scott Model（Gray-Scott モデル） |
 | `/genetic-creatures/` | Genetic Creatures（遺伝的生物） |
+| `/neural-network-viz/` | Neural Network Viz（ニューラルネット可視化） |
 
 ## トップページ仕様
 
