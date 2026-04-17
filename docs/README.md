@@ -226,3 +226,4 @@ docs/
 | `/apollonian-network-3d/` | Apollonian Network 3D（アポロニウスの窓を擬似3Dで描画） |
 | `/ford-circles/` | Ford Circles（既約分数ごとに描くFord円のフラクタル構造） |
 | `/stern-brocot-mediant-tree/` | Stern–Brocot Mediant Tree（Stern-Brocot木をmediant生成で描画） |
+| `/farey-sequence-diagram/` | Farey Sequence Diagram（Farey数列を弧でつないだ図） |
