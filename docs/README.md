@@ -80,6 +80,7 @@
 | `/bubble-chamber/` | Bubble Chamber（磁場中の荷電粒子が描く螺旋軌跡の泡箱ビジュアル） |
 | `/convection-cell/` | Convection Cell（熱対流セルで渦を描く粒子のベナール対流ビジュアル） |
 | `/ice-crystal/` | Ice Crystal（6 回対称で再帰成長する雪の結晶フラクタル） |
+| `/rainbow-prism/` | Rainbow Prism（入射光がプリズムで分散して虹色スペクトルになる光学ビジュアル） |
 
 ## トップページ仕様
 
