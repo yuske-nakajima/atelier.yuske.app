@@ -59,6 +59,7 @@
 | `/retinal-persistence/` | Retinal Persistence（視覚の残像を模したリサージュ軌跡パーティクル） |
 | `/dithering-studio/` | Dithering Studio（Bayer 行列による順序付きディザの 2 値化スタジオ） |
 | `/color-blending/` | Color Blending（ブレンドモードで 3 色円盤を混合する加法・減法混色） |
+| `/optical-illusion/` | Optical Illusion（回転渦・Café Wall・放射錯視を切り替える錯視スタジオ） |
 
 ## トップページ仕様
 
