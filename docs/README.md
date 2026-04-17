@@ -100,6 +100,7 @@
 | `/bacterial-colony/` | Bacterial Colony（バクテリアコロニー） |
 | `/plankton-bloom/` | Plankton Bloom（プランクトンブルーム） |
 | `/slime-mold/` | Slime Mold（粘菌ネットワーク） |
+| `/bird-murmuration/` | Bird Murmuration（鳥の群れの旋回） |
 
 ## トップページ仕様
 
