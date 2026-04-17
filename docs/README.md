@@ -50,6 +50,7 @@
 | `/pi-walk/` | Pi Walk（π の各桁を方向に変換したランダムウォーク） |
 | `/fibonacci-sunflower/` | Fibonacci Sunflower（黄金角で配置したひまわりの種の螺旋） |
 | `/xor-fractal/` | XOR Fractal（x XOR y で描くシェルピンスキー風フラクタル） |
+| `/wolfram-code-explorer/` | Wolfram Code Explorer（1D 初等セルオートマトンをルール番号で探索） |
 
 ## トップページ仕様
 
