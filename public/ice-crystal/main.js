@@ -40,28 +40,23 @@ let time = 0;
 let growth = 0; // 0..1
 
 /**
- * 枝を描く（再帰）
+ * 枝を Path に積む（再帰）。層ごとにまとめて 1 回だけ stroke することで
+ * shadowBlur の適用回数を depth 回に抑える。
+ * @param {Path2D[]} paths
  * @param {number} x
  * @param {number} y
  * @param {number} angle
  * @param {number} length
  * @param {number} depthLeft
  */
-function drawBranch(x, y, angle, length, depthLeft) {
+function collectBranch(paths, x, y, angle, length, depthLeft) {
   if (depthLeft <= 0 || length < 1) return;
   const nx = x + Math.cos(angle) * length;
   const ny = y + Math.sin(angle) * length;
   const depthIdx = Math.round(params.depth) - depthLeft;
-  const hue = params.hueBase + depthIdx * params.hueShift;
-  ctx.strokeStyle = `hsla(${hue}, 65%, 80%, ${0.55 + 0.45 * (depthLeft / params.depth)})`;
-  ctx.lineWidth = Math.max(
-    0.0625,
-    params.lineWidth * (depthLeft / params.depth + 0.3),
-  );
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.lineTo(nx, ny);
-  ctx.stroke();
+  const path = paths[depthIdx];
+  path.moveTo(x, y);
+  path.lineTo(nx, ny);
 
   // 側枝
   const sideAngRad = (params.sideAngle * Math.PI) / 180;
@@ -71,14 +66,30 @@ function drawBranch(x, y, angle, length, depthLeft) {
     const sx = x + Math.cos(angle) * length * t;
     const sy = y + Math.sin(angle) * length * t;
     const sideLen = length * params.branchRatio * (1 - t * 0.3);
-    drawBranch(sx, sy, angle - sideAngRad, sideLen, depthLeft - 1);
-    drawBranch(sx, sy, angle + sideAngRad, sideLen, depthLeft - 1);
+    collectBranch(paths, sx, sy, angle - sideAngRad, sideLen, depthLeft - 1);
+    collectBranch(paths, sx, sy, angle + sideAngRad, sideLen, depthLeft - 1);
   }
 
-  // 先端の分岐
-  const tipLen = length * params.tipSplit;
-  drawBranch(nx, ny, angle - sideAngRad * 0.4, tipLen, depthLeft - 1);
-  drawBranch(nx, ny, angle + sideAngRad * 0.4, tipLen, depthLeft - 1);
+  // 先端の分岐（先端のみ：再帰爆発を避けるため tipSplit=0 ならスキップ）
+  if (params.tipSplit > 0.01) {
+    const tipLen = length * params.tipSplit;
+    collectBranch(
+      paths,
+      nx,
+      ny,
+      angle - sideAngRad * 0.4,
+      tipLen,
+      depthLeft - 1,
+    );
+    collectBranch(
+      paths,
+      nx,
+      ny,
+      angle + sideAngRad * 0.4,
+      tipLen,
+      depthLeft - 1,
+    );
+  }
 }
 
 function drawBackground() {
@@ -110,10 +121,23 @@ function draw() {
   ctx.lineCap = 'round';
   ctx.shadowBlur = params.glow;
   ctx.shadowColor = `hsl(${params.hueBase}, 70%, 85%)`;
-  // 6 回対称（雪の結晶）
+
+  // 層ごとに Path をまとめ、層単位で 1 回だけ stroke する
+  const depthI = Math.round(params.depth);
+  const paths = Array.from({ length: depthI }, () => new Path2D());
   for (let i = 0; i < 6; i++) {
     const angle = (i / 6) * Math.PI * 2;
-    drawBranch(0, 0, angle, effectiveLen, Math.round(params.depth));
+    collectBranch(paths, 0, 0, angle, effectiveLen, depthI);
+  }
+  for (let d = 0; d < depthI; d++) {
+    const depthLeft = depthI - d;
+    const hue = params.hueBase + d * params.hueShift;
+    ctx.strokeStyle = `hsla(${hue}, 65%, 80%, ${0.55 + 0.45 * (depthLeft / depthI)})`;
+    ctx.lineWidth = Math.max(
+      0.0625,
+      params.lineWidth * (depthLeft / depthI + 0.3),
+    );
+    ctx.stroke(paths[d]);
   }
   ctx.shadowBlur = 0;
   ctx.restore();
