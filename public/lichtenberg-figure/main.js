@@ -48,42 +48,44 @@ let figureSeed = Math.floor(Math.random() * 1e9);
 let lastSpawn = 0;
 let time = 0;
 
+// セグメント数の暴発を防ぐ上限
+const MAX_SEGMENTS = 50000;
+/** @type {Map<number, number[]>} */
+let segmentsByDepth = new Map();
+let segmentCount = 0;
+
 /**
- * 放電枝を再帰描画
+ * 放電枝を再帰収集
  * @param {number} x
  * @param {number} y
  * @param {number} angle
  * @param {number} length
  * @param {number} depthLeft
- * @param {number} thickness
  */
-function drawBolt(x, y, angle, length, depthLeft, thickness) {
+function collectBolt(x, y, angle, length, depthLeft) {
   if (depthLeft <= 0 || length < 1) return;
+  if (segmentCount >= MAX_SEGMENTS) return;
   const nx = x + Math.cos(angle) * length;
   const ny = y + Math.sin(angle) * length;
-  const t = 1 - depthLeft / params.depth;
-  const alpha = 0.85 - t * 0.35;
-  ctx.strokeStyle = `hsla(${params.hue + t * 40}, 80%, ${60 + t * 20}%, ${alpha})`;
-  ctx.lineWidth = Math.max(0.25, thickness);
-  ctx.shadowBlur = params.glow * 16;
-  ctx.shadowColor = `hsla(${params.hue}, 90%, 70%, ${params.glow})`;
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.lineTo(nx, ny);
-  ctx.stroke();
+  let bucket = segmentsByDepth.get(depthLeft);
+  if (!bucket) {
+    bucket = [];
+    segmentsByDepth.set(depthLeft, bucket);
+  }
+  bucket.push(x, y, nx, ny);
+  segmentCount++;
 
   const branches = Math.max(2, Math.min(4, Math.round(params.branches)));
   const spread = (params.spread * Math.PI) / 180;
   for (let i = 0; i < branches; i++) {
     const frac = branches === 1 ? 0 : i / (branches - 1) - 0.5;
     const jitter = ((rnd() - 0.5) * params.jitter * Math.PI) / 180;
-    drawBolt(
+    collectBolt(
       nx,
       ny,
       angle + frac * spread + jitter,
       length * params.lengthRatio * (0.8 + rnd() * 0.4),
       depthLeft - 1,
-      thickness * params.thickDecay,
     );
   }
 }
@@ -91,16 +93,40 @@ function drawBolt(x, y, angle, length, depthLeft, thickness) {
 function spawnFigure() {
   setSeed(figureSeed);
   ctx.lineCap = 'round';
+  segmentsByDepth = new Map();
+  segmentCount = 0;
   const branches = 5;
   for (let i = 0; i < branches; i++) {
-    drawBolt(
+    collectBolt(
       canvas.width / 2,
       canvas.height / 2,
       (i / branches) * Math.PI * 2 + rnd() * 0.5,
       params.initialLength,
       Math.round(params.depth),
-      params.thickness,
     );
+  }
+  // 深さバケットごとに 1 回 stroke。shadowBlur のコストを最小化
+  ctx.shadowBlur = params.glow * 16;
+  ctx.shadowColor = `hsla(${params.hue}, 90%, 70%, ${params.glow})`;
+  const depths = [...segmentsByDepth.keys()].sort((a, b) => b - a);
+  let thickness = params.thickness;
+  let prevDepth = depths.length ? depths[0] : 0;
+  for (const d of depths) {
+    // 深さが減るごとに thickDecay を累積適用
+    const dropped = prevDepth - d;
+    for (let k = 0; k < dropped; k++) thickness *= params.thickDecay;
+    prevDepth = d;
+    const t = 1 - d / params.depth;
+    const alpha = 0.85 - t * 0.35;
+    ctx.strokeStyle = `hsla(${params.hue + t * 40}, 80%, ${60 + t * 20}%, ${alpha})`;
+    ctx.lineWidth = Math.max(0.25, thickness);
+    const seg = /** @type {number[]} */ (segmentsByDepth.get(d));
+    ctx.beginPath();
+    for (let i = 0; i < seg.length; i += 4) {
+      ctx.moveTo(seg[i], seg[i + 1]);
+      ctx.lineTo(seg[i + 2], seg[i + 3]);
+    }
+    ctx.stroke();
   }
   ctx.shadowBlur = 0;
 }

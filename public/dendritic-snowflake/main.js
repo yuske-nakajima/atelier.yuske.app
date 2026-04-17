@@ -30,6 +30,12 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
+// セグメント数の暴発を防ぐ上限（パラメータ次第で 8^depth まで増えるため）
+const MAX_SEGMENTS = 200000;
+/** @type {Map<number, number[]>} */
+let segmentsByDepth = new Map();
+let segmentCount = 0;
+
 /**
  * @param {number} x
  * @param {number} y
@@ -39,22 +45,25 @@ resize();
  */
 function drawArm(x, y, angle, length, depthLeft) {
   if (depthLeft <= 0 || length < 1) return;
+  if (segmentCount >= MAX_SEGMENTS) return;
   const nx = x + Math.cos(angle) * length;
   const ny = y + Math.sin(angle) * length;
-  const t = depthLeft / params.depth;
-  ctx.strokeStyle = `hsla(${params.hue}, ${params.saturation}%, ${70 + t * 20}%, 0.9)`;
-  ctx.lineWidth = Math.max(0.25, params.thickness * t);
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.lineTo(nx, ny);
-  ctx.stroke();
+  let bucket = segmentsByDepth.get(depthLeft);
+  if (!bucket) {
+    bucket = [];
+    segmentsByDepth.set(depthLeft, bucket);
+  }
+  bucket.push(x, y, nx, ny);
+  segmentCount++;
 
   const sides = Math.round(params.sideBranches);
+  const sa = (params.sideAngle * Math.PI) / 180;
+  const cosA = Math.cos(angle);
+  const sinA = Math.sin(angle);
   for (let i = 1; i <= sides; i++) {
     const f = i / (sides + 1);
-    const bx = x + Math.cos(angle) * length * f;
-    const by = y + Math.sin(angle) * length * f;
-    const sa = (params.sideAngle * Math.PI) / 180;
+    const bx = x + cosA * length * f;
+    const by = y + sinA * length * f;
     drawArm(bx, by, angle + sa, length * params.lengthRatio, depthLeft - 1);
     drawArm(bx, by, angle - sa, length * params.lengthRatio, depthLeft - 1);
   }
@@ -70,6 +79,8 @@ function draw() {
   const cy = canvas.height / 2;
   const arms = Math.max(3, Math.round(params.arms));
   const rot = (params.rotation * Math.PI) / 180;
+  segmentsByDepth = new Map();
+  segmentCount = 0;
   for (let i = 0; i < arms; i++) {
     const a = (i / arms) * Math.PI * 2 + rot;
     drawArm(
@@ -80,12 +91,32 @@ function draw() {
       Math.round(params.depth),
     );
   }
+  // 深さバケットごとに 1 回 stroke することで shadowBlur のコストを最小化
+  const depths = [...segmentsByDepth.keys()].sort((a, b) => b - a);
+  for (const d of depths) {
+    const seg = /** @type {number[]} */ (segmentsByDepth.get(d));
+    const t = d / params.depth;
+    ctx.strokeStyle = `hsla(${params.hue}, ${params.saturation}%, ${70 + t * 20}%, 0.9)`;
+    ctx.lineWidth = Math.max(0.25, params.thickness * t);
+    ctx.beginPath();
+    for (let i = 0; i < seg.length; i += 4) {
+      ctx.moveTo(seg[i], seg[i + 1]);
+      ctx.lineTo(seg[i + 2], seg[i + 3]);
+    }
+    ctx.stroke();
+  }
   ctx.shadowBlur = 0;
 }
 draw();
 
+let drawScheduled = false;
 function redraw() {
-  requestAnimationFrame(draw);
+  if (drawScheduled) return;
+  drawScheduled = true;
+  requestAnimationFrame(() => {
+    drawScheduled = false;
+    draw();
+  });
 }
 
 const gui = new TileUI({
