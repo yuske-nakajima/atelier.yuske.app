@@ -222,3 +222,4 @@ docs/
 | `/heighway-dragon-variants/` | Heighway Dragon Variants（角度・回転変種のHeighwayドラゴン曲線） |
 | `/flowsnake-variants/` | Flowsnake Variants（Gosper曲線の角度・深度変種） |
 | `/terdragon/` | Terdragon（120°角のL-systemによるTerdragon曲線） |
+| `/mcmullen-carpet/` | McMullen Carpet（長方形多段分割によるMcMullenカーペット） |
