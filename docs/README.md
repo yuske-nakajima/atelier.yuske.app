@@ -47,6 +47,12 @@
 | `/prime-spiral/` | Prime Spiral（整数を螺旋に並べ素数を強調したウラム螺旋） |
 | `/collatz-conjecture/` | Collatz Conjecture（コラッツ予想の軌道を枝として重ねた樹形） |
 | `/pascal-triangle-mod/` | Pascal Triangle Mod（パスカル三角形を mod で色分けしたフラクタル） |
+| `/pi-walk/` | Pi Walk（π の各桁を方向に変換したランダムウォーク） |
+| `/fibonacci-sunflower/` | Fibonacci Sunflower（黄金角で配置したひまわりの種の螺旋） |
+| `/xor-fractal/` | XOR Fractal（x XOR y で描くシェルピンスキー風フラクタル） |
+| `/wolfram-code-explorer/` | Wolfram Code Explorer（1D 初等セルオートマトンをルール番号で探索） |
+| `/heart-pulse/` | Heart Pulse（心臓曲線を BPM で脈動させるパルス波） |
+| `/error-diffusion/` | Error Diffusion（Floyd-Steinberg 誤差拡散ディザで階調を量子化） |
 
 ## トップページ仕様
 
