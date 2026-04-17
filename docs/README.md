@@ -82,6 +82,65 @@
 | `/ice-crystal/` | Ice Crystal（6 回対称で再帰成長する雪の結晶フラクタル） |
 | `/rainbow-prism/` | Rainbow Prism（入射光がプリズムで分散して虹色スペクトルになる光学ビジュアル） |
 | `/mirage-heat/` | Mirage Heat（熱気で地平線が揺らぐ蜃気楼のビジュアル） |
+| `/tornado-vortex/` | Tornado Vortex（渦巻く竜巻のパーティクル） |
+| `/avalanche-cascade/` | Avalanche Cascade（雪崩のカスケード） |
+| `/hilbert-curve/` | Hilbert Curve（ヒルベルト曲線） |
+| `/peano-curve/` | Peano Curve（ペアノ曲線） |
+| `/rhombille-tiling/` | Rhombille Tiling（菱形タイリング） |
+| `/celtic-knot/` | Celtic Knot（ケルト結び目模様） |
+| `/escher-tessellation/` | Escher Tessellation（エッシャー風テセレーション） |
+| `/quasicrystal/` | Quasicrystal（準結晶パターン） |
+| `/girih-pattern/` | Girih Pattern（ギリパターン） |
+| `/aztec-geometry/` | Aztec Geometry（アステカ幾何模様） |
+| `/mandala-generator/` | Mandala Generator（マンダラ生成器） |
+| `/lissajous-3d/` | Lissajous 3D（3D リサジュー曲線） |
+| `/schooling-fish/` | Schooling Fish（群泳する魚） |
+| `/ant-bridge/` | Ant Bridge（アリの橋） |
+| `/bee-swarm/` | Bee Swarm（ミツバチの群れ） |
+| `/bacterial-colony/` | Bacterial Colony（バクテリアコロニー） |
+| `/plankton-bloom/` | Plankton Bloom（プランクトンブルーム） |
+| `/slime-mold/` | Slime Mold（粘菌ネットワーク） |
+| `/bird-murmuration/` | Bird Murmuration（鳥の群れの旋回） |
+| `/electron-cloud/` | Electron Cloud（電子雲） |
+| `/magnetic-dust/` | Magnetic Dust（磁性粉のパターン） |
+| `/dust-storm/` | Dust Storm（砂嵐） |
+| `/comet-tail/` | Comet Tail（彗星の尾） |
+| `/fireflies-trail/` | Fireflies Trail（蛍の光跡） |
+| `/moth-to-flame/` | Moth to Flame（蛾と炎） |
+| `/pollen-drift/` | Pollen Drift（花粉の漂い） |
+| `/mandelbrot-zoom/` | Mandelbrot Zoom（マンデルブロ集合ズーム） |
+| `/burning-ship/` | Burning Ship（燃える船フラクタル） |
+| `/newton-fractal/` | Newton Fractal（ニュートン法フラクタル） |
+| `/barnsley-fern/` | Barnsley Fern（バーンズリーのシダ） |
+| `/apollonian-gasket/` | Apollonian Gasket（アポロニウスのガスケット） |
+| `/h-tree/` | H Tree（H木フラクタル） |
+| `/pythagoras-tree/` | Pythagoras Tree（ピタゴラスの木） |
+| `/t-square-fractal/` | T-Square Fractal（T-スクエアフラクタル） |
+| `/gosper-island/` | Gosper Island（ゴスパー島） |
+| `/menger-slice/` | Menger Slice（メンガースポンジ断面） |
+| `/spectrogram-painter/` | Spectrogram Painter（スペクトログラム描画） |
+| `/circular-sequencer/` | Circular Sequencer（円形シーケンサー） |
+| `/phase-shift-metronome/` | Phase Shift Metronome（位相シフトメトロノーム） |
+| `/euclidean-rhythm/` | Euclidean Rhythm（ユークリッドリズム） |
+| `/polyrhythm-wheel/` | Polyrhythm Wheel（ポリリズム円盤） |
+| `/chord-wheel/` | Chord Wheel（コードホイール） |
+| `/fm-synthesis-visualizer/` | FM Synthesis Visualizer（FM 合成ビジュアライザ） |
+| `/karplus-strong-strings/` | Karplus-Strong Strings（カープラス・ストロング弦） |
+| `/granular-cloud/` | Granular Cloud（グラニュラークラウド） |
+| `/beat-interference/` | Beat Interference（ビート干渉） |
+| `/risset-rhythm/` | Risset Rhythm（リセのリズム） |
+| `/reaction-diffusion/` | Reaction Diffusion（反応拡散系） |
+| `/gray-scott-model/` | Gray-Scott Model（Gray-Scott モデル） |
+| `/genetic-creatures/` | Genetic Creatures（遺伝的生物） |
+| `/neural-network-viz/` | Neural Network Viz（ニューラルネット可視化） |
+| `/leaf-venation/` | Leaf Venation（葉脈形成） |
+| `/coral-growth/` | Coral Growth（サンゴの成長） |
+| `/mycelium-network/` | Mycelium Network（菌糸ネットワーク） |
+| `/dna-helix/` | DNA Helix（DNAヘリックス） |
+| `/cell-division/` | Cell Division（細胞分裂） |
+| `/virus-capsid/` | Virus Capsid（ウイルスカプシド） |
+| `/chromatic-aberration/` | Chromatic Aberration（色収差） |
+| `/diffraction-grating/` | Diffraction Grating（回折格子） |
 
 ## トップページ仕様
 
