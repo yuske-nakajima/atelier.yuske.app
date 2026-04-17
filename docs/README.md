@@ -119,6 +119,7 @@
 | `/gosper-island/` | Gosper Island（ゴスパー島） |
 | `/menger-slice/` | Menger Slice（メンガースポンジ断面） |
 | `/spectrogram-painter/` | Spectrogram Painter（スペクトログラム描画） |
+| `/circular-sequencer/` | Circular Sequencer（円形シーケンサー） |
 
 ## トップページ仕様
 
