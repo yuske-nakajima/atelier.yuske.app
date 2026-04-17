@@ -31,6 +31,7 @@
 | `/tessellation-lab/` | Tessellation Lab（正多角形タイルの敷き詰めパターン生成・変形） |
 | `/julia-set-explorer/` | Julia Set Explorer（ジュリア集合をリアルタイムに探索するフラクタル） |
 | `/l-system-garden/` | L-System Garden（L-System で生成する植物・樹木のフラクタル） |
+| `/recursive-subdivision/` | Recursive Subdivision（矩形を再帰分割するモンドリアン風の構図） |
 
 ## トップページ仕様
 
