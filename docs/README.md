@@ -185,3 +185,4 @@ docs/
 | `/basalt-column-cracking/` | ¼ˆ¼‰ |
 | `/mud-crack-polygon/` | ¼ˆ¼‰ |
 | `/turing-stripes/` | ¼ˆ¼‰ |
+| `/turing-spots/` | ¼ˆ¼‰ |
