@@ -188,3 +188,4 @@ docs/
 | `/turing-spots/` | ¼ˆ¼‰ |
 | `/cephalopod-skin/` | ¼ˆ¼‰ |
 | `/butterfly-wing-scales/` | ¼ˆ¼‰ |
+| `/peacock-feather-eye/` | ¼ˆ¼‰ |
