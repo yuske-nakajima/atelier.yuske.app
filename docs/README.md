@@ -219,3 +219,4 @@ docs/
 | `/wythoff-construction/` | Wythoff Construction（p,q鏡面対称に基づくWythoff構成パターン） |
 | `/levy-c-curve/` | Lévy C Curve（45°分岐で再帰生成するLévy Cフラクタル曲線） |
 | `/moore-curve/` | Moore Curve（L-system展開によるMoore空間充填曲線） |
+| `/heighway-dragon-variants/` | Heighway Dragon Variants（角度・回転変種のHeighwayドラゴン曲線） |
