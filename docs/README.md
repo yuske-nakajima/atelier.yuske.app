@@ -130,6 +130,7 @@
 | `/beat-interference/` | Beat Interference（ビート干渉） |
 | `/risset-rhythm/` | Risset Rhythm（リセのリズム） |
 | `/reaction-diffusion/` | Reaction Diffusion（反応拡散系） |
+| `/gray-scott-model/` | Gray-Scott Model（Gray-Scott モデル） |
 
 ## トップページ仕様
 
