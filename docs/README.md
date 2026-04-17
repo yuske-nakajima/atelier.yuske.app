@@ -55,6 +55,7 @@
 | `/error-diffusion/` | Error Diffusion（Floyd-Steinberg 誤差拡散ディザで階調を量子化） |
 | `/stern-brocot-tree/` | Stern-Brocot Tree（既約分数を生成するシュターン・ブロコ木） |
 | `/digit-sum-grid/` | Digit Sum Grid（整数の桁和で色分けするグリッドパターン） |
+| `/spectral-rainbow/` | Spectral Rainbow（波長 380-780nm の可視光スペクトルを RGB 近似で描く） |
 
 ## トップページ仕様
 
