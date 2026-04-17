@@ -104,6 +104,7 @@
 | `/electron-cloud/` | Electron Cloud（電子雲） |
 | `/magnetic-dust/` | Magnetic Dust（磁性粉のパターン） |
 | `/dust-storm/` | Dust Storm（砂嵐） |
+| `/comet-tail/` | Comet Tail（彗星の尾） |
 
 ## トップページ仕様
 
