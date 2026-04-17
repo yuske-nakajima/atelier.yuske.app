@@ -118,6 +118,7 @@
 | `/t-square-fractal/` | T-Square Fractal（T-スクエアフラクタル） |
 | `/gosper-island/` | Gosper Island（ゴスパー島） |
 | `/menger-slice/` | Menger Slice（メンガースポンジ断面） |
+| `/spectrogram-painter/` | Spectrogram Painter（スペクトログラム描画） |
 
 ## トップページ仕様
 
