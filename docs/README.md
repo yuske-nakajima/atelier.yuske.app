@@ -196,3 +196,4 @@ docs/
 | `/diatom-frustule/` | ¼ˆ¼‰ |
 | `/radiolarian-skeleton/` | ¼ˆ¼‰ |
 | `/pollen-grain-microscopy/` | ¼ˆ¼‰ |
+| `/leaf-skeleton/` | ¼ˆ¼‰ |
