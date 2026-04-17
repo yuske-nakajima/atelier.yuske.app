@@ -57,6 +57,7 @@
 | `/ripple-pond/` | Ripple Pond（雨滴で広がる同心円波紋の水面ビジュアル） |
 | `/truchet-tiles/` | Truchet Tiles（ランダムな向きの弧タイルで生まれる迷路模様） |
 | `/harmonograph/` | Harmonograph（減衰する振り子の合成で描くハーモノグラフ） |
+| `/rose-curve/` | Rose Curve（r = cos(kθ) で描く花弁状の薔薇曲線） |
 
 ## トップページ仕様
 
