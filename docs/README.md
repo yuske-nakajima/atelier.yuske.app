@@ -112,6 +112,7 @@
 | `/burning-ship/` | Burning Ship（燃える船フラクタル） |
 | `/newton-fractal/` | Newton Fractal（ニュートン法フラクタル） |
 | `/barnsley-fern/` | Barnsley Fern（バーンズリーのシダ） |
+| `/apollonian-gasket/` | Apollonian Gasket（アポロニウスのガスケット） |
 
 ## トップページ仕様
 
