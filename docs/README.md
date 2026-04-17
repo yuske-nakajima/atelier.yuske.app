@@ -198,3 +198,4 @@ docs/
 | `/pollen-grain-microscopy/` | ¼ˆ¼‰ |
 | `/leaf-skeleton/` | ¼ˆ¼‰ |
 | `/root-growth-rrt/` | ¼ˆ¼‰ |
+| `/snowflake-dendrite/` | ¼ˆ¼‰ |
