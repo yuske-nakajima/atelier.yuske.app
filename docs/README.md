@@ -125,6 +125,7 @@
 | `/polyrhythm-wheel/` | Polyrhythm Wheel（ポリリズム円盤） |
 | `/chord-wheel/` | Chord Wheel（コードホイール） |
 | `/fm-synthesis-visualizer/` | FM Synthesis Visualizer（FM 合成ビジュアライザ） |
+| `/karplus-strong-strings/` | Karplus-Strong Strings（カープラス・ストロング弦） |
 
 ## トップページ仕様
 
