@@ -122,6 +122,7 @@
 | `/circular-sequencer/` | Circular Sequencer（円形シーケンサー） |
 | `/phase-shift-metronome/` | Phase Shift Metronome（位相シフトメトロノーム） |
 | `/euclidean-rhythm/` | Euclidean Rhythm（ユークリッドリズム） |
+| `/polyrhythm-wheel/` | Polyrhythm Wheel（ポリリズム円盤） |
 
 ## トップページ仕様
 
