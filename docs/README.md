@@ -34,6 +34,7 @@
 | `/recursive-subdivision/` | Recursive Subdivision（矩形を再帰分割するモンドリアン風の構図） |
 | `/sierpinski-variants/` | Sierpinski Variants（シェルピンスキー三角形/カーペットのフラクタル） |
 | `/galaxy-spiral/` | Galaxy Spiral（腕を持つ渦巻銀河の星々が回転するビジュアル） |
+| `/particle-life/` | Particle Life（色別粒子の引力・斥力から生まれる自己組織化） |
 
 ## トップページ仕様
 
