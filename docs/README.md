@@ -92,6 +92,7 @@
 | `/quasicrystal/` | Quasicrystal（準結晶パターン） |
 | `/girih-pattern/` | Girih Pattern（ギリパターン） |
 | `/aztec-geometry/` | Aztec Geometry（アステカ幾何模様） |
+| `/mandala-generator/` | Mandala Generator（マンダラ生成器） |
 
 ## トップページ仕様
 
