@@ -205,3 +205,4 @@ docs/
 | `/wasp-nest-hexagon/` | ¼ˆ¼‰ |
 | `/spider-web-radial/` | ¼ˆ¼‰ |
 | `/slime-mold-transport-net/` | ¼ˆ¼‰ |
+| `/plankton-vertical-migration/` | ¼ˆ¼‰ |
