@@ -15,8 +15,9 @@ const params = {
   edgeAlpha: 0.3,
   padding: 40,
   seed: 1,
-  glow: 3,
 };
+// 描画する矩形数の上限（フリーズ防止）
+const MAX_RECTS = 200000;
 const defaults = { ...params };
 
 const canvas = /** @type {HTMLCanvasElement} */ (
@@ -53,6 +54,7 @@ function chooseKeep(cols, rows, keep, rnd) {
 }
 
 function subdivide(x, y, w, h, depth, cols, rows, keep, rnd, hue, out) {
+  if (out.length >= MAX_RECTS) return;
   if (depth === 0) {
     out.push([x, y, w, h, hue]);
     return;
@@ -62,6 +64,7 @@ function subdivide(x, y, w, h, depth, cols, rows, keep, rnd, hue, out) {
   const kept = chooseKeep(cols, rows, keep, rnd);
   for (let j = 0; j < rows; j++) {
     for (let i = 0; i < cols; i++) {
+      if (out.length >= MAX_RECTS) return;
       const idx = j * cols + i;
       if (!kept.has(idx)) continue;
       const nh = (hue + (i * 13 + j * 7) * params.hueShift * 0.1) % 360;
@@ -85,10 +88,12 @@ function subdivide(x, y, w, h, depth, cols, rows, keep, rnd, hue, out) {
 function draw() {
   ctx.fillStyle = '#08080c';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.shadowBlur = params.glow;
   const pad = params.padding;
   const w = canvas.width - pad * 2;
   const h = canvas.height - pad * 2;
+  const cols = Math.max(2, params.cols | 0);
+  const rows = Math.max(2, params.rows | 0);
+  const keep = Math.max(1, Math.min(cols * rows, params.keep | 0));
   const rnd = prng(params.seed);
   const out = [];
   subdivide(
@@ -97,21 +102,23 @@ function draw() {
     w,
     h,
     Math.max(0, Math.min(6, params.depth | 0)),
-    Math.max(2, params.cols | 0),
-    Math.max(2, params.rows | 0),
-    Math.max(1, params.keep | 0),
+    cols,
+    rows,
+    keep,
     rnd,
     params.hue,
     out,
   );
+  // エッジ描画は小さすぎる矩形では省略（可読性とパフォーマンス）
+  const edge = `rgba(0,0,0,${params.edgeAlpha})`;
+  ctx.strokeStyle = edge;
   for (const [x, y, rw, rh, hue] of out) {
     ctx.fillStyle = `hsl(${hue}, ${params.saturation}%, ${params.lightness}%)`;
-    ctx.shadowColor = ctx.fillStyle;
     ctx.fillRect(x, y, rw, rh);
-    ctx.strokeStyle = `rgba(0,0,0,${params.edgeAlpha})`;
-    ctx.strokeRect(x, y, rw, rh);
+    if (rw > 2 && rh > 2 && params.edgeAlpha > 0) {
+      ctx.strokeRect(x, y, rw, rh);
+    }
   }
-  ctx.shadowBlur = 0;
 }
 
 function tick() {
@@ -149,7 +156,6 @@ gui.add(params, 'lightness', 20, 80, 1).onChange(onChange);
 gui.add(params, 'edgeAlpha', 0, 1, 0.01).onChange(onChange);
 gui.add(params, 'padding', 0, 200, 1).onChange(onChange);
 gui.add(params, 'seed', 1, 9999, 1).onChange(onChange);
-gui.add(params, 'glow', 0, 20, 0.5).onChange(onChange);
 
 function rand(min, max, step = 0.01) {
   return Math.round((min + Math.random() * (max - min)) / step) * step;
