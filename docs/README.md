@@ -43,6 +43,7 @@
 | `/swarm-intelligence/` | Swarm Intelligence（アリのフェロモントレイルから生まれる自己組織化） |
 | `/cymatics/` | Cymatics（振動モード (m,n) で現れるクラドニ図形の砂模様） |
 | `/double-pendulum-chaos/` | Double Pendulum Chaos（二重振り子の軌跡が描くカオス的感度依存性） |
+| `/cantor-dust/` | Cantor Dust（区間を繰り返し分割して残すカントール塵） |
 
 ## トップページ仕様
 
