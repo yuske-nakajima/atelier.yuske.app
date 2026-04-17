@@ -54,6 +54,7 @@
 | `/heart-pulse/` | Heart Pulse（心臓曲線を BPM で脈動させるパルス波） |
 | `/error-diffusion/` | Error Diffusion（Floyd-Steinberg 誤差拡散ディザで階調を量子化） |
 | `/soap-film/` | Soap Film（薄膜干渉で揺らぐシャボン膜のイリデッセンス） |
+| `/ripple-pond/` | Ripple Pond（雨滴で広がる同心円波紋の水面ビジュアル） |
 
 ## トップページ仕様
 
