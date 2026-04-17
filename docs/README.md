@@ -110,6 +110,7 @@
 | `/pollen-drift/` | Pollen Drift（花粉の漂い） |
 | `/mandelbrot-zoom/` | Mandelbrot Zoom（マンデルブロ集合ズーム） |
 | `/burning-ship/` | Burning Ship（燃える船フラクタル） |
+| `/newton-fractal/` | Newton Fractal（ニュートン法フラクタル） |
 
 ## トップページ仕様
 
