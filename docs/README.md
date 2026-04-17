@@ -201,3 +201,4 @@ docs/
 | `/snowflake-dendrite/` | ¼ˆ¼‰ |
 | `/hoarfrost-needle/` | ¼ˆ¼‰ |
 | `/ant-colony-trails/` | ¼ˆ¼‰ |
+| `/termite-mound-cross-section/` | ¼ˆ¼‰ |
