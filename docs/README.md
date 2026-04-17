@@ -75,6 +75,7 @@
 | `/lightning-strike/` | Lightning Strike（確率的に分岐しながら走る稲妻のジェネラティブアート） |
 | `/sand-dune/` | Sand Dune（風に流されて重なり合う砂丘の稜線ビジュアル） |
 | `/cloud-formation/` | Cloud Formation（パフの集合で形作る流れる雲のジェネレーティブアート） |
+| `/aurora-borealis/` | Aurora Borealis（夜空を流れるオーロラのリボンと星のビジュアル） |
 
 ## トップページ仕様
 
