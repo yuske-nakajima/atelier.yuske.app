@@ -207,3 +207,4 @@ docs/
 | `/slime-mold-transport-net/` | ¼ˆ¼‰ |
 | `/plankton-vertical-migration/` | ¼ˆ¼‰ |
 | `/fish-scale-arrangement/` | ¼ˆ¼‰ |
+| `/feather-barb-pattern/` | ¼ˆ¼‰ |
