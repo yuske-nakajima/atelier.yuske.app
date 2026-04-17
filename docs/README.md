@@ -202,3 +202,4 @@ docs/
 | `/hoarfrost-needle/` | ¼ˆ¼‰ |
 | `/ant-colony-trails/` | ¼ˆ¼‰ |
 | `/termite-mound-cross-section/` | ¼ˆ¼‰ |
+| `/wasp-nest-hexagon/` | ¼ˆ¼‰ |
