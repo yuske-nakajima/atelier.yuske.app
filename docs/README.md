@@ -61,6 +61,7 @@
 | `/superellipse/` | Superellipse（指数 n で膨縮するラメ曲線のネストパターン） |
 | `/spiral-phyllotaxis/` | Spiral Phyllotaxis（黄金角でひまわり状に並ぶ種のフィロタキシス） |
 | `/meteor-shower/` | Meteor Shower（流星が尾を引いて降る夜空の流星群） |
+| `/dragon-curve/` | Dragon Curve（紙を折り畳んで展開するヘイウェイのドラゴン曲線） |
 
 ## トップページ仕様
 
