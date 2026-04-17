@@ -94,6 +94,7 @@
 | `/aztec-geometry/` | Aztec Geometry（アステカ幾何模様） |
 | `/mandala-generator/` | Mandala Generator（マンダラ生成器） |
 | `/lissajous-3d/` | Lissajous 3D（3D リサジュー曲線） |
+| `/schooling-fish/` | Schooling Fish（群泳する魚） |
 
 ## トップページ仕様
 
