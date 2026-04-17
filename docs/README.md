@@ -123,6 +123,7 @@
 | `/phase-shift-metronome/` | Phase Shift Metronome（位相シフトメトロノーム） |
 | `/euclidean-rhythm/` | Euclidean Rhythm（ユークリッドリズム） |
 | `/polyrhythm-wheel/` | Polyrhythm Wheel（ポリリズム円盤） |
+| `/chord-wheel/` | Chord Wheel（コードホイール） |
 
 ## トップページ仕様
 
