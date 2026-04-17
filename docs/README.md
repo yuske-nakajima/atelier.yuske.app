@@ -42,6 +42,7 @@
 | `/islamic-geometry/` | Islamic Geometry（星形の回転対称で敷き詰めるイスラム幾何学模様） |
 | `/swarm-intelligence/` | Swarm Intelligence（アリのフェロモントレイルから生まれる自己組織化） |
 | `/cymatics/` | Cymatics（振動モード (m,n) で現れるクラドニ図形の砂模様） |
+| `/double-pendulum-chaos/` | Double Pendulum Chaos（二重振り子の軌跡が描くカオス的感度依存性） |
 
 ## トップページ仕様
 
