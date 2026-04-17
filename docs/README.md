@@ -133,6 +133,7 @@
 | `/gray-scott-model/` | Gray-Scott Model（Gray-Scott モデル） |
 | `/genetic-creatures/` | Genetic Creatures（遺伝的生物） |
 | `/neural-network-viz/` | Neural Network Viz（ニューラルネット可視化） |
+| `/leaf-venation/` | Leaf Venation（葉脈形成） |
 
 ## トップページ仕様
 
