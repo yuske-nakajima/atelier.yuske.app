@@ -115,6 +115,7 @@
 | `/apollonian-gasket/` | Apollonian Gasket（アポロニウスのガスケット） |
 | `/h-tree/` | H Tree（H木フラクタル） |
 | `/pythagoras-tree/` | Pythagoras Tree（ピタゴラスの木） |
+| `/t-square-fractal/` | T-Square Fractal（T-スクエアフラクタル） |
 
 ## トップページ仕様
 
