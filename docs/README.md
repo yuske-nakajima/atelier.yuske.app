@@ -37,6 +37,7 @@
 | `/particle-life/` | Particle Life（色別粒子の引力・斥力から生まれる自己組織化） |
 | `/waveform-sculptor/` | Waveform Sculptor（サイン波の重ね合わせで描くリサージュ波形） |
 | `/rhythm-grid/` | Rhythm Grid（BPM 同期で点滅するステップシーケンサー風グリッド） |
+| `/gradient-mesh/` | Gradient Mesh（メッシュ頂点の色から補間する滑らかなグラデーション） |
 
 ## トップページ仕様
 
