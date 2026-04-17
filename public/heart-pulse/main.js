@@ -58,7 +58,8 @@ function frame() {
   const t = (performance.now() - startTime) / 1000;
   const phase = (t * params.bpm) / 60;
   const pulse = 1 + beat(phase) * params.pulseAmp;
-  const scale = Math.min(w, h) * 0.02 * params.size * pulse;
+  // 心臓曲線は |x|,|y| が最大 17 程度。画面短辺の 40% に収めるため 0.4/17 ≒ 0.0024 を基準にする
+  const scale = Math.min(w, h) * 0.0015 * params.size * pulse;
 
   ctx.save();
   ctx.translate(w / 2, h / 2);
