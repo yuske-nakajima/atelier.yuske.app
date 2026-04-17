@@ -233,3 +233,4 @@ docs/
 | `/sacks-spiral/` | Sacks Spiral（r=√n極座標で素数を配置するSacksスパイラル） |
 | `/goldbach-comet/` | Goldbach Comet（偶数を2素数の和で表す方法数のコメットプロット） |
 | `/totient-function-plot/` | Totient Function Plot（オイラーのトーシェント関数φ(n)のプロット） |
+| `/collatz-tree-layout/` | Collatz Tree Layout（Collatz数列を奇偶で回転させた有機的ツリー） |
