@@ -85,6 +85,7 @@
 | `/tornado-vortex/` | Tornado Vortex（渦巻く竜巻のパーティクル） |
 | `/avalanche-cascade/` | Avalanche Cascade（雪崩のカスケード） |
 | `/hilbert-curve/` | Hilbert Curve（ヒルベルト曲線） |
+| `/peano-curve/` | Peano Curve（ペアノ曲線） |
 
 ## トップページ仕様
 
