@@ -111,6 +111,36 @@
 | `/mandelbrot-zoom/` | Mandelbrot Zoom（マンデルブロ集合ズーム） |
 | `/burning-ship/` | Burning Ship（燃える船フラクタル） |
 | `/newton-fractal/` | Newton Fractal（ニュートン法フラクタル） |
+| `/barnsley-fern/` | Barnsley Fern（バーンズリーのシダ） |
+| `/apollonian-gasket/` | Apollonian Gasket（アポロニウスのガスケット） |
+| `/h-tree/` | H Tree（H木フラクタル） |
+| `/pythagoras-tree/` | Pythagoras Tree（ピタゴラスの木） |
+| `/t-square-fractal/` | T-Square Fractal（T-スクエアフラクタル） |
+| `/gosper-island/` | Gosper Island（ゴスパー島） |
+| `/menger-slice/` | Menger Slice（メンガースポンジ断面） |
+| `/spectrogram-painter/` | Spectrogram Painter（スペクトログラム描画） |
+| `/circular-sequencer/` | Circular Sequencer（円形シーケンサー） |
+| `/phase-shift-metronome/` | Phase Shift Metronome（位相シフトメトロノーム） |
+| `/euclidean-rhythm/` | Euclidean Rhythm（ユークリッドリズム） |
+| `/polyrhythm-wheel/` | Polyrhythm Wheel（ポリリズム円盤） |
+| `/chord-wheel/` | Chord Wheel（コードホイール） |
+| `/fm-synthesis-visualizer/` | FM Synthesis Visualizer（FM 合成ビジュアライザ） |
+| `/karplus-strong-strings/` | Karplus-Strong Strings（カープラス・ストロング弦） |
+| `/granular-cloud/` | Granular Cloud（グラニュラークラウド） |
+| `/beat-interference/` | Beat Interference（ビート干渉） |
+| `/risset-rhythm/` | Risset Rhythm（リセのリズム） |
+| `/reaction-diffusion/` | Reaction Diffusion（反応拡散系） |
+| `/gray-scott-model/` | Gray-Scott Model（Gray-Scott モデル） |
+| `/genetic-creatures/` | Genetic Creatures（遺伝的生物） |
+| `/neural-network-viz/` | Neural Network Viz（ニューラルネット可視化） |
+| `/leaf-venation/` | Leaf Venation（葉脈形成） |
+| `/coral-growth/` | Coral Growth（サンゴの成長） |
+| `/mycelium-network/` | Mycelium Network（菌糸ネットワーク） |
+| `/dna-helix/` | DNA Helix（DNAヘリックス） |
+| `/cell-division/` | Cell Division（細胞分裂） |
+| `/virus-capsid/` | Virus Capsid（ウイルスカプシド） |
+| `/chromatic-aberration/` | Chromatic Aberration（色収差） |
+| `/diffraction-grating/` | Diffraction Grating（回折格子） |
 
 ## トップページ仕様
 
