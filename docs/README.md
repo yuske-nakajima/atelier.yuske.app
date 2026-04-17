@@ -81,6 +81,7 @@
 | `/convection-cell/` | Convection Cell（熱対流セルで渦を描く粒子のベナール対流ビジュアル） |
 | `/ice-crystal/` | Ice Crystal（6 回対称で再帰成長する雪の結晶フラクタル） |
 | `/rainbow-prism/` | Rainbow Prism（入射光がプリズムで分散して虹色スペクトルになる光学ビジュアル） |
+| `/mirage-heat/` | Mirage Heat（熱気で地平線が揺らぐ蜃気楼のビジュアル） |
 
 ## トップページ仕様
 
