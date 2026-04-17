@@ -193,3 +193,4 @@ docs/
 | `/conus-textile-pattern/` | ¼ˆ¼‰ |
 | `/ammonite-suture/` | ¼ˆ¼‰ |
 | `/coral-polyp-cluster/` | ¼ˆ¼‰ |
+| `/diatom-frustule/` | ¼ˆ¼‰ |
