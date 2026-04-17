@@ -39,6 +39,7 @@
 | `/rhythm-grid/` | Rhythm Grid（BPM 同期で点滅するステップシーケンサー風グリッド） |
 | `/gradient-mesh/` | Gradient Mesh（メッシュ頂点の色から補間する滑らかなグラデーション） |
 | `/ink-diffusion/` | Ink Diffusion（墨汁がにじみ広がる拡散シミュレーション） |
+| `/islamic-geometry/` | Islamic Geometry（星形の回転対称で敷き詰めるイスラム幾何学模様） |
 
 ## トップページ仕様
 
