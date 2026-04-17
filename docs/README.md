@@ -124,6 +124,7 @@
 | `/euclidean-rhythm/` | Euclidean Rhythm（ユークリッドリズム） |
 | `/polyrhythm-wheel/` | Polyrhythm Wheel（ポリリズム円盤） |
 | `/chord-wheel/` | Chord Wheel（コードホイール） |
+| `/fm-synthesis-visualizer/` | FM Synthesis Visualizer（FM 合成ビジュアライザ） |
 
 ## トップページ仕様
 
