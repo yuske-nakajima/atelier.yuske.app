@@ -187,3 +187,4 @@ docs/
 | `/turing-stripes/` | ¼ˆ¼‰ |
 | `/turing-spots/` | ¼ˆ¼‰ |
 | `/cephalopod-skin/` | ¼ˆ¼‰ |
+| `/butterfly-wing-scales/` | ¼ˆ¼‰ |
