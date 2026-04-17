@@ -217,3 +217,4 @@ docs/
 | `/rep-tiles/` | Rep-Tiles（自己相似分割によるRep-Tile） |
 | `/aperiodic-wang-tiles/` | Aperiodic Wang Tiles（辺色付き正方形による非周期Wangタイル） |
 | `/wythoff-construction/` | Wythoff Construction（p,q鏡面対称に基づくWythoff構成パターン） |
+| `/levy-c-curve/` | Lévy C Curve（45°分岐で再帰生成するLévy Cフラクタル曲線） |
