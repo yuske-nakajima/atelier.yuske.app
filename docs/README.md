@@ -30,6 +30,7 @@
 | `/smoke-plume/` | Smoke Plume（ゆらぎながら立ち昇る煙の流体風シミュレーション） |
 | `/tessellation-lab/` | Tessellation Lab（正多角形タイルの敷き詰めパターン生成・変形） |
 | `/julia-set-explorer/` | Julia Set Explorer（ジュリア集合をリアルタイムに探索するフラクタル） |
+| `/l-system-garden/` | L-System Garden（L-System で生成する植物・樹木のフラクタル） |
 
 ## トップページ仕様
 
