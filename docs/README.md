@@ -211,3 +211,4 @@ docs/
 | `/einstein-monotile-hat/` | Einstein Monotile Hat（13辺モノタイルHatの非周期敷き詰め） |
 | `/spectre-monotile/` | Spectre Monotile（Spectreモノタイルによる非周期タイル配置） |
 | `/socolar-taylor-tile/` | Socolar–Taylor Tile（Socolar–Taylorタイルの装飾付き六角配置） |
+| `/ammann-beenker-tiling/` | Ammann–Beenker Tiling（正八角形と菱形によるAmmann–Beenker準結晶タイル） |
