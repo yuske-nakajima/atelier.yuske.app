@@ -221,3 +221,4 @@ docs/
 | `/moore-curve/` | Moore Curve（L-system展開によるMoore空間充填曲線） |
 | `/heighway-dragon-variants/` | Heighway Dragon Variants（角度・回転変種のHeighwayドラゴン曲線） |
 | `/flowsnake-variants/` | Flowsnake Variants（Gosper曲線の角度・深度変種） |
+| `/terdragon/` | Terdragon（120°角のL-systemによるTerdragon曲線） |
