@@ -79,6 +79,7 @@
 | `/lava-flow/` | Lava Flow（メタボールで融合する溶岩流と黒皮のグラデーション） |
 | `/bubble-chamber/` | Bubble Chamber（磁場中の荷電粒子が描く螺旋軌跡の泡箱ビジュアル） |
 | `/convection-cell/` | Convection Cell（熱対流セルで渦を描く粒子のベナール対流ビジュアル） |
+| `/ice-crystal/` | Ice Crystal（6 回対称で再帰成長する雪の結晶フラクタル） |
 
 ## トップページ仕様
 
