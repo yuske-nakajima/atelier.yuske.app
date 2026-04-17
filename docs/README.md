@@ -134,6 +134,7 @@
 | `/genetic-creatures/` | Genetic Creatures（遺伝的生物） |
 | `/neural-network-viz/` | Neural Network Viz（ニューラルネット可視化） |
 | `/leaf-venation/` | Leaf Venation（葉脈形成） |
+| `/coral-growth/` | Coral Growth（サンゴの成長） |
 
 ## トップページ仕様
 
