@@ -117,6 +117,7 @@
 | `/pythagoras-tree/` | Pythagoras Tree（ピタゴラスの木） |
 | `/t-square-fractal/` | T-Square Fractal（T-スクエアフラクタル） |
 | `/gosper-island/` | Gosper Island（ゴスパー島） |
+| `/menger-slice/` | Menger Slice（メンガースポンジ断面） |
 
 ## トップページ仕様
 
