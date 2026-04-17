@@ -76,6 +76,7 @@
 | `/sand-dune/` | Sand Dune（風に流されて重なり合う砂丘の稜線ビジュアル） |
 | `/cloud-formation/` | Cloud Formation（パフの集合で形作る流れる雲のジェネレーティブアート） |
 | `/aurora-borealis/` | Aurora Borealis（夜空を流れるオーロラのリボンと星のビジュアル） |
+| `/lava-flow/` | Lava Flow（メタボールで融合する溶岩流と黒皮のグラデーション） |
 
 ## トップページ仕様
 
