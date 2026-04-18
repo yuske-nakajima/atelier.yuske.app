@@ -261,3 +261,4 @@ docs/
 | `/langevin-dynamics/` | Langevin Dynamics（摩擦と熱ノイズを持つLangevin粒子群） |
 | `/fresnel-zone-plate/` | Fresnel Zone Plate（同心帯で収束するフレネル帯板の干渉模様） |
 | `/single-slit-diffraction/` | Single-slit Diffraction（単スリット回折のsinc強度分布） |
+| `/double-slit-interference/` | Double-slit Interference（二重スリットで生じる干渉縞） |
