@@ -257,3 +257,4 @@ docs/
 | `/rossler-attractor/` | Rössler Attractor（らせんから折り畳まれるレスラーアトラクタ） |
 | `/chua-circuit/` | Chua Circuit（二つの渦を行き来するChua回路のダブルスクロール） |
 | `/duffing-oscillator/` | Duffing Oscillator（非線形復元力で描くDuffing振動子の位相図） |
+| `/brownian-motion-2d/` | Brownian Motion 2D（2次元のランダムウォークで描くブラウン運動） |
