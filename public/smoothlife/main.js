@@ -6,12 +6,12 @@ const params = {
   cellSize: 4,
   innerR: 4,
   outerR: 12,
-  b1: 0.278,
-  b2: 0.365,
-  d1: 0.267,
-  d2: 0.445,
+  b1: 0.239,
+  b2: 0.301,
+  d1: 0.27,
+  d2: 0.489,
   alpha: 0.05,
-  hueShift: 180,
+  hueShift: 54,
 };
 const defaults = { ...params };
 
