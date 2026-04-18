@@ -252,3 +252,4 @@ docs/
 | `/lenia/` | Lenia（連続空間セルオートマトンLeniaの生命体） |
 | `/smoothlife/` | SmoothLife（連続版ライフゲームSmoothLifeの浮遊体） |
 | `/particle-in-cell-plasma/` | Particle-in-Cell Plasma（PIC法で解く荷電粒子プラズマの渦） |
+| `/magnetohydrodynamics/` | Magnetohydrodynamics（磁気流体のねじれるフラックスロープ） |
