@@ -254,3 +254,4 @@ docs/
 | `/particle-in-cell-plasma/` | Particle-in-Cell Plasma（PIC法で解く荷電粒子プラズマの渦） |
 | `/magnetohydrodynamics/` | Magnetohydrodynamics（磁気流体のねじれるフラックスロープ） |
 | `/lorenz-attractor-3d/` | Lorenz Attractor 3D（蝶の翅を描くローレンツアトラクタの3D軌跡） |
+| `/rossler-attractor/` | Rössler Attractor（らせんから折り畳まれるレスラーアトラクタ） |
