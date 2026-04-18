@@ -239,3 +239,4 @@ docs/
 | `/julia-set-zoo/` | Julia Set Zoo（複数プリセットで切り替えるJulia集合ギャラリー） |
 | `/mandelbrot-buddha/` | Mandelbrot Buddha（発散軌跡を蓄積するBuddhabrot） |
 | `/schlieren-visualization/` | Schlieren Visualization（シュリーレン法で可視化する密度場の屈折縞） |
+| `/caustics/` | Caustics（水面の揺らぎから生じる焦光パターン） |
