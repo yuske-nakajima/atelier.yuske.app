@@ -265,3 +265,4 @@ docs/
 | `/young-fringes-animation/` | Young Fringes Animation（位相変化で移ろうヤングの干渉縞アニメーション） |
 | `/gravitational-lensing/` | Gravitational Lensing（巨大質量で歪むアインシュタイン重力レンズ） |
 | `/n-body-orbit/` | N-body Orbit（相互重力で絡み合うN体軌道） |
+| `/tidal-force-field/` | Tidal Force Field（連星系が作る潮汐力ベクトル場） |
