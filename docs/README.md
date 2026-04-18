@@ -264,3 +264,4 @@ docs/
 | `/double-slit-interference/` | Double-slit Interference（二重スリットで生じる干渉縞） |
 | `/young-fringes-animation/` | Young Fringes Animation（位相変化で移ろうヤングの干渉縞アニメーション） |
 | `/gravitational-lensing/` | Gravitational Lensing（巨大質量で歪むアインシュタイン重力レンズ） |
+| `/n-body-orbit/` | N-body Orbit（相互重力で絡み合うN体軌道） |
