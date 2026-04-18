@@ -242,3 +242,4 @@ docs/
 | `/caustics/` | Caustics（水面の揺らぎから生じる焦光パターン） |
 | `/ferrofluid-spikes/` | Ferrofluid Spikes（磁場下でとがる磁性流体のロゼンツヴァイク不安定） |
 | `/rayleigh-taylor-instability/` | Rayleigh–Taylor Instability（重い流体が軽い流体に沈むRT不安定性） |
+| `/kelvin-helmholtz/` | Kelvin–Helmholtz（速度差のある界面に渦が並ぶKH不安定性） |
