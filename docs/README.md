@@ -247,3 +247,4 @@ docs/
 | `/couette-flow/` | Couette Flow（同心円筒間の粘性せん断流） |
 | `/taylor-green-vortex/` | Taylor–Green Vortex（周期境界で減衰する格子状の渦配列） |
 | `/ising-model/` | Ising Model（温度で秩序が崩れる2次元Isingモデル） |
+| `/xy-model-vortices/` | XY Model Vortices（連続スピンが作る渦と反渦のペア） |
