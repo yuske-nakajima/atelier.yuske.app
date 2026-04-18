@@ -256,3 +256,4 @@ docs/
 | `/lorenz-attractor-3d/` | Lorenz Attractor 3D（蝶の翅を描くローレンツアトラクタの3D軌跡） |
 | `/rossler-attractor/` | Rössler Attractor（らせんから折り畳まれるレスラーアトラクタ） |
 | `/chua-circuit/` | Chua Circuit（二つの渦を行き来するChua回路のダブルスクロール） |
+| `/duffing-oscillator/` | Duffing Oscillator（非線形復元力で描くDuffing振動子の位相図） |
