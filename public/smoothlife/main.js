@@ -63,9 +63,34 @@ function reseed() {
   N = Math.max(30, params.gridSize | 0);
   grid = new Float32Array(N * N);
   buf = new Float32Array(N * N);
-  for (let i = 0; i < grid.length; i++)
-    grid[i] = Math.random() < 0.35 ? Math.random() : 0;
   buildKernels();
+  // SmoothLife はセル単位のランダムノイズだと平均値が birth 範囲に届かず即消滅する。
+  // outerR 程度のランダムな円形ブロブを複数配置して種にする。
+  const blobCount = Math.max(
+    8,
+    Math.floor(((N * N) / (R * R * Math.PI)) * 0.6),
+  );
+  for (let i = 0; i < blobCount; i++) {
+    const cx = Math.random() * N;
+    const cy = Math.random() * N;
+    // outerR より大きいブロブは中心が過密死するため innerR 程度に抑える。
+    const rr = Math.max(2, params.innerR * (0.6 + Math.random() * 1.2));
+    const rr2 = rr * rr;
+    const y0 = Math.floor(cy - rr);
+    const y1 = Math.ceil(cy + rr);
+    const x0 = Math.floor(cx - rr);
+    const x1 = Math.ceil(cx + rr);
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        const dx = x - cx;
+        const dy = y - cy;
+        if (dx * dx + dy * dy > rr2) continue;
+        const nx = ((x % N) + N) % N;
+        const ny = ((y % N) + N) % N;
+        grid[nx + ny * N] = 0.6 + Math.random() * 0.4;
+      }
+    }
+  }
 }
 reseed();
 
@@ -106,13 +131,12 @@ function step() {
   [grid, buf] = [buf, grid];
 }
 
-function tick() {
-  step();
+function draw() {
   ctx.fillStyle = '#0b0a07';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   const size = params.cellSize;
-  const ox = (canvas.width - N * size) / 2,
-    oy = (canvas.height - N * size) / 2;
+  const ox = (canvas.width - N * size) / 2;
+  const oy = (canvas.height - N * size) / 2;
   for (let y = 0; y < N; y++) {
     for (let x = 0; x < N; x++) {
       const v = grid[x + y * N];
@@ -122,6 +146,11 @@ function tick() {
       ctx.fillRect(ox + x * size, oy + y * size, size, size);
     }
   }
+}
+
+function tick() {
+  draw();
+  step();
   requestAnimationFrame(tick);
 }
 tick();
