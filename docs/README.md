@@ -255,3 +255,4 @@ docs/
 | `/magnetohydrodynamics/` | Magnetohydrodynamics（磁気流体のねじれるフラックスロープ） |
 | `/lorenz-attractor-3d/` | Lorenz Attractor 3D（蝶の翅を描くローレンツアトラクタの3D軌跡） |
 | `/rossler-attractor/` | Rössler Attractor（らせんから折り畳まれるレスラーアトラクタ） |
+| `/chua-circuit/` | Chua Circuit（二つの渦を行き来するChua回路のダブルスクロール） |
