@@ -263,3 +263,4 @@ docs/
 | `/single-slit-diffraction/` | Single-slit Diffraction（単スリット回折のsinc強度分布） |
 | `/double-slit-interference/` | Double-slit Interference（二重スリットで生じる干渉縞） |
 | `/young-fringes-animation/` | Young Fringes Animation（位相変化で移ろうヤングの干渉縞アニメーション） |
+| `/gravitational-lensing/` | Gravitational Lensing（巨大質量で歪むアインシュタイン重力レンズ） |
