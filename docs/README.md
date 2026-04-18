@@ -250,3 +250,4 @@ docs/
 | `/xy-model-vortices/` | XY Model Vortices（連続スピンが作る渦と反渦のペア） |
 | `/potts-model/` | Potts Model（q状態Pottsモデルのドメイン粗大化） |
 | `/lenia/` | Lenia（連続空間セルオートマトンLeniaの生命体） |
+| `/smoothlife/` | SmoothLife（連続版ライフゲームSmoothLifeの浮遊体） |
