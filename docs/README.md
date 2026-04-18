@@ -262,3 +262,4 @@ docs/
 | `/fresnel-zone-plate/` | Fresnel Zone Plate（同心帯で収束するフレネル帯板の干渉模様） |
 | `/single-slit-diffraction/` | Single-slit Diffraction（単スリット回折のsinc強度分布） |
 | `/double-slit-interference/` | Double-slit Interference（二重スリットで生じる干渉縞） |
+| `/young-fringes-animation/` | Young Fringes Animation（位相変化で移ろうヤングの干渉縞アニメーション） |
