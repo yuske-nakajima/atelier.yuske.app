@@ -251,3 +251,4 @@ docs/
 | `/potts-model/` | Potts Model（q状態Pottsモデルのドメイン粗大化） |
 | `/lenia/` | Lenia（連続空間セルオートマトンLeniaの生命体） |
 | `/smoothlife/` | SmoothLife（連続版ライフゲームSmoothLifeの浮遊体） |
+| `/particle-in-cell-plasma/` | Particle-in-Cell Plasma（PIC法で解く荷電粒子プラズマの渦） |
