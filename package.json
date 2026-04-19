@@ -1,6 +1,11 @@
 {
   "name": "atelier-yuske-app",
   "private": true,
+  "packageManager": "pnpm@10.33.0+sha512.EFaLtKavtYyes2MNqQzJUWQXq+vT+rvmc58K55VyjaFJHp21pUTHatjrdXD1xLs9bGN7LLQb/c20f6gjyGSTGQ==",
+  "engines": {
+    "node": "24.15.0",
+    "pnpm": "10.33.0"
+  },
   "scripts": {
     "dev": "vite public",
     "dev:bg": "vite public > /dev/null 2>&1 & echo $! > .vite.pid && echo 'Vite started (PID:'$(cat .vite.pid)')'",
