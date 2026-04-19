@@ -1,0 +1,8 @@
+# pnpm 設定 (pnpm 10+)
+# サプライチェーン攻撃対策: 公開から 7 日経過したバージョンのみインストールを許可
+minimumReleaseAge: 10080
+# 不正なサブ依存 (tarball, git 直指定等) をブロック (pnpm 10 デフォルト)
+blockExoticSubdeps: true
+# ライフサイクルスクリプトはホワイトリスト方式 (pnpm 10 デフォルト)
+onlyBuiltDependencies:
+  - esbuild
