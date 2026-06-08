@@ -1,10 +1,10 @@
 {
   "name": "atelier-yuske-app",
   "private": true,
-  "packageManager": "pnpm@11.1.2",
+  "packageManager": "pnpm@11.1.3",
   "engines": {
     "node": "24.16.0",
-    "pnpm": "11.1.2"
+    "pnpm": "11.1.3"
   },
   "scripts": {
     "dev": "vite public",
@@ -20,7 +20,7 @@
     "@playwright/test": "1.60.0",
     "eslint": "10.4.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.59.3",
-    "vite": "8.0.13"
+    "typescript-eslint": "8.59.4",
+    "vite": "8.0.14"
   }
 }
