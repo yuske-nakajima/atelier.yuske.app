@@ -118,13 +118,13 @@ git checkout -b feat/<ディレクトリ名>
 - [ ] `public/<ディレクトリ名>/` に `index.html`, `main.js`, `style.css` が存在する
 - [ ] ページタイトルが正しく設定されている
 - [ ] ページの機能が実装されている
-- [ ] `npm run check` がエラーなしで通る
+- [ ] `pnpm run check` がエラーなしで通る
 - [ ] `public/index.html` にリンクが追加されている
 - [ ] `docs/README.md` にページ情報が追加されている
 
 #### 評価方法
 
-- `npm run check` でリント・フォーマットチェック
+- `pnpm run check` でリント・フォーマットチェック
 - 各ファイルの存在確認
 - index.html と docs/README.md の更新確認
 
