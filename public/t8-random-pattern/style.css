@@ -114,7 +114,8 @@ h2 {
   margin-bottom: 0;
 }
 
-.field label {
+.field label,
+.field .field-label {
   font-size: 0.875rem;
   color: var(--muted-foreground);
   flex-shrink: 0;
