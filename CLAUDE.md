@@ -10,7 +10,6 @@ Vite で静的配信する個人サイト。HTML / CSS / JS のみで構成し�
 .
 ├── CLAUDE.md            # Claude Code 用の指示ファイル
 ├── biome.json           # Biome（リンター/フォーマッター）設定
-├── eslint.config.mjs    # ESLint（非推奨 API 検出）設定
 ├── jsconfig.json        # JS の型チェック設定
 ├── package.json
 ├── playwright.config.js # Playwright（E2E テスト）設定
@@ -33,7 +32,7 @@ Vite で静的配信する個人サイト。HTML / CSS / JS のみで構成し�
 | `pnpm run dev:bg` | 開発サーバーをバックグラウンドで起動（PID 管理付き） |
 | `pnpm run dev:status` | 開発サーバーの稼働状態を確認 |
 | `pnpm run dev:stop` | バックグラウンドの開発サーバーを停止 |
-| `pnpm run check` | lint チェック（Biome + ESLint） |
+| `pnpm run check` | lint チェック（Biome） |
 | `pnpm run format` | lint/format の自動修正（Biome） |
 
 ### 開発サーバー
@@ -76,7 +75,6 @@ npx playwright test --ui   # UI モードで実行
 - インデント: スペース 2 つ
 - JS クォート: シングルクォート
 - Biome の recommended ルールに従う
-- ESLint の `@typescript-eslint/no-deprecated` で非推奨 API を検出する
 - JS ファイルの先頭に `// @ts-check` を記述する
 - `jsconfig.json` で `strict: true` / `checkJs: true` を有効化済み
 - 日本語でコメント・ドキュメントを記述する
